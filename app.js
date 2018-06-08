@@ -14,10 +14,10 @@ io.on('connection', (socket) => {
 		var sessionId;
 		opentok.createSession({mediaMode:"routed"}, function(error, session) {
 		  if (error) {
-		    io.emit('sessionid', "Error al crear session ID");
+		    io.emit('sessionid', {response: "Error al crear session ID"});
 		  } else {
 		    sessionId = session.sessionId;
-		    io.emit('sessionid', sessionId);
+		    io.emit('sessionid', {response: sessionId});
 		  }
 		});
 	});
