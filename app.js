@@ -20,8 +20,7 @@ io.on('connection', (socket) => {
 		    io.emit('sessionid', {response: sessionId});
 		  }
 		});
-	});
-	socket.on('token', (sessionId) => {
+	},  'token', (sessionId) => {
 		var token = opentok.generateToken(sessionId);
 		io.emit('token', {response: token});
 	});
