@@ -21,6 +21,10 @@ io.on('connection', (socket) => {
 		  }
 		});
 	});
+	socket.on('token', (sessionId) => {
+		var token = opentok.generateToken(sessionId);
+		io.emit('token', {response: token})
+	});
 });
 
 http.listen(port, () => {
