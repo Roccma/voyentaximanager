@@ -25,7 +25,6 @@ console.log(sessionId + " - " + token);
 var map;
 
 var markerStart;
-var marker;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -40,27 +39,28 @@ function initMap() {
 	});
 
 	marker = markerStart;	
+	let socket = io();
+	socket.emit("listen_location");
+	socket.on('location', function(data){
+
+		console.log("info");
+		if(data['sessionid'] == sessionId){
+			if(marker != null && marker != "undefined")
+				marker.setMap(null);
+			var newMarker = new google.maps.Marker({
+			    position: {lat: parseFloat(data['latitud']), lng: parseFloat(data['longitud'])},
+			    map: map,
+			    title: 'Ubicación'
+			});
+
+			var center = new google.maps.LatLng(parseFloat(data['latitud']), parseFloat(data['longitud']));
+			map.panTo(center);
+			marker = newMarker;
+		}
+	});
+
 }
 
-let socket = io();
-socket.emit("listen_location");
-socket.on('location', function(data){
-
-	console.log("info");
-	if(data['sessionid'] == sessionId){
-		if(marker != null && marker != "undefined")
-			marker.setMap(null);
-		var newMarker = new google.maps.Marker({
-		    position: {lat: parseFloat(data['latitud']), lng: parseFloat(data['longitud'])},
-		    map: map,
-		    title: 'Ubicación'
-		});
-
-		var center = new google.maps.LatLng(parseFloat(data['latitud']), parseFloat(data['longitud']));
-		map.panTo(center);
-		marker = newMarker;
-	}
-});
 
 //initializeSession("46127092", "2_MX40NjEyNzA5Mn5-MTUyNzUxMzMyNDUzOX5aY2JDRGJadlN6OXRoSWxmNUVhcTlvZnN-fg", "T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9NDNjNWJkZWI3NzhlMjMyZGJlZTJhYmZhZjJkNmYwN2RhNmY3Mzc1ZDpzZXNzaW9uX2lkPTJfTVg0ME5qRXlOekE1TW41LU1UVXlOelV4TXpNeU5EVXpPWDVhWTJKRFJHSmFkbE42T1hSb1NXeG1OVVZoY1RsdlpuTi1mZyZjcmVhdGVfdGltZT0xNTI3NTEzNDA5Jm5vbmNlPTAuMjY5NjQ2NDcxNjMzNTY4OSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTMwMTA1NDEwJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9");
 //initializeSession("46127092", "1_MX40NjEyNzA5Mn5-MTUyODE3MDQ4Njc0MX5wV0IxNUs3OGtsMlVpbVMyUUlOWEVCSVF-fg", "T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9NTc3MGRjMDdlOTkyOTE0NDM4NDY0MGZjODBlNWQ1ODkzYzVlNTQ1YzpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOekE1TW41LU1UVXlPREUzTURRNE5qYzBNWDV3VjBJeE5VczNPR3RzTWxWcGJWTXlVVWxPV0VWQ1NWRi1mZyZjcmVhdGVfdGltZT0xNTI4MTcwNTM1Jm5vbmNlPTAuODU0MzkyNjgzNDg0NDE1NSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTMwNzYyNTM1JmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9");
