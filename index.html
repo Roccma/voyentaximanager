@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>OpenTok</title>
+	<link rel = "stylesheet" href = "css/app.css"/>
+	<script src = "https://static.opentok.com/v2/js/opentok.min.js"></script>
+	<script src="http://static.opentok.com/v1.1/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+</head>
+<body style="overflow-y: auto; overflow-x: hidden; box-sizing: border-box;">
+	<nav  style="background-color: #FFE448; position: fixed; left: 0; right: 0; height: 70px" >
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#"></a>
+	      <img style="width: 60%" src="Logo.png">
+	    </div>
+
+	  </div>
+	</nav>
+	<div id = "videos">
+		<div id = "subscriber" style = "position: relative; top: 15%; left: 35%;"></div>
+		<div id = "publisher" style = "overflow-y: hidden;"></div>
+	</div>
+	<div id="archiveList" style="height:100px; display:none">
+		<p>Recordings (click to play):</p>
+	</div>
+	<script src = "js/app.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</body>
+</html>

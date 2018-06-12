@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Voy en Taxi</title>
+	<link rel = "stylesheet" href = "../css/app.css"/>
+	<script src = "https://static.opentok.com/v2/js/opentok.min.js"></script>
+	<link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+</head>
+<body style="overflow-y: auto; overflow-x: hidden; box-sizing: border-box; margin: 0">
+	<nav  style="background-color: #FFE448; position: fixed; left: 0; right: 0; height: 70px" >
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <img height="70" src="/img/Logo.png">
+	    </div>
+
+	  </div>
+	</nav>
+	<div class = "main" style = "position: fixed; top: 70px; bottom: 0; left: 0; right: 0">
+		<table class = "table">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">SESSION_ID</th>
+					<th scope="col">Fecha</th>
+					<th scope="col">Hora</th>				
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody id = "body">
+			</tbody>
+		</table>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src = "/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+		let socket = io();
+		let d = new Date();
+		let day = d.getDate() > 9 ? d.getDate() : "0" + d.getDate();
+		let month = d.getMonth() + 1 > 9 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1);
+		let fecha = day + "/" + month + "/" + d.getFullYear();
+
+		let horas = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
+		let minutos = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
+		let hora = horas + ":" + minutos;
+		socket.on('help', function(data){
+			let newRow =
+				"<tr id = '" + data['sessionid'] + "''>" + 
+					"<td>" + data['sessionid'] + "</td>" +
+					"<td>" + fecha + "</td>" + 
+					"<td>" + hora + "</td>" + 
+					"<td><i class = 'fa fa-play' id = 'sessionid=" + data['sessionid'] + "&token=" + data['token'] + "&latitud=" + data['latitud'] + "&longitud=" + data['longitud'] + "'></i></td>" +
+				"</tr>";
+			$('#body').html(newRow + $('#body').html());	
+		});
+
+		socket.on('finish_help', function(data){
+			$('#' + data['sessionid']).remove();	
+		});
+
+		$('body').on('click', '.fa-play', function(){
+			let a = document.createElement('a');
+			a.href = "streaming.html?" + $(this).attr('id');
+			a.target= "_blank";
+			a.click();
+		})
+		
+	</script>
+</body>
+</html>
