@@ -81,7 +81,6 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('location', (sessionId, latitud, longitud) => {
-		//console.log("finish_help");
 		io.emit('location', {sessionid : sessionId, latitud : latitud, longitud : longitud});
 	});
 

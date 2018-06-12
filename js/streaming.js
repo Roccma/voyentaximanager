@@ -25,6 +25,7 @@ console.log(sessionId + " - " + token);
 var map;
 
 var markerStart;
+var marker = "no";
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -32,20 +33,22 @@ function initMap() {
         zoom: 17
     });
 
+    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
     markerStart = new google.maps.Marker({
 	    position: {lat: latitud, lng: longitud},
 	    map: map,
+	    icon: image,
 	    title: 'Ubicación'
 	});
-
-	marker = markerStart;	
+	
 	let socket = io();
 	socket.emit("listen_location");
 	socket.on('location', function(data){
 
-		console.log("info");
+		console.log("info: " + parseFloat(data['latitud']) + " : " + parseFloat(data['longitud']));
 		if(data['sessionid'] == sessionId){
-			if(marker != null && marker != "undefined")
+			if(marker != "no")
 				marker.setMap(null);
 			var newMarker = new google.maps.Marker({
 			    position: {lat: parseFloat(data['latitud']), lng: parseFloat(data['longitud'])},
