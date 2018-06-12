@@ -48,7 +48,8 @@ socket.on('location', function(data){
 
 	console.log("info");
 	if(data['sessionid'] == sessionId){
-		marker.setMap(null);
+		if(marker != null && marker != "undefined")
+			marker.setMap(null);
 		var newMarker = new google.maps.Marker({
 		    position: {lat: parseFloat(data['latitud']), lng: parseFloat(data['longitud'])},
 		    map: map,
