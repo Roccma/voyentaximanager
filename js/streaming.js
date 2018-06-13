@@ -27,6 +27,8 @@ var map;
 var markerStart;
 var marker = "no";
 
+let socket = io();
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
  	    center: {lat: latitud, lng: longitud},
@@ -42,7 +44,6 @@ function initMap() {
 	    title: 'Ubicación'
 	});
 	
-	let socket = io();
 	socket.emit("listen_location");
 	socket.on('location', function(data){
 
@@ -96,6 +97,10 @@ function initializeSession(apiKey, sessionId, token){
 			width : '75%',
 			height : '100%'
 		}, handleError);
+	});
+
+	session.on('streamDestroyed', function(event){
+		io.emit("finish_help", sessionId);
 	});
 
 	var publisher = OT.initPublisher('publisher', {
