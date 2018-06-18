@@ -99,9 +99,9 @@ function initializeSession(apiKey, sessionId, token){
 		}, handleError);
 	});
 
-	session.on('streamDestroyed', function(event){
+	/*session.on('streamDestroyed', function(event){
 		io.emit("finish_help", sessionId);
-	});
+	});*/
 
 	var publisher = OT.initPublisher('publisher', {
 		insertMode : 'append',
