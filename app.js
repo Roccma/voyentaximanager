@@ -23,6 +23,10 @@ app.get('/streaming', (req, res) => {
 	res.redirect('streaming.html');
 });
 
+app.get('/gps', (req, res) => {
+	res.redirect('gps.html');
+});
+
 app.get('/css/app.css', (req, res) => {
 	res.sendFile(`${cssDir}/app.css`);
 });
@@ -91,23 +95,27 @@ io.on('connection', (socket) => {
 
 	socket.on('record_start', (apiKey, apiSecret, sessionId) => {
 		
-		//console.log("RECORD_START: ");
+		console.log("RECORD_START: ");
 		var OpenTok = require('opentok'),
 		opentok = new OpenTok(apiKey, apiSecret);
 
-		/*opentok.listArchives({offset:100, count:50}, function(error, archives, totalCount) {
+		/*opentok.listArchives({count: 50, offset: 0, sessionId: sessionId}, function(error, archives, totalCount) {
 		  if (error) return console.log("error:", error);
 
 		  console.log(totalCount + " archives");
-		  for (var i = 0; i < archives.length; i++) {
-		    archives[i].stop(function(err, archive) {
-			  if (err) console.log(err);
-			  else console.log("Borrado: ");
+		  console.log(archives);
+		  /*for (var i = 0; i < archives.length; i++) {
+		  	archives[i].delete(function(err) {
+			  if (err) console.log(err)
+			  else console.log("Borrado: " + archives[i]);
 			});
-		  }
-		});*/
+		  archives.forEach(function(element){
+		  	/*element.delete(function(err) {
+			  if (err) console.log(err)
+			  else console.log("Borrado");
+			});*/
 
-		opentok.startArchive(sessionId, {name : 'Video record'}, (err, archive) => {
+		opentok.startArchive(sessionId, {name : 'Video record', outputMode : 'individual'}, (err, archive) => {
 			if(err){
 				console.log("ERROR: " + err);
 				io.emit('record_start', {archive: "0"});
@@ -115,6 +123,7 @@ io.on('connection', (socket) => {
 			else
 				io.emit('record_start', {archive : archive.id});
 		});
+		
 	});
 
 	socket.on('record_stop', (apiKey, apiSecret, archiveId) => {
@@ -127,7 +136,7 @@ io.on('connection', (socket) => {
 			else{
 				opentok.getArchive(archiveId, (err, archive) =>{
 					console.log(archive);
-					io.emit('record_stop', {archive: archive});
+					io.emit('record_stop', {archive: "https://s3.amazonaws.com/tokbox.com.archive2/" + apiKey + "/" + archiveId + "/archive.zip"});
 				})
 				
 			}
