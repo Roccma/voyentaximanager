@@ -11,50 +11,113 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 </head>
-<body style="overflow-y: auto; overflow-x: hidden; box-sizing: border-box; margin: 0">
-	<nav  style="background-color: #FFE448; position: fixed; left: 0; right: 0; height: 70px" >
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <img height="70" src="/img/Logo.png">
+<body class = "pagebody">
+	<nav class = "menu">
+	  <div class="container-fluid menucontainer">
+	    <div class="navbar-header" style = "margin-top: 5px">
+	      <img height="55" src="/img/Logo.png">
 	    </div>
+
+		<div class = "opcionesMenu">
+			<div id = "opcionEmergencias" class = "divIcono">
+				<i class = "fa fa-phone"></i> <span>Emergencias</span>
+			</div>
+			<div id = "opcionFinalizadas" class = "divIcono">				
+				<i class = "fa fa-phone-slash"></i> <span>Finalizadas</span>
+			</div>
+			<div id = "opcionLocalizacion" class = "divIcono">
+				<i class = "fa fa-map-marker-alt"></i> <span>Localización</span>
+			</div>
+			<div id = "opcionEstadisticas" class = "divIcono">
+				<i class = "fa fa-chart-pie"></i> <span>Estadísticas</span>
+			</div>
+			<div id = "opcionOpenTok" class = "divIcono" data-toggle="modal" data-target="#modalCredenciales">
+				<i class = "fa fa-plug"></i> <span>Credenciales</span>
+			</div>
+		</div>
 
 	  </div>
 	</nav>
-	<div class = "main" style = "position: fixed; top: 70px; bottom: 0; left: 0; right: 0">
+	<div class = "main">
 		<table class = "table">
 			<thead class="thead-dark">
 				<tr>
-					<th scope="col">SESSION_ID</th>
+					<th scope="col">Taxista</th>
+					<th scope="col">E-mail</th>
+					<th scope="col">Celular</th>
 					<th scope="col">Fecha</th>
 					<th scope="col">Hora</th>				
-					<th scope="col"></th>
+					<th scope="col">Ver</th>
 				</tr>
 			</thead>
 			<tbody id = "body">
 			</tbody>
 		</table>
 	</div>
+	<div class="modal fade" id = "modalCredenciales">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<img src = "../img/tokbox.png" class = "imgTokbox"/>
+          			<h4 class="modal-title">Credenciales de OpenTok</h4>
+				</div>
+				<div class = "modal-body">
+					<div class = "form-group" id = "divApiKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otApiKey">API key</label>
+						<input type = "text" id = "otApiKey" name = "otApiKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divSecretKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otSecretKey">Secret key</label>
+						<input type = "text" id = "otSecretKey" name = "otSecretKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "alert alert-danger" id = "alertOpenTok" style = "margin-top: 25px; display: none">
+						<center><strong>ERROR:</strong> No se han completado campos</center>
+					</div>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarOpenTok" class = "btn btn-success">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">  
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>	
+	<script src = "../js/bootstrap.min.js"></script>
 	<script src = "/socket.io/socket.io.js"></script>
 	<script type="text/javascript">
 		let socket = io();
-		let d = new Date();
+		/*let d = new Date();
 		let day = d.getDate() > 9 ? d.getDate() : "0" + d.getDate();
 		let month = d.getMonth() + 1 > 9 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1);
 		let fecha = day + "/" + month + "/" + d.getFullYear();
 
 		let horas = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
 		let minutos = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
-		let hora = horas + ":" + minutos;
+		let hora = horas + ":" + minutos;*/
 		socket.on('help', function(data){
+			let fechaHora = data['fechaHora'];
+			let fhSplit = fechaHora.split(" ");
+			let hora = fhSplit[1];
+			let fecha = fhSplit[0].replace(/-/g, '/');
 			let newRow =
 				"<tr id = '" + data['sessionid'] + "''>" + 
-					"<td>" + data['sessionid'] + "</td>" +
+					"<td>" + data['name'] + "</td>" +
+					"<td>" + data['email'] + "</td>" +
+					"<td>" + data['telephone'] + "</td>" +
 					"<td>" + fecha + "</td>" + 
 					"<td>" + hora + "</td>" + 
 					"<td><i class = 'fa fa-play' id = 'sessionid=" + data['sessionid'] + "&token=" + data['token'] + "&latitud=" + data['latitud'] + "&longitud=" + data['longitud'] + "'></i></td>" +
 				"</tr>";
 			$('#body').html(newRow + $('#body').html());	
+			/*$('.table').DataTable({
+				"language": { 
+	            	"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" 
+	            },
+	        	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]]
+	        });*/
 		});
 
 		socket.on('finish_help', function(data){
@@ -66,8 +129,85 @@
 			a.href = "streaming.html?" + $(this).attr('id');
 			a.target= "_blank";
 			a.click();
-		})
+		});
+
+		$('.table').DataTable({
+			"language": { 
+            	"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" 
+            },
+        	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]]
+        });
+
+        $('#opcionOpenTok').on('click', function(){
+
+        	$('#alertOpenTok').css('display', 'none');
+        	$('#divApiKey').removeClass('has-error');
+        	$('#divSecretKey').removeClass('has-error');
+
+        	$.ajax({
+	        	url : 'http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/GetClaveTokBox',
+	        	type : 'GET',
+	        	dataType : 'json'
+	        })
+	        .done(function(response){
+	        	console.log(response);
+	        	$('#otApiKey').val(response['api_key']);
+	        	$('#otSecretKey').val(response['secret_key']);
+	        })
+	        .fail(function(error, err, e){
+	        	console.log(e);
+	        });
+        });
+
+        $('#btnAceptarOpenTok').on('click', function(){
+        	var campoVacio = false;
+
+        	if($('#otApiKey').val() == "" || $('#otSecretKey').val() == "")
+        		campoVacio = true;
+
+        	if($('#otApiKey').val() == ""){
+        		$('#divApiKey').addClass('has-error');
+        	}
+        	else{
+        		$('#divApiKey').removeClass('has-error');
+        	}
+
+        	if($('#otSecretKey').val() == ""){
+        		$('#divSecretKey').addClass('has-error');
+        	}
+        	else{
+        		$('#divSecretKey').removeClass('has-error');
+        	}
+
+        	if(campoVacio){
+        		$('#alertOpenTok').addClass('alert-danger').removeClass('alert-success');
+        		$('#alertOpenTok').html("<center><strong>ERROR:</strong> No se han completado campos</center>");
+        		$('#alertOpenTok').fadeIn();
+
+        		return;
+        	}
+
+        	$('#alertOpenTok').fadeOut();
+
+        	$.ajax({
+        		url : 'http://192.168.1.9:8080/VoyEnTaxiWS/usuarios.php/ClavesTokBox?apiKey=' + $('#otApiKey').val() + "&projectKey=" + $('#otSecretKey').val(),
+        		type : 'GET',
+        		dataType : 'json'
+        	})
+        	.done(function(response){
+        		if(response['result']){
+        			$('#alertOpenTok').removeClass('alert-danger').addClass('alert-success');
+        			$('#alertOpenTok').html("<center><strong>ÉXITO:</strong> Credenciales actualizadas</center>");
+        			$('#divApiKey').removeClass('has-error');
+        			$('#divSecretKey').removeClass('has-error');
+        			$('#alertOpenTok').fadeIn();
+        		}
+        	})
+        });
 		
 	</script>
+	<footer class = "footer">
+		<center>Voy en Taxi | Bot&oacute;n de Alerta | 2018</center>
+	</footer>
 </body>
 </html>

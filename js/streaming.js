@@ -1,15 +1,3 @@
-//var apiKey = "46127092";
-//var sessionId = "2_MX40NjEyNzA5Mn5-MTUyNzUxMzMyNDUzOX5aY2JDRGJadlN6OXRoSWxmNUVhcTlvZnN-fg";
-//var token = "T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9NDNjNWJkZWI3NzhlMjMyZGJlZTJhYmZhZjJkNmYwN2RhNmY3Mzc1ZDpzZXNzaW9uX2lkPTJfTVg0ME5qRXlOekE1TW41LU1UVXlOelV4TXpNeU5EVXpPWDVhWTJKRFJHSmFkbE42T1hSb1NXeG1OVVZoY1RsdlpuTi1mZyZjcmVhdGVfdGltZT0xNTI3NTEzNDA5Jm5vbmNlPTAuMjY5NjQ2NDcxNjMzNTY4OSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTMwMTA1NDEwJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9";
-
-//1_MX40NjEyNzA5Mn5-MTUyODE3MDQ4Njc0MX5wV0IxNUs3OGtsMlVpbVMyUUlOWEVCSVF-fg
-//T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9NTc3MGRjMDdlOTkyOTE0NDM4NDY0MGZjODBlNWQ1ODkzYzVlNTQ1YzpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOekE1TW41LU1UVXlPREUzTURRNE5qYzBNWDV3VjBJeE5VczNPR3RzTWxWcGJWTXlVVWxPV0VWQ1NWRi1mZyZjcmVhdGVfdGltZT0xNTI4MTcwNTM1Jm5vbmNlPTAuODU0MzkyNjgzNDg0NDE1NSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTMwNzYyNTM1JmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9
-
-//2_MX40NjEyNzA5Mn5-MTUyODE3MDU5MjAyNX5SdFQ0VVZiYXJjbUkydWkyamNZbVp5bnV-fg
-//T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9MmY3M2ZkMGE0ZjY0YjkwNzdhMDRkNjhkZTJiOTI2YTlmN2M0NGQyZDpzZXNzaW9uX2lkPTJfTVg0ME5qRXlOekE1TW41LU1UVXlPREUzTURVNU1qQXlOWDVTZEZRMFZWWmlZWEpqYlVreWRXa3lhbU5aYlZwNWJuVi1mZyZjcmVhdGVfdGltZT0xNTI4MTcwNjE2Jm5vbmNlPTAuNjAwNjc0NDc4NTM3ODcyNiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTMwNzYyNjE3JmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9
-
-
-
 let url = location.href;
 
 let urlSplit = url.split("?");
@@ -29,47 +17,56 @@ var marker = "no";
 
 let socket = io();
 
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
- 	    center: {lat: latitud, lng: longitud},
-        zoom: 17
-    });
+var map = L.map('map').setView([latitud, longitud], 18);
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+	maxZoom: 18}).addTo(map);
+L.control.scale().addTo(map);
 
-    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
 
-    markerStart = new google.maps.Marker({
-	    position: {lat: latitud, lng: longitud},
-	    map: map,
-	    icon: image,
-	    title: 'Ubicación'
+var locationMarker = L.AwesomeMarkers.icon({
+    icon: 'ion-model-s',
+    markerColor: 'red'
+});
+
+var initMarker = L.AwesomeMarkers.icon({
+    icon: 'ion-flag',
+    markerColor: 'green'
+});
+
+var marker = L.marker([latitud, longitud], {draggable: false});
+marker.bindPopup("<center>Posición inicial</center>");
+marker.on('mouseover', function (e) {
+    this.openPopup();
+});
+marker.on('mouseout', function (e) {
+    this.closePopup();
+});
+marker.setIcon(initMarker);
+marker.addTo(map);
+
+var markerLocation;
+
+socket.emit("listen_location");
+socket.on('location', function(data){
+
+	if(markerLocation != null && markerLocation != "undefined")
+		map.removeLayer(markerLocation);
+
+	markerLocation = L.marker([data["latitud"], data["longitud"]], {draggable: false});
+	markerLocation.bindPopup("<center>Posición actual</center>");
+	markerLocation.on('mouseover', function (e) {
+	    this.openPopup();
 	});
-	
-	socket.emit("listen_location");
-	socket.on('location', function(data){
-
-		console.log("info: " + parseFloat(data['latitud']) + " : " + parseFloat(data['longitud']));
-		if(data['sessionid'] == sessionId){
-			if(marker != "no")
-				marker.setMap(null);
-			var newMarker = new google.maps.Marker({
-			    position: {lat: parseFloat(data['latitud']), lng: parseFloat(data['longitud'])},
-			    map: map,
-			    title: 'Ubicación'
-			});
-
-			var center = new google.maps.LatLng(parseFloat(data['latitud']), parseFloat(data['longitud']));
-			map.panTo(center);
-			marker = newMarker;
-		}
+	markerLocation.on('mouseout', function (e) {
+	    this.closePopup();
 	});
+	markerLocation.setIcon(locationMarker);
+	markerLocation.addTo(map);
 
-}
+	map.setView([data["latitud"], data["longitud"]], 18);
+});
 
-
-//initializeSession("46127092", "2_MX40NjEyNzA5Mn5-MTUyNzUxMzMyNDUzOX5aY2JDRGJadlN6OXRoSWxmNUVhcTlvZnN-fg", "T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9NDNjNWJkZWI3NzhlMjMyZGJlZTJhYmZhZjJkNmYwN2RhNmY3Mzc1ZDpzZXNzaW9uX2lkPTJfTVg0ME5qRXlOekE1TW41LU1UVXlOelV4TXpNeU5EVXpPWDVhWTJKRFJHSmFkbE42T1hSb1NXeG1OVVZoY1RsdlpuTi1mZyZjcmVhdGVfdGltZT0xNTI3NTEzNDA5Jm5vbmNlPTAuMjY5NjQ2NDcxNjMzNTY4OSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTMwMTA1NDEwJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9");
-//initializeSession("46127092", "1_MX40NjEyNzA5Mn5-MTUyODE3MDQ4Njc0MX5wV0IxNUs3OGtsMlVpbVMyUUlOWEVCSVF-fg", "T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9NTc3MGRjMDdlOTkyOTE0NDM4NDY0MGZjODBlNWQ1ODkzYzVlNTQ1YzpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOekE1TW41LU1UVXlPREUzTURRNE5qYzBNWDV3VjBJeE5VczNPR3RzTWxWcGJWTXlVVWxPV0VWQ1NWRi1mZyZjcmVhdGVfdGltZT0xNTI4MTcwNTM1Jm5vbmNlPTAuODU0MzkyNjgzNDg0NDE1NSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTMwNzYyNTM1JmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9");
-//initializeSession("46127092", "2_MX40NjEyNzA5Mn5-MTUyODE3MDU5MjAyNX5SdFQ0VVZiYXJjbUkydWkyamNZbVp5bnV-fg", "T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9MmY3M2ZkMGE0ZjY0YjkwNzdhMDRkNjhkZTJiOTI2YTlmN2M0NGQyZDpzZXNzaW9uX2lkPTJfTVg0ME5qRXlOekE1TW41LU1UVXlPREUzTURVNU1qQXlOWDVTZEZRMFZWWmlZWEpqYlVreWRXa3lhbU5aYlZwNWJuVi1mZyZjcmVhdGVfdGltZT0xNTI4MTcwNjE2Jm5vbmNlPTAuNjAwNjc0NDc4NTM3ODcyNiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTMwNzYyNjE3JmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9");
-//initializeSession("46127092", "1_MX40NjEyNzA5Mn5-MTUyODYwMTI1ODU5OH5haElFQ3ZFZ2VYQ0hPaTExYTR1NVJpL0d-fg", "T1==cGFydG5lcl9pZD00NjEyNzA5MiZzaWc9ZDE4ODk5YzBjNGUyNDI4NmYzOGVhMzkyZWY3MDdmY2Q3YTM5OTc2YTpzZXNzaW9uX2lkPTFfTVg0ME5qRXlOekE1TW41LU1UVXlPRFl3TVRJMU9EVTVPSDVoYUVsRlEzWkZaMlZZUTBoUGFURXhZVFIxTlZKcEwwZC1mZyZjcmVhdGVfdGltZT0xNTI4NjAxMzE5Jm5vbmNlPTAuMTYwMjQ2MjA5NDk3NjQyMjMmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTUzMTE5MzMyMSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==");
 initializeSession("46127092", sessionId, token);
 
 var connected = false;
@@ -98,10 +95,6 @@ function initializeSession(apiKey, sessionId, token){
 			height : '100%'
 		}, handleError);
 	});
-
-	/*session.on('streamDestroyed', function(event){
-		io.emit("finish_help", sessionId);
-	});*/
 
 	var publisher = OT.initPublisher('publisher', {
 		insertMode : 'append',

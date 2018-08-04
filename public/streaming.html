@@ -15,8 +15,8 @@
 <body style="overflow-y: hidden; overflow-x: hidden; box-sizing: border-box; margin: 0">
 	<nav  style="background-color: #FFE448; position: fixed; left: 0; right: 0; height: 70px" >
 	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <img height="70" src="/img/Logo.png">
+	    <div class="navbar-header" style = "margin-top: 5px">
+	      <img height="55" src="/img/Logo.png">
 	    </div>
 
 	  </div>
@@ -26,11 +26,28 @@
 			<div id = "subscriber" style = "width: 59%; height: 100%; margin-left: 15px"></div>
 			<div id = "map" style = "display: inline-block; width: 35%; height: 100%; margin-right: 15px; float: right;"></div>
 		</div>
-		<div id = "publisher" style = "overflow-y: hidden; width: 250px; height: 150px;"></div>
+		<div id = "publisher" style = "overflow-y: hidden; width: 250px; height: 150px; bottom: 57px"></div>
 	</div>
 	<script src = "/socket.io/socket.io.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"/>
+	<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=d0c5GU6bqLUS3GXzuVmJj5rhgVAiSofA"></script>
+	<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-routing.js?key=d0c5GU6bqLUS3GXzuVmJj5rhgVAiSofA"></script>
+	<!--<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>-->
+	<script src = "../js/leaflet.awesome-markers.js"></script>
+	<!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />-->
+	<script src="https://unpkg.com/ionicons@4.2.4/dist/ionicons.js"></script>
+	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css"/>
+	<link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
+	
+	<!--	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1duDqyFKrvApr3AOjfQFWnDe-ODP2WpE&callback=initMap"async defer></script> 
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1duDqyFKrvApr3AOjfQFWnDe-ODP2WpE&callback=initMap"async defer></script> -->
 	<script src = "../js/streaming.js"></script>
+
+	<footer class = "footer">
+		<center>Voy en Taxi | Bot&oacute;n de Alerta | 2018</center>
+	</footer>
 </body>
 </html>
