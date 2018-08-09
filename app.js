@@ -25,6 +25,10 @@ app.get('/streaming', (req, res) => {
 	res.redirect('streaming.html');
 });
 
+app.get('/finalizadas', (req, res) => {
+	res.redirect('finalizadas.html');
+});
+
 app.get('/gps', (req, res) => {
 	res.redirect('gps.html');
 });
@@ -86,6 +90,10 @@ app.get('/img/tokbox.png', (req, res) => {
 	res.sendFile(`${imgDir}/tokbox.png`);
 });
 
+app.get('/img/flechas.png', (req, res) => {
+	res.sendFile(`${imgDir}/flechas.png`);
+});
+
 var salas = [];
 
 io.on('connection', (socket) => {
@@ -105,10 +113,10 @@ io.on('connection', (socket) => {
 		});
 	});
 
-	socket.on('help', (sessionId, token, name, email, telephone, latitud, longitud, fechaHora) => {
+	socket.on('help', (sessionId, token, cedula, name, email, telephone, latitud, longitud, fechaHora) => {
 		//salas.push({"socket" : socket.id, "sessionId" : sessionId});
 		console.log("help! " + email);		
-		io.emit('help', {sessionid : sessionId, token : token, name : name, email : email, telephone : telephone, latitud : latitud, longitud : longitud, fechaHora : fechaHora});
+		io.emit('help', {sessionid : sessionId, token : token, cedula : cedula, name : name, email : email, telephone : telephone, latitud : latitud, longitud : longitud, fechaHora : fechaHora});
 	});
 
 	socket.on('finish_help', (sessionId) => {
@@ -181,6 +189,15 @@ io.on('connection', (socket) => {
 			}
 		});
 	});
+
+	socket.on('reconnected', (sessionId) => {
+		//console.log("reconectado! " + sessionId);
+		io.emit('reconnected', {sessionId : sessionId});
+	});
+
+	socket.on('reconnecting', (sessionId) => {
+		console.log("reconnecting! " + sessionId);
+	})
 });
 
 http.listen(port, () => {

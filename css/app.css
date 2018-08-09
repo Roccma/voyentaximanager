@@ -11,29 +11,32 @@ body, html {
     margin-right: auto;
 }
 
-#subscriber {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
+#publisher{
+  height: calc(100% - 30px);
 }
 
-#publisher {
-    position: absolute;
-    width: 360px;
-    height: 240px;
-    bottom: 10px;
-    left: 10px;
-    z-index: 100;
-    border: 3px solid white;
-    border-radius: 3px;
+.OT_publisher {
+  border-radius: 0 0 3px 3px;
 }
 
-.fa-play:hover{
+.atenderLlamada{
+  color: grey;
+  font-size: 18px;
+}
+
+.finalizarLlamada{
+  color: grey;
+  font-size: 18px;
+}
+
+.atenderLlamada:hover{
     cursor: pointer;
-    color: gray;
+    color: #089B35;
+}
+
+.finalizarLlamada:hover{
+    cursor: pointer;
+    color: red;
 }
 
 #contenedorMapa{
@@ -50,7 +53,7 @@ body, html {
 }
 
 #map {
-  height: 100%;
+  height: calc(100% - 30px);
 }
 /* Optional: Makes the sample page fill the window. */
 /*html, body {
@@ -150,10 +153,25 @@ body, html {
   height: 70px;
 }
 
+.contenedorMain{  
+  max-width: 1100px; 
+  margin: 0 auto;
+}
+
 .main{
   position: fixed; 
   top: 70px; 
-  bottom: 0; 
+  bottom: 35px; 
+  left: 0; 
+  right: 0;
+  padding: 0 !important;
+  overflow-y: auto;
+}
+
+.main2{
+  position: fixed; 
+  top: 70px; 
+  bottom: 35px; 
   left: 0; 
   right: 0;
   padding: 0 !important;
@@ -213,6 +231,7 @@ body, html {
 
 .table{
   margin-top: 40px;
+  margin-bottom: 15px !important;
 }
 
 .divIcono:hover{
@@ -249,6 +268,10 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   margin-top: 55px;
 }
 
+#DataTables_Table_0_wrapper{
+  margin-bottom: 35px !important;
+}
+
 .modal-header{
   background: #FFE448;
   color: black;
@@ -277,6 +300,201 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 .modal .modal-dialog{
   width: 500px;
 }
+
+.dataTables_filter{
+  margin-bottom: 35px;
+}
+
+#headerTabla{
+  background: #FFE448;
+}
+
+.table.dataTable thead .sorting{
+  background-image: none !important;
+}
+
+.table tr:nth-child(even) {
+  background: #F5F5F5 !important;
+}
+
+#body tr:nth-child(odd) {
+  background: #FAFAFA !important;
+}
+
+#colTaxista{
+  width: 25%;
+}
+
+#colEmail{
+  width: 25%;
+
+}
+
+#colCelular{
+  width: 20%;
+  
+}
+
+#colFecha{
+  
+}
+
+#colHora{
+  
+}
+
+#colVer{
+  
+}
+
+#colFinalizar{  
+}
+
+
+.contenedorPublisher{
+    position: absolute;
+    width: 278px;
+    height: 200px;
+    bottom: 75px;
+    z-index: 100;
+    border: 3px solid #FFE448;
+    border-radius: 3px;
+}
+
+.contenedorSubscriber{
+  position: absolute;
+  left: 0;
+  top: 25px;
+  width: 70% !important;
+  height:  59% !important;
+  z-index: 10;
+  border: 3px solid #FFE448;
+  border-radius: 5px;
+
+}
+
+.tituloContenedorSubscriber{
+  background: #FFE448;
+  text-align: center;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.tituloContenedorPublisher{
+  background: #FFE448;
+  text-align: center;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#subscriber {
+    height: calc(100% - 30px);
+}
+
+#publisher{
+  border: 0px solid black !important;
+  left: 0 !important;
+
+}
+
+.OT_subscriber{
+  width: 100% !important;  
+  border-radius: 0 0 5px 5px ;
+}
+
+.botonAccion{
+  z-index: 1000;
+  color: white;
+  font-size: 18px;
+  padding: 15px;
+  border-radius: 50px;
+  left: 46.5%;
+  width: 78%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#finalizarLlamada{  
+  background: red;
+  margin-top: 15%;
+}
+
+#finalizarLlamada:hover{
+  cursor: pointer;
+  background: #FF8686;
+}
+
+#intentarReconectar{
+  background: #339af0;
+  margin-top: 5%;
+}
+
+#intentarReconectar:hover{
+  cursor: pointer;
+  background: #97c9f3;
+}
+
+.contenedorMapa{
+    width: 29%;
+    height: 59%;
+    position: absolute;
+    right: 0;
+    top: 25px;
+    border: 3px solid #FFE448;
+    border-radius: 5px;
+}
+
+.tituloContenedorMapa{
+  background: #FFE448;
+  text-align: center;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.contenedorDatos{
+    position: absolute;
+    width: calc(100% - 575px);
+    height: 200px;
+    bottom: 75px;
+    z-index: 100;
+    border: 3px solid #FFE448;
+    border-radius: 3px;
+    right: 0;
+}
+
+.tituloContenedorDatos{
+  background: #FFE448;
+  text-align: center;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#tablaDatos{
+  width: 100%;
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+#tablaDatos tr td{
+  padding: 15px;
+}
+
+.contenedorBotones{
+  position: absolute;
+  height: 200px;
+  width: 277px;
+  bottom: 75px;
+  left: 288px;
+}
+
+.leaflet-bottom{
+  display: none !important;
+}
+
 
 /*#opcionEmergencias:hover i{  
   -webkit-text-stroke: 2px red;

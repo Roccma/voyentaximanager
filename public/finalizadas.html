@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Voy en Taxi</title>
+	<link rel = "stylesheet" href = "../css/app.css"/>
+	<script src = "https://static.opentok.com/v2/js/opentok.min.js"></script>
+	<link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+</head>
+<body class = "pagebody">
+	<nav class = "menu">
+	  <div class="container-fluid menucontainer">
+	    <div class="navbar-header" style = "margin-top: 5px">
+	      <img height="55" src="/img/Logo.png">
+	    </div>
+
+		<div class = "opcionesMenu">
+			<div id = "opcionEmergencias" class = "divIcono" onclick="window.location.href = 'index.html'">
+				<i class = "fa fa-phone"></i> <span>Emergencias</span>
+			</div>
+			<div id = "opcionFinalizadas" class = "divIcono" onclick="window.location.href = 'finalizadas.html'">				
+				<i class = "fa fa-phone-slash"></i> <span>Finalizadas</span>
+			</div>
+			<div id = "opcionLocalizacion" class = "divIcono" onclick="window.location.href = 'gps.html'">
+				<i class = "fa fa-map-marker-alt"></i> <span>Localización</span>
+			</div>
+			<div id = "opcionEstadisticas" class = "divIcono">
+				<i class = "fa fa-chart-pie"></i> <span>Estadísticas</span>
+			</div>
+			<div id = "opcionOpenTok" class = "divIcono" data-toggle="modal" data-target="#modalCredenciales">
+				<i class = "fa fa-plug"></i> <span>Credenciales</span>
+			</div>
+		</div>
+
+	  </div>
+	</nav>
+	<div class = "main">
+		<div class = "contenedorMain">
+			<table class = "table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Taxista</th>
+						<th scope="col">Cédula</th>
+						<th scope="col">E-Mail</th>
+						<th scope="col">Celular</th>
+						<th scope="col">Fecha Inicio</th>
+						<th scope="col">Fecha Fin</th>
+						<th scope="col">Hora Inicio</th>
+						<th scope="col">Hora Fin</th>
+						<th scope="col">Longitud Inicial</th>
+						<th scope="col">Longitud Final</th>				
+						<th scope="col">Latitud Inicial</th>
+						<th scope="col">Latitud Final</th>
+						<th scope="col">Evidencia</th>		
+					</tr>
+				</thead>
+				<tbody id = "body">
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="modal fade" id = "modalCredenciales">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<img src = "../img/tokbox.png" class = "imgTokbox"/>
+          			<h4 class="modal-title">Credenciales de OpenTok</h4>
+				</div>
+				<div class = "modal-body">
+					<div class = "form-group" id = "divApiKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otApiKey">API key</label>
+						<input type = "text" id = "otApiKey" name = "otApiKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divSecretKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otSecretKey">Secret key</label>
+						<input type = "text" id = "otSecretKey" name = "otSecretKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "alert alert-danger" id = "alertOpenTok" style = "margin-top: 25px; display: none">
+						<center><strong>ERROR:</strong> No se han completado campos</center>
+					</div>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarOpenTok" class = "btn btn-success">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">  
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>	
+	<script src = "../js/bootstrap.min.js"></script>
+	<script src = "/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+		// function createXhr(){
+		// 	var objeto = false;
+		// 	if (window.XMLHttpRequest) {
+		// 		objeto = new XMLHttpRequest();
+		// 	} else if (window.ActiveXObject) {
+		// 		objeto = new ActiveXObject("Microsoft.XMLHTTP");
+		// 	}
+		// 	return objeto;
+		// }
+
+		// var xhttp = createXhr();
+		// xhttp.onreadystatechange = function(){
+		// 	if(this.readyState == 4 && this.status == 200){
+	 //    	//console.log(xhttp.responseText);
+	 //    	//var json = JSON.parse(xhttp.responseText);
+	 //    	console.log(xhttp.responseText);
+	 //    	}
+  //   	}
+
+  //   	xhttp.open("GET", "http://localhost/VoyEnTaxiWS/usuarios.php/ListadoUsuarios",false);
+		// xhttp.send();
+		$('.table').DataTable({
+			"language": { 
+            	"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" 
+            },
+        	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]]
+        });
+
+		$.ajax({
+        		url : "http://localhost/VoyEnTaxiWS/usuarios.php/VideollamadasFinalizadas",
+        		type : 'GET',
+        		dataType : 'json'
+        	})
+        	.done(function(data){
+        		console.log(data);
+        		for (var i=0;i<data.length;i++){ 
+        			console.log(data[i]);
+        			let fechaHorai = data[i]['fecha_hora_inicial'];
+        			let fhSplit = fechaHorai.split(" ");
+        			let horai = fhSplit[1];
+        			let fechai = fhSplit[0].replace(/-/g, '/');
+        			fechai = fechai.split("/");
+					fechai = fechai[2]+"/"+fechai[1]+"/"+fechai[0];
+        			let fechaHoraf = data[i]['fecha_hora_final'];
+        			fhSplit = fechaHoraf.split(" ");
+        			let horaf = fhSplit[1];
+        			let fechaf = fhSplit[0].replace(/-/g, '/');
+        			fechaf = fechaf.split("/");
+					fechaf = fechaf[2]+"/"+fechaf[1]+"/"+fechaf[0];
+        			let newRow =
+        			"<tr id = '" + data[i]['id'] + "''>" + 
+        			"<td>" + data[i]['nombre'] + "</td>" +
+        			"<td>" + data[i]['cedula'] + "</td>" +
+        			"<td>" + data[i]['email'] + "</td>" +
+        			"<td>" + data[i]['telefono'] + "</td>" +
+        			"<td>" + fechai + "</td>" +
+        			"<td>" + fechaf + "</td>" +
+        			"<td>" + horai + "</td>" +
+        			"<td>" + horaf + "</td>" +
+        			"<td>" + data[i]['longitud_inicial'] + "</td>" +
+        			"<td>" + data[i]['longitud_final'] + "</td>" +
+        			"<td>" + data[i]['latitud_inicial'] + "</td>" +
+        			"<td>" + data[i]['latitud_final'] + "</td>" +
+        			"<td>" + data[i]['url_video'] + "</td>" +
+        			"</tr>";
+        			console.log(newRow);
+        			$('#body').html(newRow + $('#body').html());
+        		}
+        	})
+
+
+	</script>
+	<footer class = "footer">
+		<center>Voy en Taxi | Bot&oacute;n de Alerta | 2018</center>
+	</footer>
+</body>
+</html>

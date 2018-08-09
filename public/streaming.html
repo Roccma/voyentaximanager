@@ -4,29 +4,70 @@
 	<title>Voy en Taxi</title>
 	<link rel = "stylesheet" href = "../css/app.css"/>
 	<script src = "https://static.opentok.com/v2/js/opentok.min.js"></script>
-	<!--<script src="http://static.opentok.com/v1.1/js/TB.min.js" type="text/javascript" charset="utf-8"></script>-->
-	<link href="../css/bootstrap.min.css" rel="stylesheet">
-	<!--
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
-	<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>-->
-	<!--script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1duDqyFKrvApr3AOjfQFWnDe-ODP2WpE&callback=initMap" async defer></script>-->
+	<link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
     <link href="../css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 </head>
-<body style="overflow-y: hidden; overflow-x: hidden; box-sizing: border-box; margin: 0">
-	<nav  style="background-color: #FFE448; position: fixed; left: 0; right: 0; height: 70px" >
-	  <div class="container-fluid">
+<body class = "pagebody">
+	<nav class = "menu">
+	  <div class="container-fluid menucontainer">
 	    <div class="navbar-header" style = "margin-top: 5px">
 	      <img height="55" src="/img/Logo.png">
 	    </div>
 
+		<div class = "opcionesMenu">
+			<div id = "opcionEmergencias" class = "divIcono" onclick="window.location.href = 'index.html'">
+				<i class = "fa fa-phone"></i> <span>Emergencias</span>
+			</div>
+			<div id = "opcionFinalizadas" class = "divIcono" onclick="window.location.href = 'finalizadas.html'">				
+				<i class = "fa fa-phone-slash"></i> <span>Finalizadas</span>
+			</div>
+			<div id = "opcionLocalizacion" class = "divIcono" onclick="window.location.href = 'gps.html'">
+				<i class = "fa fa-map-marker-alt"></i> <span>Localización</span>
+			</div>
+			<div id = "opcionEstadisticas" class = "divIcono">
+				<i class = "fa fa-chart-pie"></i> <span>Estadísticas</span>
+			</div>
+			<div id = "opcionOpenTok" class = "divIcono" data-toggle="modal" data-target="#modalCredenciales">
+				<i class = "fa fa-plug"></i> <span>Credenciales</span>
+			</div>
+		</div>
+
 	  </div>
 	</nav>
-	<div id = "videos">
-		<div style = " position: relative; top: 110px; width: 100%; height: 55%">
-			<div id = "subscriber" style = "width: 59%; height: 100%; margin-left: 15px"></div>
-			<div id = "map" style = "display: inline-block; width: 35%; height: 100%; margin-right: 15px; float: right;"></div>
+	<div class = "main2">
+		<div id = "videos" style = "margin-top: 30px;">
+			<div>
+				<div class = "contenedorSubscriber">
+					<div class = "tituloContenedorSubscriber"><i class = "fa fa-video"></i> Videollamada</div>
+					<div id = "subscriber">
+					</div>
+				</div>
+				<div class = "contenedorMapa">
+					<div class = "tituloContenedorMapa"><i class = "fa fa-map-marker-alt"></i> Ubicaci&oacute;n</div>
+					<div id = "map"></div>
+				</div>
+			</div>	
+			<div class = "contenedorPublisher">
+				<div class = "tituloContenedorPublisher"><i class = "fa fa-user-alt"></i> Operador</div>
+				<div id = "publisher"></div>
+			</div>	
+			<div class = "contenedorBotones">
+				<div class = "botonAccion" id = "finalizarLlamada" onclick = "finishHelp();">
+					<i class = "fa fa-phone-slash"></i> Finalizar
+				</div>
+				<div class = "botonAccion" id = "intentarReconectar" onclick = "refresh();">
+					<i class = "fa fa-sync-alt"></i> Intentar reconectar
+				</div>
+			</div>
+			<div class = "contenedorDatos">
+				<div class = "tituloContenedorDatos"><i class = "fa fa-file-alt"></i> Información del taxista</div>
+				<table id = "tablaDatos">
+				</table>
+			</div>
 		</div>
-		<div id = "publisher" style = "overflow-y: hidden; width: 250px; height: 150px; bottom: 57px"></div>
 	</div>
 	<script src = "/socket.io/socket.io.js"></script>
 
@@ -40,7 +81,7 @@
 	<script src="https://unpkg.com/ionicons@4.2.4/dist/ionicons.js"></script>
 	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css"/>
 	<link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>	
 	<!--	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1duDqyFKrvApr3AOjfQFWnDe-ODP2WpE&callback=initMap"async defer></script> -->
@@ -49,5 +90,36 @@
 	<footer class = "footer">
 		<center>Voy en Taxi | Bot&oacute;n de Alerta | 2018</center>
 	</footer>
+	<script type="text/javascript">
+		$(document).on('ready', function(){
+			let url = location.href;
+
+			let urlSplit = url.split("?");
+
+			let credentialsParts = urlSplit[1].split('&');
+
+			let sessionId = credentialsParts[0].replace("sessionid=", "");
+
+			jQuery.ajax({
+				url : 'http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/DatosTaxista',
+				type : 'GET',
+				dataType : 'json',
+				data : {'sessionId' : sessionId}
+			})
+			.done(function(response){
+				document.getElementById('tablaDatos').innerHTML = 
+					"<tr>" +
+						"<td><b>Nombre:</b><br> " + response['nombre'] + "</td>" +
+						"<td><b>Cédula de Identidad:</b><br> " + response['cedula'] + "</td>" +						
+						"<td><b>Celular:</b><br> " + response['telefono'] + "</td>" +
+					"</tr>" +
+					"<tr>" +
+						"<td><b>Apellido:</b><br> " + response['apellido'] + "</td>" +
+						"<td><b>Correo electrónico:</b><br> " + response['email'] + "</td>" +						
+						"<td><b>Empresa:</b><br> La de Arjona</td>" +
+					"</tr>";
+			});
+		})
+	</script>
 </body>
 </html>

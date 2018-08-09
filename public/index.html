@@ -19,13 +19,13 @@
 	    </div>
 
 		<div class = "opcionesMenu">
-			<div id = "opcionEmergencias" class = "divIcono">
+			<div id = "opcionEmergencias" class = "divIcono" onclick="window.location.href = 'index.html'">
 				<i class = "fa fa-phone"></i> <span>Emergencias</span>
 			</div>
-			<div id = "opcionFinalizadas" class = "divIcono">				
+			<div id = "opcionFinalizadas" class = "divIcono" onclick="window.location.href = 'finalizadas.html'">				
 				<i class = "fa fa-phone-slash"></i> <span>Finalizadas</span>
 			</div>
-			<div id = "opcionLocalizacion" class = "divIcono">
+			<div id = "opcionLocalizacion" class = "divIcono" onclick="window.location.href = 'gps.html'">
 				<i class = "fa fa-map-marker-alt"></i> <span>Localización</span>
 			</div>
 			<div id = "opcionEstadisticas" class = "divIcono">
@@ -39,20 +39,23 @@
 	  </div>
 	</nav>
 	<div class = "main">
-		<table class = "table">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">Taxista</th>
-					<th scope="col">E-mail</th>
-					<th scope="col">Celular</th>
-					<th scope="col">Fecha</th>
-					<th scope="col">Hora</th>				
-					<th scope="col">Ver</th>
-				</tr>
-			</thead>
-			<tbody id = "body">
-			</tbody>
-		</table>
+		<div class = "contenedorMain">
+			<table class = "table">
+				<thead class="thead-dark">
+					<tr id = "headerTabla">
+						<th scope="col" id="colTaxista">Taxista</th>
+						<th scope="col" id="colEmail">E-mail</th>
+						<th scope="col" id="colCelular">Celular</th>
+						<th scope="col" id="colFecha">Fecha</th>
+						<th scope="col" id="colHora">Hora</th>				
+						<th scope="col" id="colVer"></th>
+						<th scope="col" id="colFinalizar"></th>
+					</tr>
+				</thead>
+				<tbody id = "body">
+				</tbody>
+			</table>
+		</div>		
 	</div>
 	<div class="modal fade" id = "modalCredenciales">
 		<div class = "modal-dialog">
@@ -88,16 +91,55 @@
 	<script src = "../js/bootstrap.min.js"></script>
 	<script src = "/socket.io/socket.io.js"></script>
 	<script type="text/javascript">
+		let table;
 		let socket = io();
-		/*let d = new Date();
-		let day = d.getDate() > 9 ? d.getDate() : "0" + d.getDate();
-		let month = d.getMonth() + 1 > 9 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1);
-		let fecha = day + "/" + month + "/" + d.getFullYear();
+		
+		$.ajax({
+        	url : "http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/VideollamadasActuales",
+        	type : 'GET',
+        	dataType : 'json'
+        })
+        .done(function(data){
+        	console.log(data);
+        	for (var i=0;i<data.length;i++){ 
+        		let fechaHora = data[i]['fecha_hora_inicial'];
+        		let fhSplit = fechaHora.split(" ");
+        		let hora = fhSplit[1];
+        		let fecha = fhSplit[0].replace(/-/g, '/');
+        		fecha = fecha.split("/");
+				fecha = fecha[2]+"/"+fecha[1]+"/"+fecha[0];
+        		let newRow =
+        		"<tr id = '" + data[i]['id'] + "''>" + 
+        			"<td>" + data[i]['nombre'] + "</td>" +
+        			"<td>" + data[i]['email'] + "</td>" +
+        			"<td>" + data[i]['telefono'] + "</td>" +
+        			"<td>" + fecha + "</td>" + 
+        			"<td>" + hora + "</td>" + 
+        			"<td><i class = 'fa fa-phone atenderLlamada' id = 'sessionid=" + data['sessionid'] + "&token=" + data['token'] + "&latitud=" + data['latitud'] + "&longitud=" + data['longitud'] + "'></i></td>" +
+					"<td><i class = 'fa fa-phone-slash finalizarLlamada'></i></td>" +
+        		"</tr>";
+        		$('#body').html(newRow + $('#body').html());
+        	}        	
 
-		let horas = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
-		let minutos = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
-		let hora = horas + ":" + minutos;*/
-		socket.on('help', function(data){
+	        table = $('.table').DataTable({
+				"language": { 
+			       	"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" 
+			    },
+			  	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+			  	"aoColumns": [
+					{"bSortable": true},
+					{"bSortable": true},
+					{"bSortable": true},
+					{"sType": "date"},					
+					{"bSortable": true},
+					{"bSortable": false},
+					{"bSortable": false}
+				]
+			});	
+        });
+
+		socket.on('help', function(data){	
+			table.destroy();
 			let fechaHora = data['fechaHora'];
 			let fhSplit = fechaHora.split(" ");
 			let hora = fhSplit[1];
@@ -109,34 +151,47 @@
 					"<td>" + data['telephone'] + "</td>" +
 					"<td>" + fecha + "</td>" + 
 					"<td>" + hora + "</td>" + 
-					"<td><i class = 'fa fa-play' id = 'sessionid=" + data['sessionid'] + "&token=" + data['token'] + "&latitud=" + data['latitud'] + "&longitud=" + data['longitud'] + "'></i></td>" +
+					"<td><i class = 'fa fa-phone atenderLlamada' id = 'sessionid=" + data['sessionid'] + "&token=" + data['token'] + "&latitud=" + data['latitud'] + "&longitud=" + data['longitud'] + "'></i></td>" +
+					"<td><i class = 'fa fa-phone-slash finalizarLlamada'></i></td>" +
 				"</tr>";
-			$('#body').html(newRow + $('#body').html());	
-			/*$('.table').DataTable({
+			$('#body').html(newRow + $('#body').html());
+			
+			table = $('.table').DataTable({
 				"language": { 
 	            	"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" 
 	            },
-	        	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]]
-	        });*/
+	        	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+			  	"aoColumns": [
+					{"bSortable": true},
+					{"bSortable": true},
+					{"bSortable": true},
+					{"sType": "date"},					
+					{"bSortable": true},
+					{"bSortable": false},
+					{"bSortable": false}
+				]
+	        });
+
+	        $.ajax({
+        		url : "http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/DatosLlamada?userid="+data['cedula']+"&date="+fhSplit[0]+hora+"&latitud="+data['latitud']+"&longitud="+data['longitud']+"",
+        		type : 'GET',
+        		dataType : 'json'
+        	})
+        	.done(function(data){
+        		console.log(data);
+        	});	
 		});
 
 		socket.on('finish_help', function(data){
 			$('#' + data['sessionid']).remove();	
 		});
 
-		$('body').on('click', '.fa-play', function(){
+		$('body').on('click', '.atenderLlamada', function(){
 			let a = document.createElement('a');
 			a.href = "streaming.html?" + $(this).attr('id');
 			a.target= "_blank";
 			a.click();
 		});
-
-		$('.table').DataTable({
-			"language": { 
-            	"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" 
-            },
-        	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]]
-        });
 
         $('#opcionOpenTok').on('click', function(){
 
@@ -190,7 +245,7 @@
         	$('#alertOpenTok').fadeOut();
 
         	$.ajax({
-        		url : 'http://192.168.1.9:8080/VoyEnTaxiWS/usuarios.php/ClavesTokBox?apiKey=' + $('#otApiKey').val() + "&projectKey=" + $('#otSecretKey').val(),
+        		url : 'http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/ClavesTokBox?apiKey=' + $('#otApiKey').val() + "&projectKey=" + $('#otSecretKey').val(),
         		type : 'GET',
         		dataType : 'json'
         	})
@@ -203,6 +258,11 @@
         			$('#alertOpenTok').fadeIn();
         		}
         	})
+        });
+
+        $('#subscriber').hover(function(){
+        	alert("hover");
+        	$('#finalizarLlamada').fadeIn();
         });
 		
 	</script>

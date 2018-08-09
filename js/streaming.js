@@ -17,7 +17,7 @@ var marker = "no";
 
 let socket = io();
 
-var map = L.map('map').setView([latitud, longitud], 18);
+var map = L.map('map').setView([latitud, longitud], 16);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 	maxZoom: 18}).addTo(map);
 L.control.scale().addTo(map);
@@ -64,9 +64,20 @@ socket.on('location', function(data){
 	markerLocation.setIcon(locationMarker);
 	markerLocation.addTo(map);
 
-	map.setView([data["latitud"], data["longitud"]], 18);
+	map.setView([data["latitud"], data["longitud"]], 16);
 });
 
+socket.on('reconnected', function(data){
+	alert("reconectar");
+
+	if(data['sessionId'] == sessionId){
+		//location.reload(true);
+		//session.disconnect();
+		location.reload(true);
+		//initializeSession("46127092", sessionId, token);
+	}
+});
+	
 initializeSession("46127092", sessionId, token);
 
 var connected = false;
@@ -79,6 +90,10 @@ var recImgData;
 var VIDEO_HEIGHT = 240;
 var VIDEO_WIDTH = 320;
 
+var session;
+
+var subscribers = new Array();
+
 function handleError(error){
 	if(error){
 		alert(error.message);
@@ -86,15 +101,21 @@ function handleError(error){
 }
 
 function initializeSession(apiKey, sessionId, token){
-	var session = OT.initSession(apiKey, sessionId);
+	session = OT.initSession(apiKey, sessionId);
 
 	session.on('streamCreated', function(event){
-		session.subscribe(event.stream, 'subscriber', {
+		//alert("streamCreated");
+		var subscriber = session.subscribe(event.stream, 'subscriber', {
 			insertMode : 'append',
 			width : '75%',
 			height : '100%'
 		}, handleError);
+		console.log(event.stream);
 	});
+
+	/*session.on('sessionDisconnected', function(event){
+		alert("desconectado");
+	});*/
 
 	var publisher = OT.initPublisher('publisher', {
 		insertMode : 'append',
@@ -114,3 +135,8 @@ function initializeSession(apiKey, sessionId, token){
 		}
 	});
 }
+
+function finishHelp(){
+	socket.emit("finish_help", sessionId);
+}
+
