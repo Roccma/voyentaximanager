@@ -1,3 +1,4 @@
+const request = require('request');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -8,8 +9,12 @@ const port = process.env.PORT || 3000;
 var fork = require("child_process").fork; 
 
 var imgDir = `${__dirname}/img`;
+var audioDir = `${__dirname}/audio`;
 var cssDir = `${__dirname}/css`;
 var jsDir = `${__dirname}/js`;
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended:false}));
 
 app.use(express.static(__dirname + "/public"));
 
@@ -31,6 +36,10 @@ app.get('/finalizadas', (req, res) => {
 
 app.get('/gps', (req, res) => {
 	res.redirect('gps.html');
+});
+
+app.get('/estadisticas', (req, res) => {
+	res.redirect('estadisticas.html');
 });
 
 app.get('/css/app.css', (req, res) => {
@@ -94,6 +103,22 @@ app.get('/img/flechas.png', (req, res) => {
 	res.sendFile(`${imgDir}/flechas.png`);
 });
 
+app.get('/img/spinner.gif', (req, res) => {
+	res.sendFile(`${imgDir}/spinner.gif`);
+});
+
+app.get('/img/logo_miniatura.png', (req, res) => {
+	res.sendFile(`${imgDir}/logo_miniatura.png`);
+});
+
+app.get('/img/icon.png', (req, res) => {
+	res.sendFile(`${imgDir}/icon.png`);
+});
+
+app.get('/audio/voyentaxi_nueva_llamada.mp3', (req, res) => {
+	res.sendFile(`${audioDir}/voyentaxi_nueva_llamada.mp3`);
+});
+
 var salas = [];
 
 io.on('connection', (socket) => {
@@ -108,29 +133,64 @@ io.on('connection', (socket) => {
 		  } else {
 		    sessionId = session.sessionId;
 		    var token = opentok.generateToken(sessionId);
+		    console.log("Credenciales: " + sessionId + " - " + token);
 		    io.emit('credentials', {sessionid: sessionId, token: token});
 		  }
 		});
 	});
 
-	socket.on('help', (sessionId, token, cedula, name, email, telephone, latitud, longitud, fechaHora) => {
-		//salas.push({"socket" : socket.id, "sessionId" : sessionId});
-		console.log("help! " + email);		
-		io.emit('help', {sessionid : sessionId, token : token, cedula : cedula, name : name, email : email, telephone : telephone, latitud : latitud, longitud : longitud, fechaHora : fechaHora});
+	socket.on('help', (sessionId, token, cedula, name, email, telephone, latitud, longitud, fechaHora, cantidad_desconexiones, dias_persistencia) => {	
+		var url = "http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/DatosLlamada?userid="+cedula+"&date="+fechaHora+"&latitud="+latitud+"&longitud="+longitud+"&sessionid="+sessionId+"&token="+token+"&cantidad_desconexiones="+cantidad_desconexiones+"&dias_persistencia="+dias_persistencia;
+		request.get(url,(error,res,body) => {
+			if(error)
+				console.log(error);
+			var js = JSON.parse(body);
+			console.log(js);
+			let id = js.id;		
+			io.emit('help', {sessionid : sessionId, token : token, cedula : cedula, name : name, email : email, telephone : telephone, latitud : latitud, longitud : longitud, fechaHora : fechaHora, cantidad_desconexiones : cantidad_desconexiones, id : id});
+		});	
 	});
 
-	socket.on('finish_help', (sessionId) => {
-		console.log("finish_help");
-		io.emit('finish_help', {sessionid : sessionId});
+	socket.on('finish_help_from_app', (sessionId, id, latitud, longitud) => {
+		var url = "http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/FinLlamada?callid="+id+"&url=&date=&latitud="+latitud+"&longitud="+longitud;
+		console.log(url);
+		request.get(url,(error,res,body) => {
+			if(error)
+				console.log(error);
+			var js = JSON.parse(body);
+			console.log(js);		
+			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});
+		});
+		
+		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
 
-	socket.on('location', (sessionId, latitud, longitud) => {
-		io.emit('location', {sessionid : sessionId, latitud : latitud, longitud : longitud});
+	socket.on('update_call_data', (id, latitud_final, longitud_final, url_video) => {
+		var url = "http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/ActualizarDatosLlamada?id="+id+"&latitud_final="+ latitud_final + "&longitud_final=" + longitud_final + "&url_video=" + url_video;
+		console.log(url);
+		request.get(url,(error,res,body) => {
+			if(error)
+				console.log(error);
+			/*var js = JSON.parse(body);
+			console.log(js);		
+			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
+		});
+		
+		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
 
-	socket.on('listen_location', () => {
+	socket.on('finish_help', (sessionId, id) => {
+		console.log("finish_help " + id);
+		io.emit('finish_help', {sessionid : sessionId, id : id});
+	});
+
+	socket.on('location', (sessionId, latitud, longitud, fechaHora, id) => {
+		io.emit('location', {sessionid : sessionId, latitud : latitud, longitud : longitud, fechaHora : fechaHora, id : id});
+	});
+
+	socket.on('listen_location', (sessionId) => {
 		console.log("listen_location");
-		io.emit('listen_location', {send : 'ok'});
+		io.emit('listen_location', {send : 'ok', sessionId : sessionId});
 	});
 
 	socket.on('record_start', (apiKey, apiSecret, sessionId) => {
@@ -197,7 +257,17 @@ io.on('connection', (socket) => {
 
 	socket.on('reconnecting', (sessionId) => {
 		console.log("reconnecting! " + sessionId);
-	})
+	});
+
+	socket.on('reconnect_intent', (sessionId) => {
+		console.log("reconnect_intent");
+		io.emit('reconnect_intent', {sessionId : sessionId});
+	});
+
+	socket.on('reconnect_intent_response', (sessionId) => {
+		console.log("reconnect_intent_response");
+		io.emit('reconnect_intent_response', {sessionId : sessionId});
+	});
 });
 
 http.listen(port, () => {

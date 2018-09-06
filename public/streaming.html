@@ -9,6 +9,8 @@
     <!-- Custom styles for this template -->
     <link href="../css/dashboard.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <link rel="shortcut icon" type="image/png" href="img/icon.png"/>
 </head>
 <body class = "pagebody">
 	<nav class = "menu">
@@ -27,8 +29,11 @@
 			<div id = "opcionLocalizacion" class = "divIcono" onclick="window.location.href = 'gps.html'">
 				<i class = "fa fa-map-marker-alt"></i> <span>Localización</span>
 			</div>
-			<div id = "opcionEstadisticas" class = "divIcono">
+			<div id = "opcionEstadisticas" class = "divIcono" onclick="window.location.href = 'estadisticas.html'">
 				<i class = "fa fa-chart-pie"></i> <span>Estadísticas</span>
+			</div>
+			<div id = "opcionServidores" class = "divIcono"  data-toggle="modal" data-target="#modalServidores">
+				<i class = "fa fa-server"></i> <span>Servidores</span>
 			</div>
 			<div id = "opcionOpenTok" class = "divIcono" data-toggle="modal" data-target="#modalCredenciales">
 				<i class = "fa fa-plug"></i> <span>Credenciales</span>
@@ -43,11 +48,15 @@
 				<div class = "contenedorSubscriber">
 					<div class = "tituloContenedorSubscriber"><i class = "fa fa-video"></i> Videollamada</div>
 					<div id = "subscriber">
+						<img src = "/img/spinner.gif" style = "width: 20%; margin-left: 41%; margin-top: 25%;"/>
 					</div>
 				</div>
 				<div class = "contenedorMapa">
 					<div class = "tituloContenedorMapa"><i class = "fa fa-map-marker-alt"></i> Ubicaci&oacute;n</div>
-					<div id = "map"></div>
+					<div id = "map">
+						<div id = "ultimaActualizacion">Última actualización: 09/08/2018 04:24:52</div>
+					</div>
+
 				</div>
 			</div>	
 			<div class = "contenedorPublisher">
@@ -55,11 +64,11 @@
 				<div id = "publisher"></div>
 			</div>	
 			<div class = "contenedorBotones">
-				<div class = "botonAccion" id = "finalizarLlamada" onclick = "finishHelp();">
+				<div class = "botonAccion" id = "finalizarLlamada" onclick = "finalizarLlamada()">
 					<i class = "fa fa-phone-slash"></i> Finalizar
 				</div>
 				<div class = "botonAccion" id = "intentarReconectar" onclick = "refresh();">
-					<i class = "fa fa-sync-alt"></i> Intentar reconectar
+					<i class = "fa fa-sync-alt"></i> Intentar reconexión
 				</div>
 			</div>
 			<div class = "contenedorDatos">
@@ -69,19 +78,155 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id = "modalCredenciales">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<img src = "../img/tokbox.png" class = "imgTokbox"/>
+          			<h4 class="modal-title">Credenciales de OpenTok</h4>
+				</div>
+				<div class = "modal-body">
+					<div class = "form-group" id = "divApiKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otApiKey">API key</label>
+						<input type = "text" id = "otApiKey" name = "otApiKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divSecretKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otSecretKey">Secret key</label>
+						<input type = "text" id = "otSecretKey" name = "otSecretKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "alert alert-danger" id = "alertOpenTok" style = "margin-top: 25px; display: none">
+						<center><strong>ERROR:</strong> No se han completado campos</center>
+					</div>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarOpenTok" class = "btn btn-success">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id = "modalServidores">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<img src = "../img/logo_miniatura.png" class = "imgTokbox"/>
+          			<h4 class="modal-title">Servidores</h4>
+				</div>
+				<div class = "modal-body">
+					<div class = "form-group" id = "divServidorBDA" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorBDA">Servidor web de Botón de Alerta</label>
+						<input type = "text" id = "servidorBDA" name = "servidorBDA" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divServidorVET" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorVET">Servidor web de Voy en Taxi</label>
+						<input type = "text" id = "servidorVET" name = "servidorVET" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divServidorRespaldoVET" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorRespaldoVET">Servidor de respaldo de Voy en Taxi</label>
+						<input type = "text" id = "servidorRespaldoVET" name = "servidorRespaldoVET" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "alert alert-danger" id = "alertServidores" style = "margin-top: 25px; display: none">
+						<center><strong>ERROR:</strong> No se han completado campos</center>
+					</div>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarServidores" class = "btn btn-success">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id = "modalReconectando" style = "margin-top: 15%">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header" style = "background: #EBC309">
+          			<h4 class="modal-title"><center><i class = "fa fa-exclamation-triangle"></i> Conexión interrumpida</center></h4>
+				</div>
+				<div class = "modal-body" style = "background: #fff3cd; border-bottom: 1px solid #fff3cd">
+					<span style = "font-size: 18px"><center>La videollamada ha perdido conexión a Internet, intentando reconectar...<br></center></span>
+				</div>
+				<div class = "modal-footer" style = "background: #fff3cd; border-radius: 0 0 5px 5px; border-top: 1px solid #fff3cd !important;">
+					<button type = "button" id = "btnSalirReconectando" onclick="window.close();" class = "btn btn-danger" style="background: #EBC309; border: 1px solid #EBC309; color: black; font-size: 18px"><i class = "fa fa-arrow-left"></i> Salir</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id = "modalDesconexion" style = "margin-top: 15%">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header" style = "background: #F60700; color: white">
+          			<h4 class="modal-title"><center><i class = "fa fa-times-circle"></i> Desconexión</center></h4>
+				</div>
+				<div class = "modal-body" style = "background: #f2dede; border-bottom: 1px solid #f2dede">
+					<span style = "font-size: 18px"><center>El taxista presenta una conexión intermitente, por lo que seguirá grabando de manera local lo que ocurra<br></center></span>
+				</div>
+				<div class = "modal-footer" style = "background: #f2dede; border-radius: 0 0 5px 5px; border-top: 1px solid #f2dede !important;">
+					<button type = "button" id = "btnFinalizarDesconexion" class = "btn btn-danger" onclick="window.close();" style="background: #F60700; border: 1px solid #F60700; color: white; font-size: 18px"><i class = "fa fa-arrow-left"></i> Salir</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id = "modalLlamadaFinalizada" style = "margin-top: 15%">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header" style = "background: #007bff; color: white">
+          			<h4 class="modal-title"><center><i class = "fa fa-info-circle"></i> Informaci&oacute;n</center></h4>
+				</div>
+				<div class = "modal-body" style = "background: #d1e6fd; border-bottom: 1px solid #d1e6fd">
+					<span style = "font-size: 18px"><center>La llamada ha sido finalizada<br></center></span>
+				</div>
+				<div class = "modal-footer" style = "background: #d1e6fd; border-radius: 0 0 5px 5px; border-top: 1px solid #d1e6fd !important;">
+					<button type = "button" id = "btnSalirFinalizada" onclick="window.close();" class = "btn btn-danger" style="background: #007bff; border: 1px solid #007bff; color: white; font-size: 18px"><i class = "fa fa-arrow-left"></i> Salir</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id = "modalIntentarReconexion">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+          			<center><h4 class="modal-title"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Intentando reconectar</h4></center>
+				</div>
+				<div class = "modal-body">
+					<center>Por favor, espere un momento</center>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id = "modalNoReconexion">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header" style = "background: #F60700; color: white;">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+          			<center><h4 class="modal-title"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Intento fallido</h4></center>
+				</div>
+				<div class = "modal-body">
+					<center>No se ha podido localizar el dispositivo móvil para reconectarse</center>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script src = "/socket.io/socket.io.js"></script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"/>
 	<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=d0c5GU6bqLUS3GXzuVmJj5rhgVAiSofA"></script>
 	<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-routing.js?key=d0c5GU6bqLUS3GXzuVmJj5rhgVAiSofA"></script>
-	<!--<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src = "../js/leaflet.awesome-markers.js"></script>
-	<!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />-->
+	<script src = "../js/bootstrap.js"></script>
 	<script src="https://unpkg.com/ionicons@4.2.4/dist/ionicons.js"></script>
 	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css"/>
 	<link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>	
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">  
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>		
 	<!--	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1duDqyFKrvApr3AOjfQFWnDe-ODP2WpE&callback=initMap"async defer></script> -->
@@ -92,6 +237,13 @@
 	</footer>
 	<script type="text/javascript">
 		$(document).on('ready', function(){
+
+			let socket = io();
+
+			socket.on('help', function(data){		
+				new Audio('/audio/voyentaxi_nueva_llamada.mp3').play();	        
+			});
+
 			let url = location.href;
 
 			let urlSplit = url.split("?");
@@ -101,7 +253,7 @@
 			let sessionId = credentialsParts[0].replace("sessionid=", "");
 
 			jQuery.ajax({
-				url : 'http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/DatosTaxista',
+				url : 'https://voyentaxiws.herokuapp.com/usuarios.php/DatosTaxista',
 				type : 'GET',
 				dataType : 'json',
 				data : {'sessionId' : sessionId}
@@ -116,9 +268,156 @@
 					"<tr>" +
 						"<td><b>Apellido:</b><br> " + response['apellido'] + "</td>" +
 						"<td><b>Correo electrónico:</b><br> " + response['email'] + "</td>" +						
-						"<td><b>Empresa:</b><br> La de Arjona</td>" +
+						"<td><b>Empresa:</b><br> " + response['empresa'] + "</td>" +
 					"</tr>";
 			});
+
+			$('#opcionOpenTok').on('click', function(){
+
+	        	$('#alertOpenTok').css('display', 'none');
+	        	$('#divApiKey').removeClass('has-error');
+	        	$('#divSecretKey').removeClass('has-error');
+
+	        	$.ajax({
+		        	url : 'https://voyentaxiws.herokuapp.com/usuarios.php/GetClaveTokBox',
+		        	type : 'GET',
+		        	dataType : 'json'
+		        })
+		        .done(function(response){
+		        	console.log(response);
+		        	$('#otApiKey').val(response['api_key']);
+		        	$('#otSecretKey').val(response['secret_key']);
+		        })
+		        .fail(function(error, err, e){
+		        	console.log(e);
+		        });
+	        });
+
+	        $('#opcionServidores').on('click', function(){
+	        	$('#alertServidores').css('display', 'none');
+	        	$('#divServidorBDA').removeClass('has-error');
+	        	$('#divServidorVET').removeClass('has-error');
+	        	$('#divServidorRespaldoVET').removeClass('has-error');
+
+	        	$.ajax({
+		        	url : 'https://voyentaxiws.herokuapp.com/usuarios.php/GetServidores',
+		        	type : 'GET',
+		        	dataType : 'json'
+		        })
+		        .done(function(response){
+		        	console.log(response);
+		        	$('#servidorBDA').val(response['servidor_bda']);
+		        	$('#servidorVET').val(response['servidor_vet']);
+		        	$('#servidorRespaldoVET').val(response['servidor_respaldo_vet']);
+		        })
+		        .fail(function(error, err, e){
+		        	console.log(e);
+		        });
+	        });
+
+	        $('#btnAceptarServidores').on('click', function(){
+	        	var campoVacio = false;
+
+	        	if($('#servidorBDA').val() == "" || $('#servidorVET').val() == "" || $('#servidorRespaldoVET').val() == "")
+	        		campoVacio = true;
+
+	        	if($('#servidorBDA').val() == ""){
+	        		$('#divServidorBDA').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorBDA').removeClass('has-error');
+	        	}
+
+	        	if($('#servidorVET').val() == ""){
+	        		$('#divServidorVET').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorVET').removeClass('has-error');
+	        	}
+
+	        	if($('#servidorRespaldoVET').val() == ""){
+	        		$('#divServidorRespaldoVET').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorRespaldoVET').removeClass('has-error');
+	        	}
+
+	        	if(campoVacio){
+	        		$('#alertServidores').addClass('alert-danger').removeClass('alert-success');
+	        		$('#alertServidores').html("<center><strong>ERROR:</strong> No se han completado campos</center>");
+	        		$('#alertServidores').fadeIn();
+
+	        		return;
+	        	}
+	        	else{
+	        		$('#alertServidores').fadeOut();
+
+		        	$.ajax({
+		        		url : 'https://voyentaxiws.herokuapp.com/usuarios.php/UpdateServidores?servidor_bda=' + $('#servidorBDA').val() + "&servidor_vet=" + $('#servidorVET').val() + "&servidor_respaldo_vet=" + $('#servidorRespaldoVET').val(),
+		        		type : 'GET',
+		        		dataType : 'json'
+		        	})
+		        	.done(function(response){
+		        		if(response){
+		        			$('#alertServidores').removeClass('alert-danger').addClass('alert-success');
+		        			$('#alertServidores').html("<center><strong>ÉXITO:</strong> Direcciones de servidores actualizadas</center>");
+		        			$('#divServidorBDA').removeClass('has-error');
+		        			$('#divServidorVET').removeClass('has-error');
+		        			$('#divServidorRespaldoVET').removeClass('has-error');
+		        			$('#alertServidores').fadeIn();
+		        		}
+		        	});
+	        	}
+
+	        	
+	        });
+
+	        $('#btnAceptarOpenTok').on('click', function(){
+	        	var campoVacio = false;
+
+	        	if($('#otApiKey').val() == "" || $('#otSecretKey').val() == "")
+	        		campoVacio = true;
+
+	        	if($('#otApiKey').val() == ""){
+	        		$('#divApiKey').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divApiKey').removeClass('has-error');
+	        	}
+
+	        	if($('#otSecretKey').val() == ""){
+	        		$('#divSecretKey').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divSecretKey').removeClass('has-error');
+	        	}
+
+	        	if(campoVacio){
+	        		$('#alertOpenTok').addClass('alert-danger').removeClass('alert-success');
+	        		$('#alertOpenTok').html("<center><strong>ERROR:</strong> No se han completado campos</center>");
+	        		$('#alertOpenTok').fadeIn();
+
+	        		return;
+	        	}
+
+	        	$('#alertOpenTok').fadeOut();
+
+	        	$.ajax({
+	        		url : 'https://voyentaxiws.herokuapp.com/usuarios.php/ClavesTokBox?apiKey=' + $('#otApiKey').val() + "&projectKey=" + $('#otSecretKey').val(),
+	        		type : 'GET',
+	        		dataType : 'json'
+	        	})
+	        	.done(function(response){
+	        		if(response['result']){
+	        			$('#alertOpenTok').removeClass('alert-danger').addClass('alert-success');
+	        			$('#alertOpenTok').html("<center><strong>ÉXITO:</strong> Credenciales actualizadas</center>");
+	        			$('#divApiKey').removeClass('has-error');
+	        			$('#divSecretKey').removeClass('has-error');
+	        			$('#alertOpenTok').fadeIn();
+	        		}
+	        	})
+	        });
+
 		})
 	</script>
 </body>

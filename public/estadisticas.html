@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Voy en Taxi</title>
+	<link rel = "stylesheet" href = "../css/app.css"/>
+	<link href="../css/bootstrap.min.css" rel="stylesheet">	
+    <link href="../css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <script src = "https://static.opentok.com/v2/js/opentok.min.js"></script>
+
+    <link rel="shortcut icon" type="image/png" href="img/icon.png"/>
+</head>
+<body  class = "pagebody">
+	<nav class = "menu">
+	  <div class="container-fluid menucontainer">
+	    <div class="navbar-header" style = "margin-top: 5px">
+	      <img height="55" src="/img/Logo.png">
+	    </div>
+
+		<div class = "opcionesMenu">
+			<div id = "opcionEmergencias" class = "divIcono" onclick="window.location.href = 'index.html'">
+				<i class = "fa fa-phone"></i> <span>Emergencias</span>
+			</div>
+			<div id = "opcionFinalizadas" class = "divIcono" onclick="window.location.href = 'finalizadas.html'">				
+				<i class = "fa fa-phone-slash"></i> <span>Finalizadas</span>
+			</div>
+			<div id = "opcionLocalizacion" class = "divIcono" onclick="window.location.href = 'gps.html'">
+				<i class = "fa fa-map-marker-alt"></i> <span>Localización</span>
+			</div>
+			<div id = "opcionEstadisticas" class = "divIcono" onclick="window.location.href = 'estadisticas.html'">
+				<i class = "fa fa-chart-pie"></i> <span>Estadísticas</span>
+			</div>
+			<div id = "opcionServidores" class = "divIcono"  data-toggle="modal" data-target="#modalServidores">
+				<i class = "fa fa-server"></i> <span>Servidores</span>
+			</div>
+			<div id = "opcionOpenTok" class = "divIcono" data-toggle="modal" data-target="#modalCredenciales">
+				<i class = "fa fa-plug"></i> <span>Credenciales</span>
+			</div>
+		</div>
+
+	  </div>
+	</nav>
+	<div class = "main">
+		<div class = "contenedorMain">
+			<div class = "contenedorEstPorAnio">
+				<div class = "tituloContenedorEstPorAnio">Alertas por año
+					<div style = "display: inline; float: right; font-size: 18px"><i class = "fa fa-arrow-up" onclick="orderup(0)"></i>&nbsp;&nbsp;&nbsp;<i class = "fa fa-arrow-down" onclick="orderdown(0)"></i></div>
+				</div>
+				<div class="chart-container" style = "padding: 25px">
+					<canvas id="chartanios"></canvas>
+				</div>
+			</div>
+
+			<div class = "contenedorEstPorMes">
+				<div class = "tituloContenedorEstPorMes">Alertas por mes
+					<div style = "display: inline; float: right; font-size: 18px"><i class = "fa fa-arrow-up" onclick="orderup(1)"></i>&nbsp;&nbsp;&nbsp;<i class = "fa fa-arrow-down" onclick="orderdown(1)"></i></div>
+				</div>
+				<div class="chart-container" style = "padding: 25px">
+					<canvas id="chartmeses"></canvas>
+				</div>
+			</div>
+
+			<div class = "contenedorEstPorHora">
+				<div class = "tituloContenedorEstPorHora">Alertas por hora
+					<div style = "display: inline; float: right; font-size: 18px"><i class = "fa fa-arrow-up" onclick="orderup(2)"></i>&nbsp;&nbsp;&nbsp;<i class = "fa fa-arrow-down" onclick="orderdown(2)"></i></div>
+				</div>
+				<div class="chart-container" style = "padding: 25px">
+					<canvas id="charthora"></canvas>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+	<div class="modal fade" id = "modalCredenciales">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<img src = "../img/tokbox.png" class = "imgTokbox"/>
+          			<h4 class="modal-title">Credenciales de OpenTok</h4>
+				</div>
+				<div class = "modal-body">
+					<div class = "form-group" id = "divApiKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otApiKey">API key</label>
+						<input type = "text" id = "otApiKey" name = "otApiKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divSecretKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otSecretKey">Secret key</label>
+						<input type = "text" id = "otSecretKey" name = "otSecretKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "alert alert-danger" id = "alertOpenTok" style = "margin-top: 25px; display: none">
+						<center><strong>ERROR:</strong> No se han completado campos</center>
+					</div>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarOpenTok" class = "btn btn-success">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="modal fade" id = "modalServidores">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<img src = "../img/logo_miniatura.png" class = "imgTokbox"/>
+          			<h4 class="modal-title">Servidores</h4>
+				</div>
+				<div class = "modal-body">
+					<div class = "form-group" id = "divServidorBDA" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorBDA">Servidor web de Botón de Alerta</label>
+						<input type = "text" id = "servidorBDA" name = "servidorBDA" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divServidorVET" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorVET">Servidor web de Voy en Taxi</label>
+						<input type = "text" id = "servidorVET" name = "servidorVET" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divServidorRespaldoVET" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorRespaldoVET">Servidor de respaldo de Voy en Taxi</label>
+						<input type = "text" id = "servidorRespaldoVET" name = "servidorRespaldoVET" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "alert alert-danger" id = "alertServidores" style = "margin-top: 25px; display: none">
+						<center><strong>ERROR:</strong> No se han completado campos</center>
+					</div>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarServidores" class = "btn btn-success">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src = "/socket.io/socket.io.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
+	<script src = "../js/bootstrap.js"></script>	
+
+	<script src = "../js/leaflet.awesome-markers.js"></script>
+	<link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+	<script>
+		let socket = io();
+
+		socket.on('help', function(data){		
+			new Audio('/audio/voyentaxi_nueva_llamada.mp3').play();	        
+		});
+
+		var chartanios,chartmeses,charthora;
+		function orderup(tipo){
+			var temp;							
+		  	if (tipo == 0){
+				var dataArray = chartanios.data.labels;
+		  		var dataso = chartanios.data.datasets[0].data;	
+			}
+			if (tipo==1){
+				var dataArray = chartmeses.data.labels;
+		  		var dataso = chartmeses.data.datasets[0].data;
+		  		dataArray.forEach(function (element, index, array){
+		  			if (element.includes("Enero"))
+		  				array[index] = element.replace(" Enero","-01");
+		  			if (element.includes("Febrero"))
+		  				array[index] = element.replace(" Febrero","-02");
+		  			if (element.includes("Marzo"))
+		  				array[index] = element.replace(" Marzo","-03");
+		  			if (element.includes("Abril"))
+		  				array[index] = element.replace(" Abril","-04");
+		  			if (element.includes("Mayo"))
+		  				array[index] = element.replace(" Mayo","-05");
+		  			if (element.includes("Junio"))
+		  				array[index] = element.replace(" Junio","-06");
+		  			if (element.includes("Julio"))
+		  				array[index] = element.replace(" Julio","-07");
+		  			if (element.includes("Agosto"))
+		  				array[index] = element.replace(" Agosto","-08");
+		  			if (element.includes("Septiembre"))
+		  				array[index] = element.replace(" Septiembre","-09");
+		  			if (element.includes("Octubre"))
+		  				array[index] = element.replace(" Octubre","-10");
+		  			if (element.includes("Noviembre"))
+		  				array[index] = element.replace(" Noviembre","-11");
+		  			if (element.includes("Diciembre"))
+		  				array[index] = element.replace(" Diciembre","-12");
+		  		});
+			}
+			if (tipo==2){
+				var dataArray = charthora.data.labels;
+		  		var dataso = charthora.data.datasets[0].data;
+			}
+		  	var sorted = false
+		  	while (!sorted){
+		  		sorted = true;
+		  		dataArray.forEach(function (element, index, array){
+		  			if (element > array[index+1]) {
+		  				array[index] = array[index+1];
+		  				array[index+1] = element;
+		  				temp = dataso[index];
+			  			dataso[index] = dataso[index+1];
+			  			dataso[index+1] = temp;
+		  				sorted = false;
+		  			}
+		  		});
+		  	}
+		  	if (tipo==0){
+		  		chartanios.data.labels = dataArray;
+		  		chartanios.data.datasets[0].data = dataso;
+		  		chartanios.update();	
+		  	}
+		  	if (tipo==1){
+		  		dataArray.forEach(function (element, index, array){
+		  			if (element.includes("01"))
+		  				array[index] = element.replace("-01"," Enero");
+		  			if (element.includes("02"))
+		  				array[index] = element.replace("-02"," Febrero");
+		  			if (element.includes("03"))
+		  				array[index] = element.replace("-03"," Marzo");
+		  			if (element.includes("04"))
+		  				array[index] = element.replace("-04"," Abril");
+		  			if (element.includes("05"))
+		  				array[index] = element.replace("-05"," Mayo");
+		  			if (element.includes("06"))
+		  				array[index] = element.replace("-06"," Junio");
+		  			if (element.includes("07"))
+		  				array[index] = element.replace("-07"," Julio");
+		  			if (element.includes("08"))
+		  				array[index] = element.replace("-08"," Agosto");
+		  			if (element.includes("09"))
+		  				array[index] = element.replace("-09"," Septiembre");
+		  			if (element.includes("10"))
+		  				array[index] = element.replace("-10"," Octubre");
+		  			if (element.includes("11"))
+		  				array[index] = element.replace("-11"," Noviembre");
+		  			if (element.includes("12"))
+		  				array[index] = element.replace("-12"," Diciembre");
+		  		});
+		  		chartmeses.data.labels = dataArray;
+		  		chartmeses.data.datasets[0].data = dataso;
+		  		chartmeses.update();	
+		  	}
+		  	if (tipo==2){
+		  		charthora.data.labels = dataArray;
+		  		charthora.data.datasets[0].data = dataso;
+		  		charthora.update();	
+		  	}
+		}
+
+		function orderdown(tipo){
+			if (tipo == 0){
+				var dataArray = chartanios.data.labels;
+		  		var dataso = chartanios.data.datasets[0].data;	
+			}
+			if (tipo==1){
+				var dataArray = chartmeses.data.labels;
+		  		var dataso = chartmeses.data.datasets[0].data;
+		  		dataArray.forEach(function (element, index, array){
+		  			if (element.includes("Enero"))
+		  				array[index] = element.replace(" Enero","-01");
+		  			if (element.includes("Febrero"))
+		  				array[index] = element.replace(" Febrero","-02");
+		  			if (element.includes("Marzo"))
+		  				array[index] = element.replace(" Marzo","-03");
+		  			if (element.includes("Abril"))
+		  				array[index] = element.replace(" Abril","-04");
+		  			if (element.includes("Mayo"))
+		  				array[index] = element.replace(" Mayo","-05");
+		  			if (element.includes("Junio"))
+		  				array[index] = element.replace(" Junio","-06");
+		  			if (element.includes("Julio"))
+		  				array[index] = element.replace(" Julio","-07");
+		  			if (element.includes("Agosto"))
+		  				array[index] = element.replace(" Agosto","-08");
+		  			if (element.includes("Septiembre"))
+		  				array[index] = element.replace(" Septiembre","-09");
+		  			if (element.includes("Octubre"))
+		  				array[index] = element.replace(" Octubre","-10");
+		  			if (element.includes("Noviembre"))
+		  				array[index] = element.replace(" Noviembre","-11");
+		  			if (element.includes("Diciembre"))
+		  				array[index] = element.replace(" Diciembre","-12");
+		  		});
+		  		//console.log(dataArray);
+			}
+			if (tipo==2){
+				var dataArray = charthora.data.labels;
+		  		var dataso = charthora.data.datasets[0].data;
+			}
+			var temp;							
+		  	var sorted = false
+		  	while (!sorted){
+		  		sorted = true;
+		  		dataArray.forEach(function (element, index, array){
+		  			if (element < array[index+1]) {
+		  				array[index] = array[index+1];
+		  				array[index+1] = element;
+		  				temp = dataso[index];
+			  			dataso[index] = dataso[index+1];
+			  			dataso[index+1] = temp;
+		  				sorted = false;
+		  			}
+		  		});
+		  	}
+		  	if (tipo==0){
+		  		chartanios.data.labels = dataArray;
+		  		chartanios.data.datasets[0].data = dataso;
+		  		chartanios.update();	
+		  	}
+		  	if (tipo==1){
+		  		dataArray.forEach(function (element, index, array){
+		  			if (element.includes("01"))
+		  				array[index] = element.replace("-01"," Enero");
+		  			if (element.includes("02"))
+		  				array[index] = element.replace("-02"," Febrero");
+		  			if (element.includes("03"))
+		  				array[index] = element.replace("-03"," Marzo");
+		  			if (element.includes("04"))
+		  				array[index] = element.replace("-04"," Abril");
+		  			if (element.includes("05"))
+		  				array[index] = element.replace("-05"," Mayo");
+		  			if (element.includes("06"))
+		  				array[index] = element.replace("-06"," Junio");
+		  			if (element.includes("07"))
+		  				array[index] = element.replace("-07"," Julio");
+		  			if (element.includes("08"))
+		  				array[index] = element.replace("-08"," Agosto");
+		  			if (element.includes("09"))
+		  				array[index] = element.replace("-09"," Septiembre");
+		  			if (element.includes("10"))
+		  				array[index] = element.replace("-10"," Octubre");
+		  			if (element.includes("11"))
+		  				array[index] = element.replace("-11"," Noviembre");
+		  			if (element.includes("12"))
+		  				array[index] = element.replace("-12"," Diciembre");
+		  		});
+		  		chartmeses.data.labels = dataArray;
+		  		chartmeses.data.datasets[0].data = dataso;
+		  		chartmeses.update();	
+		  	}
+		  	if (tipo==2){
+		  		charthora.data.labels = dataArray;
+		  		charthora.data.datasets[0].data = dataso;
+		  		charthora.update();	
+		  	}
+		}
+		$(document).on('ready', function(){
+			var array1 = [], array2 = [], array3 = [], array4 = [];
+			$.ajax({
+				url : "https://voyentaxiws.herokuapp.com/usuarios.php/Stats",
+				type : 'GET',
+				dataType : 'json'
+			})
+			.done(function(data){
+				for (var key in data.anios) {
+					if (data.anios.hasOwnProperty(key)) {
+						array1.push(key);
+						array2.push(data.anios[key]);
+						array3.push('rgba(255, 228, 72, 0.5)');
+						array4.push('rgba(255, 228, 72, 1)');
+					}
+				}
+				
+				var ctx1 = document.getElementById("chartanios");
+				chartanios = new Chart(ctx1, {
+					type: 'bar',
+					data: {
+						labels: array1,
+						datasets: [{
+							label: 'Cantidad',
+							data: array2,
+							backgroundColor: array3,
+							borderColor: array4,
+							borderWidth: 2
+						}]
+					},
+					options: {
+						responsive: true,
+						legend: {
+							display : false,
+							position: 'bottom',
+						},
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero:true
+								}
+							}]
+						}
+					}
+				});
+				
+
+				array1 = [], array2 = [], array3 = [], array4 = [];
+				for (var key in data.meses) {
+					if (data.meses.hasOwnProperty(key)) {
+						array1.push(key);
+						array2.push(data.meses[key]);
+						array3.push('rgba(255, 228, 72, 0.5)');
+						array4.push('rgba(255, 228, 72, 1)');
+					}
+				}
+				var ctx2 = document.getElementById("chartmeses");
+				chartmeses = new Chart(ctx2, {
+					type: 'bar',
+					data: {
+						labels: array1,
+						datasets: [{
+							label: 'Cantidad',
+							data: array2,
+							backgroundColor: array3,
+							borderColor: array4,
+							borderWidth: 2
+						}]
+					},
+					options: {
+						responsive: true,
+						legend: {
+							display : false,
+							position: 'bottom',
+						},
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero:true
+								}
+							}]
+						}
+					}
+				});
+				array1 = [], array2 = [], array3 = [], array4 = [];
+				for (var key in data.horas) {
+					if (data.horas.hasOwnProperty(key)) {
+						array1.push(key);
+						array2.push(data.horas[key]);
+						array3.push('rgba(255, 228, 72, 0.5)');
+						array4.push('rgba(255, 228, 72, 1)');
+					}
+				}
+				var ctx3 = document.getElementById("charthora");
+				charthora = new Chart(ctx3, {
+					type: 'bar',
+					data: {
+						labels: array1,
+						datasets: [{
+							label: 'Cantidad',
+							data: array2,
+							backgroundColor: array3,
+							borderColor: array4,
+							borderWidth: 2
+						}]
+					},
+					options: {
+						responsive: true,
+						legend: {
+							display : false,
+							position: 'bottom',
+						},
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero:true
+								}
+							}]
+						}
+					}
+				});
+				orderup(0);
+				orderup(1);
+				orderup(2);
+			});
+
+
+			$('#opcionOpenTok').on('click', function(){
+
+	        	$('#alertOpenTok').css('display', 'none');
+	        	$('#divApiKey').removeClass('has-error');
+	        	$('#divSecretKey').removeClass('has-error');
+
+	        	$.ajax({
+		        	url : 'https://voyentaxiws.herokuapp.com/usuarios.php/GetClaveTokBox',
+		        	type : 'GET',
+		        	dataType : 'json'
+		        })
+		        .done(function(response){
+		        	console.log(response);
+		        	$('#otApiKey').val(response['api_key']);
+		        	$('#otSecretKey').val(response['secret_key']);
+		        })
+		        .fail(function(error, err, e){
+		        	console.log(e);
+		        });
+	        });
+
+	        $('#opcionServidores').on('click', function(){
+	        	$('#alertServidores').css('display', 'none');
+	        	$('#divServidorBDA').removeClass('has-error');
+	        	$('#divServidorVET').removeClass('has-error');
+	        	$('#divServidorRespaldoVET').removeClass('has-error');
+
+	        	$.ajax({
+		        	url : 'https://voyentaxiws.herokuapp.com/usuarios.php/GetServidores',
+		        	type : 'GET',
+		        	dataType : 'json'
+		        })
+		        .done(function(response){
+		        	console.log(response);
+		        	$('#servidorBDA').val(response['servidor_bda']);
+		        	$('#servidorVET').val(response['servidor_vet']);
+		        	$('#servidorRespaldoVET').val(response['servidor_respaldo_vet']);
+		        })
+		        .fail(function(error, err, e){
+		        	console.log(e);
+		        });
+	        });
+
+	        $('#btnAceptarServidores').on('click', function(){
+	        	var campoVacio = false;
+
+	        	if($('#servidorBDA').val() == "" || $('#servidorVET').val() == "" || $('#servidorRespaldoVET').val() == "")
+	        		campoVacio = true;
+
+	        	if($('#servidorBDA').val() == ""){
+	        		$('#divServidorBDA').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorBDA').removeClass('has-error');
+	        	}
+
+	        	if($('#servidorVET').val() == ""){
+	        		$('#divServidorVET').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorVET').removeClass('has-error');
+	        	}
+
+	        	if($('#servidorRespaldoVET').val() == ""){
+	        		$('#divServidorRespaldoVET').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorRespaldoVET').removeClass('has-error');
+	        	}
+
+	        	if(campoVacio){
+	        		$('#alertServidores').addClass('alert-danger').removeClass('alert-success');
+	        		$('#alertServidores').html("<center><strong>ERROR:</strong> No se han completado campos</center>");
+	        		$('#alertServidores').fadeIn();
+
+	        		return;
+	        	}
+	        	else{
+	        		$('#alertServidores').fadeOut();
+
+		        	$.ajax({
+		        		url : 'https://voyentaxiws.herokuapp.com/usuarios.php/UpdateServidores?servidor_bda=' + $('#servidorBDA').val() + "&servidor_vet=" + $('#servidorVET').val() + "&servidor_respaldo_vet=" + $('#servidorRespaldoVET').val(),
+		        		type : 'GET',
+		        		dataType : 'json'
+		        	})
+		        	.done(function(response){
+		        		if(response){
+		        			$('#alertServidores').removeClass('alert-danger').addClass('alert-success');
+		        			$('#alertServidores').html("<center><strong>ÉXITO:</strong> Direcciones de servidores actualizadas</center>");
+		        			$('#divServidorBDA').removeClass('has-error');
+		        			$('#divServidorVET').removeClass('has-error');
+		        			$('#divServidorRespaldoVET').removeClass('has-error');
+		        			$('#alertServidores').fadeIn();
+		        		}
+		        	});
+	        	}
+	        });
+		});
+		
+	</script>
+
+
+	<footer class = "footer">
+		<center>Voy en Taxi | Bot&oacute;n de Alerta | 2018</center>
+	</footer>
+	
+</body>
+</html>

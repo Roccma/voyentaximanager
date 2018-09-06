@@ -29,6 +29,11 @@ body, html {
   font-size: 18px;
 }
 
+.verLlamadaFinalizada{
+  color: grey;
+  font-size: 18px;
+}
+
 .atenderLlamada:hover{
     cursor: pointer;
     color: #089B35;
@@ -37,6 +42,10 @@ body, html {
 .finalizarLlamada:hover{
     cursor: pointer;
     color: red;
+}
+.verLlamadaFinalizada:hover{
+    cursor: pointer;
+    color:  #FFE448;
 }
 
 #contenedorMapa{
@@ -55,12 +64,12 @@ body, html {
 #map {
   height: calc(100% - 30px);
 }
-/* Optional: Makes the sample page fill the window. */
-/*html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}*/
+
+#mapDatos{
+  height: 350px;
+  width: 100%;
+}
+
 #description {
   font-family: Roboto;
   font-size: 15px;
@@ -207,6 +216,15 @@ body, html {
   /*border: 1px solid black;*/
   display: inline-block;
   float: right;
+  width: 80.5%;
+}
+
+#opcionEmergencias{
+  margin-left: 0 !important;
+}
+
+#opcionEmergencias span{
+  left: 0 !important;
 }
 
 .divIcono{
@@ -389,8 +407,17 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   font-weight: bold;
 }
 
+.tituloContenedorCoordenadas{
+  background: #FFE448;
+  text-align: center;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 #subscriber {
     height: calc(100% - 30px);
+    background: #f5f5f5;
 }
 
 #publisher{
@@ -401,7 +428,10 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 
 .OT_subscriber{
   width: 100% !important;  
-  border-radius: 0 0 5px 5px ;
+  border-radius: 0 0 3px 3px ;
+  position: absolute !important;
+  top: 30px !important;
+  height: calc(100% - 30px) !important;
 }
 
 .botonAccion{
@@ -465,6 +495,83 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
     right: 0;
 }
 
+.contenedorCoordenadas{
+    z-index: 100;
+    border: 3px solid #FFE448;
+    border-radius: 3px;
+}
+
+.contenedorUbicacionMapa{
+    z-index: 100;
+    border: 3px solid #FFE448;
+    border-radius: 3px;
+}
+
+.contenedorEstPorAnio{
+    z-index: 100;
+    border: 3px solid #FFE448;
+    border-radius: 3px;
+    width: 49%;
+    height: 325px;
+    position: relative;
+    top: 25px;
+    display: inline-block;
+}
+
+.contenedorEstPorMes{
+    z-index: 100;
+    border: 3px solid #FFE448;
+    border-radius: 3px;
+    width: 49%;
+    height: 325px;
+    position: relative;
+    top: 25px;
+    display: inline-block;
+    float: right;
+}
+
+.contenedorEstPorHora{
+    z-index: 100;
+    border: 3px solid #FFE448;
+    border-radius: 3px;
+    width: 100%;
+    height: 455px;
+    position: relative;
+    margin-top: 55px;
+}
+
+.tituloContenedorUbicacionMapa{
+  background: #FFE448;
+  text-align: center;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.tituloContenedorEstPorAnio{
+  background: #FFE448;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  height: 35px;
+}
+
+.tituloContenedorEstPorMes{
+  background: #FFE448;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  height: 35px;
+}
+
+.tituloContenedorEstPorHora{
+  background: #FFE448;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  height: 35px;
+}
+
 .tituloContenedorDatos{
   background: #FFE448;
   text-align: center;
@@ -473,10 +580,26 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   font-weight: bold;
 }
 
+#charthora{
+  height: 375px !important;
+  width: 950px !important;
+  margin: 0 auto;
+}
+
 #tablaDatos{
   width: 100%;
   margin-top: 10px;
   margin-left: 5px;
+}
+
+.fa-arrow-up:hover{
+  cursor: pointer;
+  color: gray;
+}
+
+.fa-arrow-down:hover{
+  cursor: pointer;
+  color: gray;
 }
 
 #tablaDatos tr td{
@@ -495,27 +618,84 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   display: none !important;
 }
 
-
-/*#opcionEmergencias:hover i{  
-  -webkit-text-stroke: 2px red;
+#ultimaActualizacion{
+    position: absolute;
+    z-index: 10000;
+    bottom: 0;
+    background: rgba(255, 255, 255, .9);
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 0 0 3px 3px;
+    /* font-weight: bold; */
+    /*font-style: italic;*/
 }
 
-#opcionEmergencias:hover span{  
-  color: red;
+#modalVerLlamadaFinalizada > .modal-dialog{
+  width: 700px !important;
 }
 
-#opcionFinalizadas:hover i{  
-  -webkit-text-stroke: 2px green;
+#tablaDatosTaxista{
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 15px;
 }
 
-#opcionFinalizadas:hover span{  
-  color: green;
+#tablaDatosTaxista tr td{
+  border-bottom: 2px solid #F1F1F1;
+  border-top: 2px solid #F1F1F1;
+  padding: 10px 5px;
 }
 
-#opcionLocalizacion:hover i{  
-  -webkit-text-stroke: 2px orange;
+.col1Datos, .col3Datos{
+  width: 25%;
+  background: #F5F5F5; 
 }
 
-#opcionLocalizacion:hover span{  
-  color: orange;
-}*/
+.col2Datos{
+  width: 23%;
+  background: #FBFBFB;
+}
+
+.col3Datos{
+  width: 25%;
+  background: #F5F5F5; 
+}
+
+.col4Datos{
+  width: 27%;
+  background: #FBFBFB;
+}
+
+#tablaDatosLlamada{
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 15px;
+}
+
+#tablaDatosLlamada tr td{
+  border-bottom: 2px solid #F1F1F1;
+  border-top: 2px solid #F1F1F1;
+  padding: 10px 5px;
+}
+
+#mapDatos{
+  width: 100%;
+  height: 305px;
+  margin-top: 15px;
+}
+
+#btnDescargar{
+  float: right;
+  margin-top: -12.5px;
+  width: 125px;
+  background: #FFE448;
+  border: 1px solid #e2cb3f;
+}
+
+#btnDescargar:hover{
+  cursor: pointer;
+  background: #fff2a5;
+}

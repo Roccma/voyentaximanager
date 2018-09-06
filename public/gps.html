@@ -4,8 +4,10 @@
 	<title>Voy en Taxi</title>
 	<link rel = "stylesheet" href = "../css/app.css"/>
 	<link href="../css/bootstrap.min.css" rel="stylesheet">	
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link href="../css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <link rel="shortcut icon" type="image/png" href="img/icon.png"/>
 </head>
 <body  class = "pagebody">
 	<nav class = "menu">
@@ -24,8 +26,11 @@
 			<div id = "opcionLocalizacion" class = "divIcono" onclick="window.location.href = 'gps.html'">
 				<i class = "fa fa-map-marker-alt"></i> <span>Localización</span>
 			</div>
-			<div id = "opcionEstadisticas" class = "divIcono">
+			<div id = "opcionEstadisticas" class = "divIcono" onclick="window.location.href = 'estadisticas.html'">
 				<i class = "fa fa-chart-pie"></i> <span>Estadísticas</span>
+			</div>
+			<div id = "opcionServidores" class = "divIcono"  data-toggle="modal" data-target="#modalServidores">
+				<i class = "fa fa-server"></i> <span>Servidores</span>
 			</div>
 			<div id = "opcionOpenTok" class = "divIcono" data-toggle="modal" data-target="#modalCredenciales">
 				<i class = "fa fa-plug"></i> <span>Credenciales</span>
@@ -35,152 +40,258 @@
 	  </div>
 	</nav>
 	<div class = "main">
-		<h1 class="page-header" style="border-bottom-color: black;">Ingresar Coordenadas </h1>
-		
-		<div class="form-group">
-			<label for="lat">Latitud:</label>
-			<input type="text" class="form-control" id="lat" style="width: 60%" >
+		<div class="contenedorCoordenadas" style="width: 1110px; margin: 0 auto; margin-top: 55px;">
+			<div class="tituloContenedorCoordenadas"><i class="fa fa-globe"></i> Coordenadas</div>
+			<div style = "padding: 15px">
+				Las coordenadas en las que se encuentra el taxi que ha presionado la alarma es latitud: &nbsp;<input type="text" class="form-control" id="lat" style = "width: 125px; display: inline; text-align: center;"> &nbsp;y longitud: &nbsp;<input type="text" class="form-control" id="lng" style = "width: 125px; display: inline; text-align: center;"><button class="btn btn-success" style = "float: right; width: 145px; text-align: center;position: relative; right: 0" onclick="setlocation();">Buscar</button><br>
+			</div>
 		</div>
-		<div class="form-group">
-			<label for="lng">Longitud:</label>
-			<input type="text" class="form-control" id="lng" style="width: 60%">
+
+		<div class="contenedorUbicacionMapa" style = "width: 1110px; position: relative; margin: 0 auto; top: 35px; height: 75%">
+			<div class="tituloContenedorUbicacionMapa"><i class="fa fa-map-marker-alt"></i> Ubicación</div>
+			<div id="map"></div>
 		</div>
-		<button class="btn btn-warning" type="button" onclick="setlocation()">Localizar</button>
-		<button class="btn btn-default" type="button" onclick="deletemarkers()">Borrar Marcadores</button>
 	</div>
-	
-	<div  id = "contenedorMapa">
-		<!--<input id="pac-input" class="controls" type="text" placeholder="Buscar">-->
-		<div id="map"></div>
-    </div>
+	<div class="modal fade" id = "modalCredenciales">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<img src = "../img/tokbox.png" class = "imgTokbox"/>
+          			<h4 class="modal-title">Credenciales de OpenTok</h4>
+				</div>
+				<div class = "modal-body">
+					<div class = "form-group" id = "divApiKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otApiKey">API key</label>
+						<input type = "text" id = "otApiKey" name = "otApiKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divSecretKey" style = "margin-top: 10px;">
+						<label class = "control-label" for = "otSecretKey">Secret key</label>
+						<input type = "text" id = "otSecretKey" name = "otSecretKey" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "alert alert-danger" id = "alertOpenTok" style = "margin-top: 25px; display: none">
+						<center><strong>ERROR:</strong> No se han completado campos</center>
+					</div>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarOpenTok" class = "btn btn-success">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="modal fade" id = "modalServidores">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<img src = "../img/logo_miniatura.png" class = "imgTokbox"/>
+          			<h4 class="modal-title">Servidores</h4>
+				</div>
+				<div class = "modal-body">
+					<div class = "form-group" id = "divServidorBDA" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorBDA">Servidor web de Botón de Alerta</label>
+						<input type = "text" id = "servidorBDA" name = "servidorBDA" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divServidorVET" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorVET">Servidor web de Voy en Taxi</label>
+						<input type = "text" id = "servidorVET" name = "servidorVET" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "form-group" id = "divServidorRespaldoVET" style = "margin-top: 10px;">
+						<label class = "control-label" for = "servidorRespaldoVET">Servidor de respaldo de Voy en Taxi</label>
+						<input type = "text" id = "servidorRespaldoVET" name = "servidorRespaldoVET" style = "width: 100%; margin-top: 10px" class = "form-control"/>
+					</div>
+					<div class = "alert alert-danger" id = "alertServidores" style = "margin-top: 25px; display: none">
+						<center><strong>ERROR:</strong> No se han completado campos</center>
+					</div>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarServidores" class = "btn btn-success">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src = "/socket.io/socket.io.js"></script>
     
-	
+    <link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1duDqyFKrvApr3AOjfQFWnDe-ODP2WpE&libraries=places&callback=initAutocomplete"
-         async defer></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">  
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+	<script src = "../js/bootstrap.js"></script>	
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"/>
+	<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=d0c5GU6bqLUS3GXzuVmJj5rhgVAiSofA"></script>
+	<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-routing.js?key=d0c5GU6bqLUS3GXzuVmJj5rhgVAiSofA"></script>
+	<script src = "../js/leaflet.awesome-markers.js"></script>
+	<script src="https://unpkg.com/ionicons@4.2.4/dist/ionicons.js"></script>
+	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css"/>
+	<link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
 	<script>
-		var map;
-		var geocoder;
-		var infowindow;
-		var markers = [];
+		
+		let socket = io();
+
+		socket.on('help', function(data){		
+			new Audio('/audio/voyentaxi_nueva_llamada.mp3').play();	        
+		});
+
+		var mymap = L.map('map').setView([-32.5000000, -56.0000000], 7);
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(mymap);
+
+		var markerGroup = L.layerGroup().addTo(mymap);
+
+		L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
+		var locationMarker = L.AwesomeMarkers.icon({
+		    icon: 'ion-model-s',
+		    markerColor: 'red'
+		});
+
+
+
 		function setlocation(){
-			deletemarkers();
+			//alert("click!");
 			var lat = document.getElementById("lat").value;
 			var lng = document.getElementById("lng").value;
+			var marker;
 			if (lat!="" && lng!=""){
-				map.setCenter(new google.maps.LatLng(lat,lng));
-				var pt = new google.maps.LatLng(lat, lng);
-  			//bounds.extend(pt);
-  			var marker = new google.maps.Marker({
-			    position: pt,
-			    title:"Posición"
-			});
-			marker.setMap(map);
-			map.setZoom(17);
-			geocoder.geocode({
-				'latLng': pt
-			}, function (results, status) {
-				if (status === google.maps.GeocoderStatus.OK) {
-					if (results[1]) {
-						console.log(results);
-						var obj = results[0];
-						address = obj["formatted_address"];
-						//alert(address);
-						var contentString = '<div id="content">'+
-						'<div id="siteNotice">'+
-						'</div>'+'<div id="bodyContent">'+
-						'<h5><b>Posición del taxista: </b>'+
-						address+'</h5>'+'</div>'+'</div>';
-
-						infowindow = new google.maps.InfoWindow({
-							content: contentString
-						});
-						infowindow.open(map, marker);
+				markerGroup.clearLayers();
+			 	/*marker = L.marker(pos);
+				console.log(marker);
+				var direccion = "<b>Posición Del Taxista:</b><br />";
+				geocoder = L.Control.Geocoder.nominatim();
+				geocoder.reverse(marker._latlng, mymap.options.crs.scale(mymap.getZoom()), function(results) {
+					var r = results[0];
+					if (r!=undefined){
+						direccion = direccion + results[0].properties.display_name;
+						//console.log(direccion);
+						marker.addTo(mymap)
+						.bindPopup(direccion).openPopup();
+						mymap.setView(pos, mymap.getZoom());
 						markers.push(marker);
 					}
-				} 
-			});
+					else{
+						marker.addTo(mymap)
+						.bindPopup("<b>Posición Desconocida</b>").openPopup();
+						mymap.setView(pos, mymap.getZoom());
+						markers.push(marker);
+					}
+				});*/
 
-            marker.addListener('click', function() {
-            	infowindow.open(map, marker);
-            });
-        	}
+				var marker = L.marker([lat, lng], {draggable: false});
+				marker.bindPopup("<center>Ubicación del taxista</center>");
+				marker.on('mouseover', function (e) {
+				    this.openPopup();
+				});
+				marker.on('mouseout', function (e) {
+				    this.closePopup();
+				});
+				marker.setIcon(locationMarker);
+				marker.addTo(markerGroup);
+				mymap.setView([lat, lng], 16);
+			}
 		}
+		$(document).on('ready', function(){
+			$('#opcionOpenTok').on('click', function(){
 
-		function deletemarkers() {
-			for (var i = 0; i < markers.length; i++) {
-				markers[i].setMap(null);}
-			markers = [];
-		}
+	        	$('#alertOpenTok').css('display', 'none');
+	        	$('#divApiKey').removeClass('has-error');
+	        	$('#divSecretKey').removeClass('has-error');
 
-		function initAutocomplete() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -33.8688, lng: 151.2195},
-          zoom: 13,
-          mapTypeId: 'roadmap'
-        });
+	        	$.ajax({
+		        	url : 'https://voyentaxiws.herokuapp.com/usuarios.php/GetClaveTokBox',
+		        	type : 'GET',
+		        	dataType : 'json'
+		        })
+		        .done(function(response){
+		        	console.log(response);
+		        	$('#otApiKey').val(response['api_key']);
+		        	$('#otSecretKey').val(response['secret_key']);
+		        })
+		        .fail(function(error, err, e){
+		        	console.log(e);
+		        });
+	        });
 
-        // Create the search box and link it to the UI element.
-        geocoder = new google.maps.Geocoder();
-        var input = document.getElementById('pac-input');
-        var searchBox = new google.maps.places.SearchBox(input);
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+	        $('#opcionServidores').on('click', function(){
+	        	$('#alertServidores').css('display', 'none');
+	        	$('#divServidorBDA').removeClass('has-error');
+	        	$('#divServidorVET').removeClass('has-error');
+	        	$('#divServidorRespaldoVET').removeClass('has-error');
 
-        // Bias the SearchBox results towards current map's viewport.
-        map.addListener('bounds_changed', function() {
-          searchBox.setBounds(map.getBounds());
-        });
+	        	$.ajax({
+		        	url : 'https://voyentaxiws.herokuapp.com/usuarios.php/GetServidores',
+		        	type : 'GET',
+		        	dataType : 'json'
+		        })
+		        .done(function(response){
+		        	console.log(response);
+		        	$('#servidorBDA').val(response['servidor_bda']);
+		        	$('#servidorVET').val(response['servidor_vet']);
+		        	$('#servidorRespaldoVET').val(response['servidor_respaldo_vet']);
+		        })
+		        .fail(function(error, err, e){
+		        	console.log(e);
+		        });
+	        });
 
-        var markers = [];
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        searchBox.addListener('places_changed', function() {
-          var places = searchBox.getPlaces();
+	        $('#btnAceptarServidores').on('click', function(){
+	        	var campoVacio = false;
 
-          if (places.length == 0) {
-            return;
-          }
+	        	if($('#servidorBDA').val() == "" || $('#servidorVET').val() == "" || $('#servidorRespaldoVET').val() == "")
+	        		campoVacio = true;
 
-          // Clear out the old markers.
-          markers.forEach(function(marker) {
-            marker.setMap(null);
-          });
-          markers = [];
+	        	if($('#servidorBDA').val() == ""){
+	        		$('#divServidorBDA').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorBDA').removeClass('has-error');
+	        	}
 
-          // For each place, get the icon, name and location.
-          var bounds = new google.maps.LatLngBounds();
-          places.forEach(function(place) {
-            if (!place.geometry) {
-              console.log("Returned place contains no geometry");
-              return;
-            }
-            var icon = {
-              url: place.icon,
-              size: new google.maps.Size(71, 71),
-              origin: new google.maps.Point(0, 0),
-              anchor: new google.maps.Point(17, 34),
-              scaledSize: new google.maps.Size(25, 25)
-            };
+	        	if($('#servidorVET').val() == ""){
+	        		$('#divServidorVET').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorVET').removeClass('has-error');
+	        	}
 
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-              map: map,
-              icon: icon,
-              title: place.name,
-              position: place.geometry.location
-            }));
+	        	if($('#servidorRespaldoVET').val() == ""){
+	        		$('#divServidorRespaldoVET').addClass('has-error');
+	        	}
+	        	else{
+	        		$('#divServidorRespaldoVET').removeClass('has-error');
+	        	}
 
-            if (place.geometry.viewport) {
-              // Only geocodes have viewport.
-              bounds.union(place.geometry.viewport);
-            } else {
-              bounds.extend(place.geometry.location);
-            }
-          });
-          map.fitBounds(bounds);
+	        	if(campoVacio){
+	        		$('#alertServidores').addClass('alert-danger').removeClass('alert-success');
+	        		$('#alertServidores').html("<center><strong>ERROR:</strong> No se han completado campos</center>");
+	        		$('#alertServidores').fadeIn();
 
-        });
-      }
+	        		return;
+	        	}
+	        	else{
+	        		$('#alertServidores').fadeOut();
+
+		        	$.ajax({
+		        		url : 'https://voyentaxiws.herokuapp.com/usuarios.php/UpdateServidores?servidor_bda=' + $('#servidorBDA').val() + "&servidor_vet=" + $('#servidorVET').val() + "&servidor_respaldo_vet=" + $('#servidorRespaldoVET').val(),
+		        		type : 'GET',
+		        		dataType : 'json'
+		        	})
+		        	.done(function(response){
+		        		if(response){
+		        			$('#alertServidores').removeClass('alert-danger').addClass('alert-success');
+		        			$('#alertServidores').html("<center><strong>ÉXITO:</strong> Direcciones de servidores actualizadas</center>");
+		        			$('#divServidorBDA').removeClass('has-error');
+		        			$('#divServidorVET').removeClass('has-error');
+		        			$('#divServidorRespaldoVET').removeClass('has-error');
+		        			$('#alertServidores').fadeIn();
+		        		}
+		        	});
+	        	}
+	        });
+		});
+		
 	</script>
 
 
