@@ -114,7 +114,9 @@ jQuery('#ultimaActualizacion').html("Última actualización: " + fecha + " " + h
 
 var markerLocation;
 
-var desconectada = false;
+var desconectada;
+
+desconectada = false;
 
 socket.on('location', function(data){
 
