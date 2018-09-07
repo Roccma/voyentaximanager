@@ -30,6 +30,10 @@ let estado;
 
 let llamadaFinalizada = false;
 
+var llamadaDesconectada;
+
+llamadaDesconectada = false;
+
 jQuery.ajax({
 	url : 'https://voyentaxiws.herokuapp.com/usuarios.php/EstadoLlamada?id=' + id,
 	type : 'GET',
@@ -53,6 +57,7 @@ if(estado == "0"){
 	llamadaFinalizada = true;
 }
 else if(desconectada){
+	llamadaDesconectada = true;
 	/*$('.contenedorSubscriber').hide();
 	$('.contenedorMapa').hide();
 	$('.contenedorPublisher').hide();
@@ -114,9 +119,7 @@ jQuery('#ultimaActualizacion').html("Última actualización: " + fecha + " " + h
 
 var markerLocation;
 
-var llamadaDesconectada;
 
-llamadaDesconectada = false;
 
 socket.on('location', function(data){
 
