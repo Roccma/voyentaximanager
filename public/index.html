@@ -212,7 +212,8 @@
 					"<td><i class = 'fa fa-phone atenderLlamada' id = 'sessionid=" + data['sessionid'] + "&token=" + data['token'] + "&latitud=" + data['latitud'] + "&longitud=" + data['longitud'] + "&fecha=" + fecha + "&hora=" + hora + "&id=" + data['id'] + "'></i></td>" +
 					"<td onclick='verificarFinalizarLlamada(\""+ data['sessionid'] + "\", " + data['id'] +");'><i class = 'fa fa-phone-slash finalizarLlamada'></i></td>" +
 				"</tr>";
-			$('#body').html(newRow + $('#body').html());			
+			$('#body').html(newRow + $('#body').html());
+			console.log(data['url']);			
 			new Audio('/audio/voyentaxi_nueva_llamada.mp3').play();
 			createDataTable();
 
