@@ -114,6 +114,7 @@ jQuery('#ultimaActualizacion').html("Última actualización: " + fecha + " " + h
 
 var markerLocation;
 
+var desconectada = false;
 
 socket.on('location', function(data){
 
@@ -146,6 +147,7 @@ socket.on('location', function(data){
 			window.clearTimeout(contadorDesconexion);
 			contadorDesconexion = window.setTimeout(function(){
 				if(!llamadaFinalizada){
+					desconectada = true;
 					/*$('.contenedorSubscriber').hide();
 					$('.contenedorMapa').hide();
 					$('.contenedorPublisher').hide();
@@ -334,7 +336,10 @@ function initializeSession(sessionId, token){
 }
 
 function finalizarLlamada(){
-	socket.emit("finish_help", sessionId, id);
+	if(desconectada == false)
+		socket.emit("finish_help", sessionId, id);
+	else
+		$('#modalNoFinalizar').modal('show');
 }
 
 
