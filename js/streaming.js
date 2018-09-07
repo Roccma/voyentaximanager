@@ -31,7 +31,7 @@ let estado;
 let llamadaFinalizada = false;
 
 jQuery.ajax({
-	url : 'http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/EstadoLlamada?id=' + id,
+	url : 'https://voyentaxiws.herokuapp.com/usuarios.php/EstadoLlamada?id=' + id,
 	type : 'GET',
 	dataType : 'json',
 	async : false
@@ -60,10 +60,22 @@ else if(desconectada){
 	$('.contenedorDatos').hide();
 
 	if(cantidad_desconexiones < 3){
-		$('#modalReconectando').modal('show');
+		$('#imgCargando').css('display', 'none');		
+		$('.OT_subscriber').css('display', 'none');
+		$('#imgDisconnected').css('display', 'none');
+		$('#divDesconnectedText').css('display', 'none');
+		$('#imgReconnecting').css('display', 'block');
+		$('#divReconnectingText').css('display', 'block');
+		//$('#modalReconectando').modal('show');
 	}
 	else{
-		$('#modalDesconexion').modal('show');
+		$('#imgCargando').css('display', 'none');		
+		$('.OT_subscriber').css('display', 'none');
+		$('#imgDisconnected').css('display', 'block');
+		$('#divDesconnectedText').css('display', 'block');
+		$('#imgReconnecting').css('display', 'none');
+		$('#divReconnectingText').css('display', 'none');
+		//$('#modalDesconexion').modal('show');
 	}
 }
 
@@ -137,12 +149,24 @@ socket.on('location', function(data){
 					$('.contenedorBotones').hide();
 					$('.contenedorDatos').hide();
 					cantidad_desconexiones++;
-					if(cantidad_desconexiones < 3)
-						$('#modalReconectando').modal('show');
-					else				
-						$('#modalDesconexion').modal('show');
+					if(cantidad_desconexiones < 3){
+						$('#imgCargando').css('display', 'none');		
+						$('.OT_subscriber').css('display', 'none');
+						$('#imgDisconnected').css('display', 'none');
+						$('#divDesconnectedText').css('display', 'none');
+						$('#imgReconnecting').css('display', 'block');
+						$('#divReconnectingText').css('display', 'block');
+					}
+					else{
+						$('#imgCargando').css('display', 'none');		
+						$('.OT_subscriber').css('display', 'none');
+						$('#imgDisconnected').css('display', 'block');
+						$('#divDesconnectedText').css('display', 'block');
+						$('#imgReconnecting').css('display', 'none');
+						$('#divReconnectingText').css('display', 'none');
+					}				
 					jQuery.ajax({
-						url : 'http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/ActualizarEstadoLlamada?id=' + id + "&cantidad_desconexiones=" + cantidad_desconexiones + "&desconectada=1",
+						url : 'https://voyentaxiws.herokuapp.com/usuarios.php/ActualizarEstadoLlamada?id=' + id + "&cantidad_desconexiones=" + cantidad_desconexiones + "&desconectada=1",
 						type : 'GET',
 						dataType : 'json'
 					})
@@ -171,7 +195,7 @@ socket.on('reconnected', function(data){
 			cantidad_desconexiones++;
 		}
 		jQuery.ajax({
-			url : 'http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/ActualizarEstadoLlamada?id=' + id + "&cantidad_desconexiones=" + cantidad_desconexiones + "&desconectada=0",
+			url : 'https://voyentaxiws.herokuapp.com/usuarios.php/ActualizarEstadoLlamada?id=' + id + "&cantidad_desconexiones=" + cantidad_desconexiones + "&desconectada=0",
 			type : 'GET',
 			dataType : 'json'
 		})
@@ -204,7 +228,7 @@ socket.on('finish_help', function(data){
 	llamadaFinalizada = true;
 
 	$.ajax({
-    	url : "http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/FinLlamada?callid="+id+"&url=&date=&latitud="+latitud+"&longitud="+longitud,
+    	url : "https://voyentaxiws.herokuapp.com/usuarios.php/FinLlamada?callid="+id+"&url=&date=&latitud="+latitud+"&longitud="+longitud,
     	//userid="+data['cedula']+"&date="+fhSplit[0]+hora+"&latitud="+data['latitud']+"&longitud="+data['longitud']+"",
     	type : 'GET',
     	dataType : 'json'
@@ -267,7 +291,7 @@ function initializeSession(sessionId, token){
 	
 	let apiKey;
 	jQuery.ajax({
-		url : 'http://127.0.0.1:8080/VoyEnTaxiWS/usuarios.php/GetClaveTokBox',
+		url : 'https://voyentaxiws.herokuapp.com/usuarios.php/GetClaveTokBox',
 		type : 'GET',
 		dataType : 'json'
 	})

@@ -48,7 +48,21 @@
 				<div class = "contenedorSubscriber">
 					<div class = "tituloContenedorSubscriber"><i class = "fa fa-video"></i> Videollamada</div>
 					<div id = "subscriber">
-						<img src = "/img/spinner.gif" style = "width: 20%; margin-left: 41%; margin-top: 25%;"/>
+						<img src = "/img/spinner.gif" id = "imgCargando" style = "width: 20%; margin-left: 41%; margin-top: 25%;"/>
+						<img src = "/img/lost_connection.gif" id = "imgDisconnected" style = "position: relative; left: 39%; margin-top: 8%; display: none" />
+						<img src = "/img/reconnecting.gif" id = "imgReconnecting" style = "position: relative; left: 40%; margin-top: 8%; width: 20%; display: none"/>
+						<div id = "divReconnectingText" style = "display: none;">
+							<br><br>
+							<span style = "font-size: 24px; display: block; text-align: center; font-weight: bold; color: #EBC309">Conexión interrumpida</span>
+							<br>
+							<span style = "font-size: 18px; display: block; text-align: center; color: #EBC309">La videollamada ha perdido conexión a Internet, intentando reconectar...</span>
+						</div>
+						<div id = "divDesconnectedText" style = "display: none;">
+							<br><br>
+							<span style = "font-size: 24px; display: block; text-align: center; font-weight: bold; color: #F60700">Desconexión</span>
+							<br>
+							<center><span style = "font-size: 18px; display: block; text-align: center; color: #F60700; width: 80%;">El taxista presenta una conexión intermitente, por lo que seguirá grabando de manera local lo que ocurra</span></center>
+						</div>
 					</div>
 				</div>
 				<div class = "contenedorMapa">
@@ -138,6 +152,7 @@
 		</div>
 	</div>
 
+	<!--
 	<div class="modal fade" id = "modalReconectando" style = "margin-top: 15%">
 		<div class = "modal-dialog">
 			<div class = "modal-content">
@@ -168,7 +183,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 
 	<div class="modal fade" id = "modalLlamadaFinalizada" style = "margin-top: 15%">
 		<div class = "modal-dialog">
@@ -239,6 +254,8 @@
 		$(document).on('ready', function(){
 
 			let socket = io();
+
+			//$('#imgCargando').css('display', 'none');
 
 			socket.on('help', function(data){		
 				new Audio('/audio/voyentaxi_nueva_llamada.mp3').play();	        

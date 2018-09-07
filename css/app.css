@@ -417,7 +417,7 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 
 #subscriber {
     height: calc(100% - 30px);
-    background: #f5f5f5;
+    background: #FBFBFB;
 }
 
 #publisher{

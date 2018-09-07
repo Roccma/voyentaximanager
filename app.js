@@ -107,6 +107,14 @@ app.get('/img/spinner.gif', (req, res) => {
 	res.sendFile(`${imgDir}/spinner.gif`);
 });
 
+app.get('/img/lost_connection.gif', (req, res) => {
+	res.sendFile(`${imgDir}/lost_connection.gif`);
+});
+
+app.get('/img/reconnecting.gif', (req, res) => {
+	res.sendFile(`${imgDir}/reconnecting.gif`);
+});
+
 app.get('/img/logo_miniatura.png', (req, res) => {
 	res.sendFile(`${imgDir}/logo_miniatura.png`);
 });
