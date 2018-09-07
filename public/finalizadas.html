@@ -418,6 +418,7 @@
 				let lonf = parseFloat(response['longitud_final']);
 
 				let longitud = L.GeometryUtil.length([L.latLng(lat, lon), L.latLng(latf, lonf)]);
+				let dist = parseFloat((longitud/1000)).toFixed(2);
 
 				document.getElementById('tablaDatosLlamada').innerHTML = 
 					"<tr>" + 
@@ -430,7 +431,7 @@
 						"<td class = 'col1Datos'><b>Duración</b></td>" +
 						"<td class = 'col2Datos'>" + response['duracion'] + "</td>" +
 						"<td class = 'col3Datos'><b>Distancia recorrida</b></td>" +
-						"<td class = 'col4Datos'>" + parseFloat((longitud/1000)).toFixed(2) + " Km</td>" +
+						"<td class = 'col4Datos'>" + dist + " Km</td>" +
 					"</tr>";				
 
 				
@@ -477,8 +478,13 @@
 				latc = (lat + latf) / 2;
 				lonc = (lon + lonf) / 2;
 
-				map.setView([latc, lonc], 16);
-
+				if(dist < 0.85)
+					map.setView([latc, lonc], 16);
+				else if (dist >= 0.85 && dist < 1.15)
+					map.setView([latc, lonc], 15);
+				else
+					map.setView([latc, lonc], 14);
+				
 				if(response['url_video'] != null){
 					document.getElementById('divEvidencias').innerHTML = 
 					'<span style = "text-align: justify;">Presionando sobre el siguiente botón se podrán obtener las grabaciones del caso.</span>' +
