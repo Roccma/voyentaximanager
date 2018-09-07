@@ -417,7 +417,14 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 
 #subscriber {
     height: calc(100% - 30px);
+}
+
+#contenedorInformacionSubscriber{
+    position: absolute;
     background: #FBFBFB;
+    width: 100%;
+    bottom: 0;
+    top: 30px;
 }
 
 #publisher{

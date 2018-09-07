@@ -62,6 +62,10 @@ app.get('/css/leaflet.awesome-markers.css', (req, res) => {
 	res.sendFile(`${cssDir}/leaflet.awesome-markers.css`);
 });
 
+app.get('/css/ionicons.min.css', (req, res) => {
+	res.sendFile(`${cssDir}/ionicons.min.css`);
+});
+
 app.get('/css/images/markers-soft.png', (req, res) => {
 	res.sendFile(`${cssDir}/images/markers-soft.png`);
 });
@@ -85,6 +89,10 @@ app.get('/js/bootstrap.min.js', (req, res) => {
 
 app.get('/js/leaflet.awesome-markers.js', (req, res) => {
 	res.sendFile(`${jsDir}/leaflet.awesome-markers.js`);
+});
+
+app.get('/js/ionicons.js', (req, res) => {
+	res.sendFile(`${jsDir}/ionicons.js`);
 });
 
 app.get('/img/Logo.png', (req, res) => {
@@ -127,10 +135,11 @@ app.get('/audio/voyentaxi_nueva_llamada.mp3', (req, res) => {
 	res.sendFile(`${audioDir}/voyentaxi_nueva_llamada.mp3`);
 });
 
-var salas = [];
+let locations = [];
 
 io.on('connection', (socket) => {
 	console.log("Nuevo usuario conectado: " + socket.id);
+	
 	socket.on('credentials', (apiKey, apiSecret) => {
 		var OpenTok = require('opentok'),
 		opentok = new OpenTok(apiKey, apiSecret);
@@ -166,7 +175,10 @@ io.on('connection', (socket) => {
 			if(error)
 				console.log(error);
 			var js = JSON.parse(body);
-			console.log(js);		
+			console.log(js);
+			let index = locations.indexOf(sessionId);		
+			locations.splice(index, index);
+			console.log(locations);
 			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});
 		});
 		
@@ -189,6 +201,9 @@ io.on('connection', (socket) => {
 
 	socket.on('finish_help', (sessionId, id) => {
 		console.log("finish_help " + id);
+		let index = locations.indexOf(sessionId);		
+		locations.splice(index, index);
+		console.log(locations);
 		io.emit('finish_help', {sessionid : sessionId, id : id});
 	});
 
@@ -198,7 +213,10 @@ io.on('connection', (socket) => {
 
 	socket.on('listen_location', (sessionId) => {
 		console.log("listen_location");
-		io.emit('listen_location', {send : 'ok', sessionId : sessionId});
+		if(locations.indexOf(sessionId) == -1){
+			locations[locations.length] = sessionId;
+			io.emit('listen_location', {send : 'ok', sessionId : sessionId});
+		}
 	});
 
 	socket.on('record_start', (apiKey, apiSecret, sessionId) => {

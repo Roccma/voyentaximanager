@@ -53,11 +53,11 @@ if(estado == "0"){
 	llamadaFinalizada = true;
 }
 else if(desconectada){
-	$('.contenedorSubscriber').hide();
+	/*$('.contenedorSubscriber').hide();
 	$('.contenedorMapa').hide();
 	$('.contenedorPublisher').hide();
 	$('.contenedorBotones').hide();
-	$('.contenedorDatos').hide();
+	$('.contenedorDatos').hide();*/
 
 	if(cantidad_desconexiones < 3){
 		$('#imgCargando').css('display', 'none');		
@@ -77,6 +77,9 @@ else if(desconectada){
 		$('#divReconnectingText').css('display', 'none');
 		//$('#modalDesconexion').modal('show');
 	}
+}
+else{
+	socket.emit("listen_location", sessionId);
 }
 
 var map = L.map('map').setView([latitud, longitud], 16);
@@ -111,7 +114,7 @@ jQuery('#ultimaActualizacion').html("Última actualización: " + fecha + " " + h
 
 var markerLocation;
 
-socket.emit("listen_location", sessionId);
+
 socket.on('location', function(data){
 
 	if(data['sessionid'] == sessionId){
@@ -143,11 +146,11 @@ socket.on('location', function(data){
 			window.clearTimeout(contadorDesconexion);
 			contadorDesconexion = window.setTimeout(function(){
 				if(!llamadaFinalizada){
-					$('.contenedorSubscriber').hide();
+					/*$('.contenedorSubscriber').hide();
 					$('.contenedorMapa').hide();
 					$('.contenedorPublisher').hide();
 					$('.contenedorBotones').hide();
-					$('.contenedorDatos').hide();
+					$('.contenedorDatos').hide();*/
 					cantidad_desconexiones++;
 					if(cantidad_desconexiones < 3){
 						$('#imgCargando').css('display', 'none');		
