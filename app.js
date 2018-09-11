@@ -95,6 +95,26 @@ app.get('/js/ionicons.js', (req, res) => {
 	res.sendFile(`${jsDir}/ionicons.js`);
 });
 
+app.get('/js/emergencias.js', (req, res) => {
+	res.sendFile(`${jsDir}/emergencias.js`);
+});
+
+app.get('/js/streaming_design.js', (req, res) => {
+	res.sendFile(`${jsDir}/streaming_design.js`);
+});
+
+app.get('/js/gps.js', (req, res) => {
+	res.sendFile(`${jsDir}/gps.js`);
+});
+
+app.get('/js/finalizadas.js', (req, res) => {
+	res.sendFile(`${jsDir}/finalizadas.js`);
+});
+
+app.get('/js/estadisticas.js', (req, res) => {
+	res.sendFile(`${jsDir}/estadisticas.js`);
+});
+
 app.get('/img/Logo.png', (req, res) => {
 	res.sendFile(`${imgDir}/Logo.png`);
 });

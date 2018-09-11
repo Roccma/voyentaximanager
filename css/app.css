@@ -706,3 +706,8 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   cursor: pointer;
   background: #fff2a5;
 }
+
+.leaflet-tile .leaflet-tile-loaded{
+  left: 0 !important;
+  top: 0 !important;
+}
