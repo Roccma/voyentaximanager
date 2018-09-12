@@ -1,6 +1,7 @@
 body, html {
     background: url('/img/ftax.png'); 
     height: 100%;
+    box-sizing: border-box;
 }
 
 #videos {
@@ -300,6 +301,7 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 .modal-title{
   margin-top: 2.5px !important;
   font-weight: bold;
+  font-size: 18px;
 }
 
 .modal-header .close{
@@ -656,6 +658,18 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   padding: 10px 5px;
 }
 
+#tablaDatosTaxista1024{
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 15px;
+}
+
+#tablaDatosTaxista1024 tr td{
+  border-bottom: 2px solid #F1F1F1;
+  border-top: 2px solid #F1F1F1;
+  padding: 10px 5px;
+}
+
 .col1Datos, .col3Datos{
   width: 25%;
   background: #F5F5F5; 
@@ -676,6 +690,40 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   background: #FBFBFB;
 }
 
+.col1Datos1024, .col5Datos1024{
+  width: 16.5%;
+  background: #F5F5F5; 
+}
+
+.col3Datos1024{
+  width: 14.5%;
+  background: #F5F5F5; 
+}
+
+.col2Datos1024{
+  width: 16%;
+  background: #FBFBFB;
+}
+
+.col4Datos1024{
+  width: 15%;
+  background: #FBFBFB;
+}
+
+/*.col5Datos1024{
+  width: 19%;
+  background: #F5F5F5; 
+}*/
+
+.col6Datos1024{
+  width: 16%;
+  background: #FBFBFB;
+}
+
+.tituloSeccion{
+  font-size: 18px;
+}
+
 #tablaDatosLlamada{
   width: 100%;
   border-collapse: collapse;
@@ -683,6 +731,21 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 }
 
 #tablaDatosLlamada tr td{
+  border-bottom: 2px solid #F1F1F1;
+  border-top: 2px solid #F1F1F1;
+  padding: 10px 5px;
+}
+
+#tablaDatosLlamada1024{
+  width: 31%;
+  border-collapse: collapse;
+  border-radius: 15px;
+  display: inline-block;
+  top: 0;
+  float: left;
+}
+
+#tablaDatosLlamada1024 tr td{
   border-bottom: 2px solid #F1F1F1;
   border-top: 2px solid #F1F1F1;
   padding: 10px 5px;
@@ -710,4 +773,24 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 .leaflet-tile .leaflet-tile-loaded{
   left: 0 !important;
   top: 0 !important;
+}
+
+.imgVET{
+  height: 55px;
+}
+
+#tablaDatosTaxista{
+  display: block;
+}
+
+#tablaDatosTaxista1024{
+  display: none;
+}
+
+#tablaDatosLlamada{
+  display: block;
+}
+
+#tablaDatosLlamada1024{
+  display: none;
 }

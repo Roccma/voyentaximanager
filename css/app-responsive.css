@@ -1,0 +1,173 @@
+@media (max-width: 1555px){
+	.main2{
+	  position: fixed; 
+	  top: 58px; 
+	  bottom: 35px; 
+	  left: 0; 
+	  right: 0;
+	  padding: 0 !important;
+	  max-width: 960px; 
+	  margin: 0 auto;
+	}
+
+	.menu{
+	  background-color: #FFE448; 
+	  position: fixed; 
+	  left: 0; 
+	  right: 0; 
+	  height: 58px;
+	}
+
+	.menucontainer{
+	  padding-left: 0 !important;  
+	  padding-right: 0 !important;
+	  max-width: 960px; 
+	  height: 58px;
+	  font-size: 14px;
+	  /*border: 1px solid black;*/
+	}
+
+	.contenedorMain{
+		max-width: 960px;
+		margin: 0 auto;
+	}
+
+	.divIcono{
+	  display: inline-block;
+	  margin-left: 17px;
+	}
+
+	.divIcono i{
+
+	  font-size: 24px;
+	  color: transparent;
+	  -webkit-text-stroke: 2px black;
+	  margin-top: 15px;
+	}
+
+	.divIcono span{
+	  position: relative;
+	  bottom: 5px;
+	  font-weight: bold;
+	  left: 5px;
+	}
+
+	.footer{
+	  background: #FFE448;
+	  position: fixed;
+	  height: 32px;
+	  bottom: 0;
+	  left: 0;
+	  right: 0;
+	  font-size: 12px;
+	  font-weight: bold;
+	  padding-top: 8px;
+	  box-sizing: border-box;
+	}
+
+	.main{
+	  position: fixed; 
+	  top: 58px; 
+	  bottom: 32px; 
+	  left: 0; 
+	  right: 0;
+	  padding: 0 !important;
+	  overflow-y: auto;
+	}
+
+	.imgVET{
+		height: 45px;
+	}
+
+	#DataTables_Table_0_wrapper{
+	  margin-top: 20px;
+	}
+
+	.dataTables_filter{
+	  margin-bottom: 15px;
+	}
+
+	#DataTables_Table_0{
+	  margin-top: 0px;
+	}
+
+	#DataTables_Table_0_wrapper{
+	  margin-bottom: 15px !important;
+	}
+
+	#modalVerLlamadaFinalizada > .modal-dialog{
+	  width: 960px !important;
+	  /*height: 400px !important;*/
+	}
+
+	#tablaDatosTaxista{
+	  display: none;
+	}
+
+	#tablaDatosTaxista1024{
+	  display: block;
+	}
+
+	#tablaDatosLlamada{
+	  display: none;
+	}
+
+	#tablaDatosLlamada1024{
+	  display: block;
+	}
+
+	.modal-title{
+	  margin-top: 2.5px !important;
+	  font-weight: bold;
+	  font-size: 16px;
+	}
+
+	.modal-header{
+	  background: #FFE448;
+	  color: black;
+	  border-radius: 5px 5px 0 0;
+	  height: 55px;
+	}
+
+	.tituloSeccion{
+	  font-size: 16px;
+	}
+
+	.modal-header .close{
+	  font-size: 30px;
+	  outline: 0;
+	}
+
+	#mapDatos{
+		width: 67%;
+	    height: 305px;
+	    display: inline-block;
+	    float: right;
+	    margin-top: 0;
+	}
+
+	.content-finalizar-llamada{
+		height: 615px;
+	}
+
+	.dialog-finalizar-llamada{
+		margin-bottom: 0 !important;
+	}
+
+	.tituloEvidencias{
+		display: inline-block;
+    	margin-top: 25px;
+	}
+
+	#btnDescargar{
+	   	width: 20%;
+	    position: relative;
+	    background: #FFE448;
+	    border: 1px solid #e2cb3f;
+	    bottom: 0;
+	    margin-top: 9px;
+	    float: left;
+	    margin-left: 6.3%;
+	}
+
+}

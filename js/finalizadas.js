@@ -210,7 +210,7 @@ function verLlamada(id){
 			"</tr>" + 
 			"<tr>" +
 				"<td class = 'col1Datos'><b>Cédula de Identidad</b></td>" +
-				"<td class = 'col2Datos'>" + response['cedula'] + "</td>" +
+				"<td class = 'col2Datos'>" + response['cedula'].toString().substring(0, 7) + "-" + response['cedula'].toString().substring(7) + "</td>" +
 				"<td class = 'col3Datos'><b>Correo electrónico</b></td>" +
 				"<td class = 'col4Datos'>" + response['email'] + "</td>" +
 			"</tr>" +
@@ -219,6 +219,24 @@ function verLlamada(id){
 				"<td class = 'col2Datos'>" + response['telefono'] + "</td>" +
 				"<td class = 'col3Datos'><b>Empresa</b></td>" +
 				"<td class = 'col4Datos'>" + response['empresa'] + "</td>" +
+			"</tr>";
+
+		document.getElementById('tablaDatosTaxista1024').innerHTML = 
+			"<tr>" + 
+				"<td class = 'col1Datos1024'><b>Nombre</b></td>" + 
+				"<td class = 'col2Datos1024'>" + response['nombre'] + "</td>" + 
+				"<td class = 'col3Datos1024'><b>Apellido</b></td>" + 
+				"<td class = 'col4Datos1024'>" + response['apellido'] + "</td>" +
+				"<td class = 'col5Datos1024'><b>Cédula de Identidad</b></td>" +
+				"<td class = 'col6Datos1024'>" + response['cedula'].toString().substring(0, 7) + "-" + response['cedula'].toString().substring(7) + "</td>" +
+			"</tr>" +
+			"<tr>" +
+				"<td class = 'col1Datos1024'><b>Correo electrónico</b></td>" +
+				"<td class = 'col2Datos1024'>" + response['email'] + "</td>" +			
+				"<td class = 'col3Datos1024'><b>Celular</b></td>" +
+				"<td class = 'col4Datos1024'>" + response['telefono'] + "</td>" +
+				"<td class = 'col5Datos1024'><b>Empresa</b></td>" +
+				"<td class = 'col6Datos1024'>" + response['empresa'] + "</td>" +
 			"</tr>";
 
 		let fechaHorai = response['fecha_hora_inicial'];
@@ -255,6 +273,24 @@ function verLlamada(id){
 				"<td class = 'col2Datos'>" + response['duracion'] + "</td>" +
 				"<td class = 'col3Datos'><b>Distancia recorrida</b></td>" +
 				"<td class = 'col4Datos'>" + dist + " Km</td>" +
+			"</tr>";
+
+		document.getElementById('tablaDatosLlamada1024').innerHTML = 
+			"<tr>" + 
+				"<td class = 'col1Datos'><b>Inicio</b></td>" + 
+				"<td class = 'col2Datos'>" + fechai + " " + horai + "</td>" + 
+			"</tr>" + 
+			"<tr>" +
+				"<td class = 'col1Datos'><b>Última vez</b></td>" + 
+				"<td class = 'col2Datos'>" + fechaf + " " + horaf + "</td>" +
+			"</tr>" + 
+			"<tr>" +
+				"<td class = 'col1Datos'><b>Duración</b></td>" +
+				"<td class = 'col2Datos'>" + response['duracion'] + "</td>" +
+			"</tr>" + 
+			"<tr>" +
+				"<td class = 'col1Datos'><b>Distancia recorrida</b></td>" +
+				"<td class = 'col2Datos'>" + dist + " Km</td>" +
 			"</tr>";				
 
 		markerGroup.clearLayers();

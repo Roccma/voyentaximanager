@@ -2,7 +2,9 @@
 <html>
 <head>
 	<title>Voy en Taxi</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel = "stylesheet" href = "../css/app.css"/>
+	<link rel = "stylesheet" href = "../css/app-responsive.css"/>
 	<script src = "https://static.opentok.com/v2/js/opentok.min.js"></script>
 	<link href="../css/bootstrap.css" rel="stylesheet">
 
@@ -16,7 +18,7 @@
 	<nav class = "menu">
 	  <div class="container-fluid menucontainer">
 	    <div class="navbar-header" style = "margin-top: 5px">
-	      <img height="55" src="/img/Logo.png">
+	      <img class = "imgVET" src="/img/Logo.png">
 	    </div>
 
 		<div class = "opcionesMenu">
@@ -121,24 +123,28 @@
 	</div>
 
 	<div class="modal fade" id = "modalVerLlamadaFinalizada">
-		<div class = "modal-dialog">
-			<div class = "modal-content">
+		<div class = "modal-dialog dialog-finalizar-llamada">
+			<div class = "modal-content content-finalizar-llamada">
 				<div class = "modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
           			<h4 class="modal-title"><i class = "fa fa-list"></i>&nbsp;&nbsp;Información de la llamada</h4>
 				</div>
 				<div class = "modal-body">
-					<h4><b><i class = "fa fa-user"></i>&nbsp;&nbsp;Datos del taxista</b></h4><br>
+					<h4 class = "tituloSeccion"><b><i class = "fa fa-user"></i>&nbsp;&nbsp;Datos del taxista</b></h4><br>
 					<table id = "tablaDatosTaxista">
 					</table>
+					<table id = "tablaDatosTaxista1024">
+					</table>
 					<br>
-					<h4><b><i class = "fa fa-phone"></i>&nbsp;&nbsp;Datos de la llamada</b></h4><br>
+					<h4 class = "tituloSeccion"><b><i class = "fa fa-phone"></i>&nbsp;&nbsp;Datos de la llamada</b></h4><br>
 					<table id = "tablaDatosLlamada">
+					</table>
+					<table id = "tablaDatosLlamada1024">
 					</table>
 					<div id = "mapDatos">						
 					</div>
 					<br>
-					<h4><b><i class = "fa fa-video"></i>&nbsp;&nbsp;Evidencias</b></h4>
+					<h4 class = "tituloSeccion tituloEvidencias"><b><i class = "fa fa-video"></i>&nbsp;&nbsp;Evidencias</b></h4>
 					<div id = "divEvidencias">
 						
 					</div>					

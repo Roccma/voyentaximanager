@@ -46,6 +46,10 @@ app.get('/css/app.css', (req, res) => {
 	res.sendFile(`${cssDir}/app.css`);
 });
 
+app.get('/css/app-responsive.css', (req, res) => {
+	res.sendFile(`${cssDir}/app-responsive.css`);
+});
+
 app.get('/css/dashboard.css', (req, res) => {
 	res.sendFile(`${cssDir}/dashboard.css`);
 });
