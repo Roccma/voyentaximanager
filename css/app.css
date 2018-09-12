@@ -676,13 +676,8 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 }
 
 .col2Datos{
-  width: 23%;
+  width: 29%;
   background: #FBFBFB;
-}
-
-.col3Datos{
-  width: 25%;
-  background: #F5F5F5; 
 }
 
 .col4Datos{

@@ -277,20 +277,20 @@ function verLlamada(id){
 
 		document.getElementById('tablaDatosLlamada1024').innerHTML = 
 			"<tr>" + 
-				"<td class = 'col1Datos'><b>Inicio</b></td>" + 
-				"<td class = 'col2Datos'>" + fechai + " " + horai + "</td>" + 
+				"<td class = 'col1Datos1024'><b>Inicio</b></td>" + 
+				"<td class = 'col2Datos1024'>" + fechai + " " + horai + "</td>" + 
 			"</tr>" + 
 			"<tr>" +
-				"<td class = 'col1Datos'><b>Última vez</b></td>" + 
-				"<td class = 'col2Datos'>" + fechaf + " " + horaf + "</td>" +
+				"<td class = 'col1Datos1024'><b>Última vez</b></td>" + 
+				"<td class = 'col2Datos1024'>" + fechaf + " " + horaf + "</td>" +
 			"</tr>" + 
 			"<tr>" +
-				"<td class = 'col1Datos'><b>Duración</b></td>" +
-				"<td class = 'col2Datos'>" + response['duracion'] + "</td>" +
+				"<td class = 'col1Datos1024'><b>Duración</b></td>" +
+				"<td class = 'col2Datos1024'>" + response['duracion'] + "</td>" +
 			"</tr>" + 
 			"<tr>" +
-				"<td class = 'col1Datos'><b>Distancia recorrida</b></td>" +
-				"<td class = 'col2Datos'>" + dist + " Km</td>" +
+				"<td class = 'col1Datos1024'><b>Distancia recorrida</b></td>" +
+				"<td class = 'col2Datos1024'>" + dist + " Km</td>" +
 			"</tr>";				
 
 		markerGroup.clearLayers();
