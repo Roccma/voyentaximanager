@@ -3,6 +3,7 @@
 <head>
 	<title>Voy en Taxi</title>
 	<link rel = "stylesheet" href = "../css/app.css"/>
+	<link rel = "stylesheet" href = "../css/app-responsive.css"/>
 	<link href="../css/bootstrap.min.css" rel="stylesheet">	
     <link href="../css/dashboard.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
@@ -13,7 +14,7 @@
 	<nav class = "menu">
 	  <div class="container-fluid menucontainer">
 	    <div class="navbar-header" style = "margin-top: 5px">
-	      <img height="55" src="/img/Logo.png">
+	      <img src="/img/Logo.png" class = "imgVET">
 	    </div>
 
 		<div class = "opcionesMenu">
@@ -40,14 +41,14 @@
 	  </div>
 	</nav>
 	<div class = "main">
-		<div class="contenedorCoordenadas" style="width: 1110px; margin: 0 auto; margin-top: 55px;">
+		<div class="contenedorCoordenadas">
 			<div class="tituloContenedorCoordenadas"><i class="fa fa-globe"></i> Coordenadas</div>
 			<div style = "padding: 15px">
-				Las coordenadas en las que se encuentra el taxi que ha presionado la alarma es latitud: &nbsp;<input type="text" class="form-control" id="lat" style = "width: 125px; display: inline; text-align: center;"> &nbsp;y longitud: &nbsp;<input type="text" class="form-control" id="lng" style = "width: 125px; display: inline; text-align: center;"><button class="btn btn-success" style = "float: right; width: 145px; text-align: center;position: relative; right: 0" onclick="setlocation();">Buscar</button><br>
+				Las coordenadas en las que se encuentra el taxi que ha presionado la alarma son latitud: &nbsp;<input type="text" class="form-control" id="lat"> &nbsp;y longitud: &nbsp;<input type="text" class="form-control" id="lng"><button class="btn btn-success" id = "btnBuscarUbicacion" onclick="setlocation();">Buscar</button><br>
 			</div>
 		</div>
 
-		<div class="contenedorUbicacionMapa" style = "width: 1110px; position: relative; margin: 0 auto; top: 35px; height: 75%">
+		<div class="contenedorUbicacionMapa">
 			<div class="tituloContenedorUbicacionMapa"><i class="fa fa-map-marker-alt"></i> Ubicación</div>
 			<div id="map"></div>
 		</div>
@@ -84,7 +85,7 @@
 			<div class = "modal-content">
 				<div class = "modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<img src = "../img/logo_miniatura.png" class = "imgTokbox"/>
+					<img src = "../img/logo_miniatura.png" class = "imgTokbox imgServidores"/>
           			<h4 class="modal-title">Servidores</h4>
 				</div>
 				<div class = "modal-body">

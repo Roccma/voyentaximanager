@@ -508,12 +508,20 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
     z-index: 100;
     border: 3px solid #FFE448;
     border-radius: 3px;
+    width: 1110px; 
+    margin: 0 auto; 
+    margin-top: 55px;
 }
 
 .contenedorUbicacionMapa{
     z-index: 100;
     border: 3px solid #FFE448;
     border-radius: 3px;
+    width: 1110px; 
+    position: relative; 
+    margin: 0 auto; 
+    top: 35px; 
+    height: 75%;
 }
 
 .contenedorEstPorAnio{
@@ -671,7 +679,7 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 }
 
 .col1Datos, .col3Datos{
-  width: 25%;
+  width: 27%;
   background: #F5F5F5; 
 }
 
@@ -788,4 +796,24 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
 
 #tablaDatosLlamada1024{
   display: none;
+}
+
+#lat{
+  width: 125px; 
+  display: inline; 
+  text-align: center;
+}
+
+#lng{
+  width: 125px; 
+  display: inline; 
+  text-align: center;
+}
+
+#btnBuscarUbicacion{
+  float: right; 
+  width: 145px; 
+  text-align: center;
+  position: relative; 
+  right: 0;
 }
