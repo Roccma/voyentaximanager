@@ -77,6 +77,26 @@ app.get('/css/images/markers-soft.png', (req, res) => {
 app.get('/css/images/markers-shadow.png', (req, res) => {
 	res.sendFile(`${cssDir}/images/markers-shadow.png`);
 });
+
+app.get('/css/images/markers-matte.png', (req, res) => {
+	res.sendFile(`${cssDir}/images/markers-matte.png`);
+});
+
+app.get('/css/images/markers-matte@2x.png', (req, res) => {
+	res.sendFile(`${cssDir}/images/markers-matte@2x.png`);
+});
+
+app.get('/css/images/markers-shadow@2x.png', (req, res) => {
+	res.sendFile(`${cssDir}/images/markers-shadow@2x.png`);
+});
+
+app.get('/css/images/markers-soft@2x.png', (req, res) => {
+	res.sendFile(`${cssDir}/images/markers-soft@2x.png`);
+});
+
+app.get('/css/images/markers-plain.png', (req, res) => {
+	res.sendFile(`${cssDir}/images/markers-plain.png`);
+});
 //bootstrap.min.css
 
 app.get('/js/streaming.js', (req, res) => {

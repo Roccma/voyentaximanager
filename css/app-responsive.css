@@ -42,7 +42,7 @@
 	  font-size: 24px;
 	  color: transparent;
 	  -webkit-text-stroke: 2px black;
-	  margin-top: 15px;
+	  margin-top: 12.5px;
 	}
 
 	.divIcono span{
@@ -51,6 +51,15 @@
 	  font-weight: bold;
 	  left: 5px;
 	}
+
+	.opcionesMenu{
+	  /*border: 1px solid black;*/
+	  display: inline-block;
+	  float: right;
+	  width: 80.5%;
+	  margin-top:4px;
+	}
+
 
 	.footer{
 	  background: #FFE448;
@@ -92,7 +101,7 @@
 	}
 
 	#DataTables_Table_0_wrapper{
-	  margin-bottom: 15px !important;
+	  margin-bottom: 7px !important;
 	}
 
 	#modalVerLlamadaFinalizada > .modal-dialog{
@@ -151,6 +160,7 @@
 	}
 
 	.dialog-finalizar-llamada{
+		margin-top: 15px !important;
 		margin-bottom: 0 !important;
 	}
 
