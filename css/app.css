@@ -510,7 +510,7 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
     border-radius: 3px;
     width: 1110px; 
     margin: 0 auto; 
-    margin-top: 55px;
+    margin-top: 35px;
 }
 
 .contenedorUbicacionMapa{
@@ -524,12 +524,31 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
     height: 75%;
 }
 
+.contenedorDatosEstadisticos{
+    z-index: 100;
+    border: 3px solid #FFE448;
+    border-radius: 3px;
+    width: 100%;
+    position: relative;
+    top: 35px;
+    height: 85px;
+    margin-bottom: 40px;
+}
+
+.tituloContenedorDatosEstadisticos{
+  background: #FFE448;
+  text-align: center;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 .contenedorEstPorAnio{
     z-index: 100;
     border: 3px solid #FFE448;
     border-radius: 3px;
     width: 49%;
-    height: 325px;
+    /*height: 325px;*/
     position: relative;
     top: 25px;
     display: inline-block;
@@ -540,7 +559,7 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
     border: 3px solid #FFE448;
     border-radius: 3px;
     width: 49%;
-    height: 325px;
+    /*height: 325px;*/
     position: relative;
     top: 25px;
     display: inline-block;
@@ -552,9 +571,10 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
     border: 3px solid #FFE448;
     border-radius: 3px;
     width: 100%;
-    height: 455px;
+    /*height: 605px;*/
     position: relative;
     margin-top: 55px;
+    margin-bottom: 55px;
 }
 
 .tituloContenedorUbicacionMapa{
@@ -597,10 +617,24 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   font-weight: bold;
 }
 
+.tdEstadistica{
+  text-align: center;
+  width: 366px;
+}
+
+.spanDato{
+  font-weight: bold;
+  font-size: 18px;
+}
+
+#chartmeses{
+  margin-left: 15px;
+}
+
 #charthora{
-  height: 375px !important;
+ /* height: 375px !important;
   width: 950px !important;
-  margin: 0 auto;
+  margin: 0 auto;*/
 }
 
 #tablaDatos{

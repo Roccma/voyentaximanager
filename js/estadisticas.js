@@ -207,12 +207,18 @@ $(document).on('ready', function(){
 		dataType : 'json'
 	})
 	.done(function(data){
+		console.log(data);
+		$('#tablaEstadisticas').html("<tr>" + 
+										"<td class = 'tdEstadistica'>Cantidad total de llamadas: <span class = 'spanDato'>" + data['cantidad'] + "</span></td>" + 
+										"<td class = 'tdEstadistica'>Promedio de llamadas por día: <span class = 'spanDato'>" + data['promedioPorDia'] + " llamadas</span></td>" + 
+										"<td class = 'tdEstadistica'>Duración promedio de llamada: <span class = 'spanDato'>" + data['promedioDuracion'] + "</span></td>" + 
+									"</tr>");
 		for (var key in data.anios) {
 			if (data.anios.hasOwnProperty(key)) {
 				array1.push(key);
 				array2.push(data.anios[key]);
 				array3.push('rgba(255, 228, 72, 0.5)');
-				array4.push('rgba(255, 228, 72, 1)');
+				array4.push('rgba(255, 228, 72, 1)');				
 			}
 		}
 		
