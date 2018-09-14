@@ -87,6 +87,13 @@ else{
 	socket.emit("listen_location", sessionId);
 }
 
+var latitud1, longitud1, latitud2, longitud2;
+
+latitud1 = latitud;
+longitud1 = longitud;
+latitud2 = latitud;
+longitud2 = longitud;
+
 var map = L.map('map').setView([latitud, longitud], 16);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 	maxZoom: 18}).addTo(map);
@@ -141,6 +148,24 @@ socket.on('location', function(data){
 		map.setView([data["latitud"], data["longitud"]], 16);
 		latitud = data["latitud"];
 		longitud = data["longitud"];
+
+		latitud1 = latitud2;
+		longitud1 = longitud2;
+
+		latitud2 = latitud;
+		longitud2 = longitud;
+
+		var pointA = new L.LatLng(latitud1, longitud1);
+		var pointB = new L.LatLng(latitud2, longitud2;
+		var pointList = [pointA, pointB];
+
+		var firstpolyline = new L.Polyline(pointList, {
+		    color: 'red',
+		    weight: 2,
+		    opacity: 1,
+		    smoothFactor: 1
+		});
+		firstpolyline.addTo(map);
 
 		let fechaHora = data['fechaHora'];
 		let fhSplit = fechaHora.split(" ");
