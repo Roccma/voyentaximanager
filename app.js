@@ -243,6 +243,21 @@ io.on('connection', (socket) => {
 		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
 
+	socket.on('update_polyline', (id, polyline) => {
+		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline;
+		console.log(url);
+		request.get(url,(error,res,body) => {
+			if(error)
+				console.log(error);
+			/*var js = JSON.parse(body);
+			console.log(js);		
+			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
+		});
+		
+		//io.emit('finish_help_from_app', {sessionId : sessionId});
+	});
+
+
 	socket.on('finish_help', (sessionId, id) => {
 		console.log("finish_help " + id);
 		let index = locations.indexOf(sessionId);		
