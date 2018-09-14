@@ -156,7 +156,7 @@ socket.on('location', function(data){
 		longitud2 = longitud;
 
 		var pointA = new L.LatLng(latitud1, longitud1);
-		var pointB = new L.LatLng(latitud2, longitud2;
+		var pointB = new L.LatLng(latitud2, longitud2);
 		var pointList = [pointA, pointB];
 
 		var firstpolyline = new L.Polyline(pointList, {
