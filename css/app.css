@@ -727,6 +727,16 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   background: #FBFBFB;
 }
 
+/*.col2Datos{
+  width: 20%;
+  background: #FBFBFB;
+}
+
+.col4Datos{
+  width: 30%;
+  background: #FBFBFB;
+}*/
+
 .col1Datos1024, .col5Datos1024{
   width: 16.5%;
   background: #F5F5F5; 
@@ -850,4 +860,25 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   text-align: center;
   position: relative; 
   right: 0;
+}
+
+#imgCargando{
+  width: 20%; 
+  margin-left: 41%; 
+  margin-top: 25%;
+}
+
+#imgDisconnected{
+  position: relative; 
+  left: 39%; 
+  margin-top: 8%; 
+  display: none;
+}
+
+#imgReconnecting{
+   position: relative; 
+   left: 40%; 
+   margin-top: 8%; 
+   width: 20%; 
+   display: none;
 }

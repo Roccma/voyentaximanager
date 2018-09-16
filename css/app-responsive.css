@@ -233,6 +233,90 @@
 	  width: 320px;
 	}
 
+	.contenedorSubscriber{
+	  position: absolute;
+	  left: 0;
+	  top: -10px;
+	  width: 59% !important;
+	  height:  59% !important;
+	  z-index: 10;
+	  border: 3px solid #FFE448;
+	  border-radius: 5px;
+	}
+
+	.OT_subscriber{
+	  width: 100% !important;  
+	  border-radius: 0 0 3px 3px ;
+	  position: absolute !important;
+	  top: 30px !important;
+	  height: calc(100% - 30px) !important;
+	}
+
+	.contenedorPublisher{
+	    position: absolute;
+	    width: 245px;
+	    height: 175px;
+	    bottom: 55px;
+	    z-index: 100;
+	    border: 3px solid #FFE448;
+	    border-radius: 3px;
+	}
+
+	.contenedorBotones{
+	  position: absolute;
+	  height: 200px;
+	  width: 277px;
+	  bottom: 45px;
+	  left: 240px;
+	}
+
+	.contenedorDatos{
+	    position: absolute;
+	    width: calc(100% - 530px);
+	    height: 175px;
+	    bottom: 55px;
+	    z-index: 100;
+	    border: 3px solid #FFE448;
+	    border-radius: 3px;
+	    right: 0;
+	}
+
+	.contenedorMapa{
+	    width: 39%;
+	    height: 59%;
+	    position: absolute;
+	    right: 0;
+	    top: -10px;
+	    border: 3px solid #FFE448;
+	    border-radius: 5px;
+	}
+
+
+	#imgCargando{
+	  width: 20%; 
+	  margin-left: 41%; 
+	  margin-top: 22%;
+	}
+
+	#imgReconnecting{
+	   position: relative; 
+	   left: 40%; 
+	   margin-top: 3%; 
+	   width: 20%; 
+	   display: none;
+	}
+
+	#imgDisconnected{
+	  position: relative; 
+	  left: 35%; 
+	  margin-top: 3%; 
+	  display: none;
+	}
+
+	#divDesconnectedText{
+		margin-top: -20px;
+	}
+
 	/*.contenedorEstPorAnio{
 		z-index: 100;
 	    border: 3px solid #FFE448;

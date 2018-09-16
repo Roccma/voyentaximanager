@@ -3,6 +3,7 @@
 <head>
 	<title>Voy en Taxi</title>
 	<link rel = "stylesheet" href = "../css/app.css"/>
+	<link rel = "stylesheet" href = "../css/app-responsive.css"/>
 	<script src = "https://static.opentok.com/v2/js/opentok.min.js"></script>
 	<link href="../css/bootstrap.css" rel="stylesheet">
 
@@ -16,7 +17,7 @@
 	<nav class = "menu">
 	  <div class="container-fluid menucontainer">
 	    <div class="navbar-header" style = "margin-top: 5px">
-	      <img height="55" src="/img/Logo.png">
+	      <img src="/img/Logo.png" class = "imgVET">
 	    </div>
 
 		<div class = "opcionesMenu">
@@ -49,9 +50,9 @@
 					<div class = "tituloContenedorSubscriber"><i class = "fa fa-video"></i> Videollamada</div>
 					<div id = "subscriber">
 						<div id = "contenedorInformacionSubscriber">
-							<img src = "/img/spinner.gif" id = "imgCargando" style = "width: 20%; margin-left: 41%; margin-top: 25%;"/>
-							<img src = "/img/lost_connection.gif" id = "imgDisconnected" style = "position: relative; left: 39%; margin-top: 8%; display: none" />
-							<img src = "/img/reconnecting.gif" id = "imgReconnecting" style = "position: relative; left: 40%; margin-top: 8%; width: 20%; display: none;"/>
+							<img src = "/img/spinner.gif" id = "imgCargando"/>
+							<img src = "/img/lost_connection.gif" id = "imgDisconnected" />
+							<img src = "/img/reconnecting.gif" id = "imgReconnecting"/>
 							<div id = "divReconnectingText" style = "display: none;">
 								<br><br>
 								<span style = "font-size: 24px; display: block; text-align: center; font-weight: bold; color: #EBC309">Conexión interrumpida</span>
