@@ -167,7 +167,7 @@
 					<center>La llamada se encuentra desconectada actualmente ¿Desea finalizarla de todos modos?</center>
 				</div>
 				<div class = "modal-footer">
-					<button type = "button" id = "btnAceptarConfirmacion" class = "btn btn-danger">Aceptar</button>
+					<button type = "button" id = "btnAceptarConfirmacion2" class = "btn btn-danger">Aceptar</button>
 					<button type = "button" data-dismiss="modal" class = "btn btn-default">Cancelar</button>					
 				</div>
 			</div>
@@ -459,6 +459,42 @@
 			let sessionId = $('#hiddenSessionId').val();
 			let id = $('#hiddenId').val();
 			$('#modalConfirmacion').modal('hide');
+			$('#modalFinalizandoLlamada').modal('show');
+			socket.emit("listen_location", sessionId);
+
+			socket.on('location', function(data){
+				if(data['sessionid'] == sessionId){
+					lat = data['latitud'];
+					lon = data['longitud'];
+
+					console.log("latitud: " + lat + " - longitud: " + lon);
+				}
+			});
+
+
+			window.setTimeout(function(){
+
+				$('#modalFinalizandoLlamada').modal('hide');
+				$.ajax({
+				   	url : "https://voyentaxiws.herokuapp.com/usuarios.php/FinLlamada?callid="+id+"&url=&date=&latitud=" + lat + "&longitud=" + lon,
+				   	type : 'GET',
+				   	dataType : 'json',
+				   	async : false
+				})
+				.done(function (response) {
+
+				  	socket.emit('finish_help', sessionId, id);
+				});
+			}, 5000);
+			
+		});	
+
+		$('#btnAceptarConfirmacion2').on('click', function(){
+			let lat = "";
+			let lon = "";
+			let sessionId = $('#hiddenSessionId').val();
+			let id = $('#hiddenId').val();
+			$('#modalNoFinalizar').modal('hide');
 			$('#modalFinalizandoLlamada').modal('show');
 			socket.emit("listen_location", sessionId);
 
