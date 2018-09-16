@@ -276,16 +276,16 @@ function verLlamada(id){
 
 		document.getElementById('tablaDatosLlamada').innerHTML = 
 			"<tr>" + 
-				"<td class = 'col1Datos'><b>Inicio</b></td>" + 
-				"<td class = 'col2Datos'>" + fechai + " " + horai + "</td>" + 
-				"<td class = 'col3Datos'><b>Última vez</b></td>" + 
-				"<td class = 'col4Datos'>" + fechaf + " " + horaf + "</td>" +
+				"<td class = 'col5Datos'><b>Inicio</b></td>" + 
+				"<td class = 'col6Datos'>" + fechai + " " + horai + "</td>" + 
+				"<td class = 'col7Datos'><b>Última vez</b></td>" + 
+				"<td class = 'col8Datos'>" + fechaf + " " + horaf + "</td>" +
 			"</tr>" + 
 			"<tr>" +
-				"<td class = 'col1Datos'><b>Duración</b></td>" +
-				"<td class = 'col2Datos'>" + response['duracion'] + "</td>" +
-				"<td class = 'col3Datos'><b>Distancia recorrida</b></td>" +
-				"<td class = 'col4Datos'>" + dist + " Km</td>" +
+				"<td class = 'col5Datos'><b>Duración</b></td>" +
+				"<td class = 'col6Datos'>" + response['duracion'] + "</td>" +
+				"<td class = 'col7Datos'><b>Distancia recorrida</b></td>" +
+				"<td class = 'col8Datos'>" + dist + " Km</td>" +
 			"</tr>";
 
 		document.getElementById('tablaDatosLlamada1024').innerHTML = 

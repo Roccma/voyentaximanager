@@ -712,18 +712,18 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   padding: 10px 5px;
 }
 
-.col1Datos, .col3Datos{
-  width: 27%;
+.col1Datos, .col3Datos, .col5Datos, .col7Datos{
+  width: 150px;
   background: #F5F5F5; 
 }
 
-.col2Datos{
-  width: 29%;
+.col2Datos, .col6Datos,{
+  width: 168px;
   background: #FBFBFB;
 }
 
-.col4Datos{
-  width: 27%;
+.col4Datos, .col8Datos,{
+  width: 201.2px;
   background: #FBFBFB;
 }
 
