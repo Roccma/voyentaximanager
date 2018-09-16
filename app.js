@@ -139,6 +139,10 @@ app.get('/js/estadisticas.js', (req, res) => {
 	res.sendFile(`${jsDir}/estadisticas.js`);
 });
 
+app.get('/js/Polyline.encoded.js', (req, res) => {
+	res.sendFile(`${jsDir}/Polyline.encoded.js`);
+});
+
 app.get('/img/Logo.png', (req, res) => {
 	res.sendFile(`${imgDir}/Logo.png`);
 });

@@ -183,10 +183,11 @@ function createDataTable(){
 			{"bSortable": true},
 			{"bSortable": true},
 			{"bSortable": true},
-			{"sType": "date"},					
+			{"bSortable": true},					
 			{"bSortable": true},
 			{"bSortable": false}],
-			"order": [[ 3, "desc" ]]
+		"order" : [ [3, "desc"], [4, "desc"] ],
+		"columnDefs" : [{"targets" : 3, "type" : "date-eu", "order-data" : [3, 4]}],
 	});
 }
 
@@ -201,6 +202,18 @@ function verLlamada(id){
 	})
 	.done(function(response){
 		console.log(response);
+		
+		markerGroup.clearLayers();
+
+		if(response['polyline'] != null){
+			var polygon = L.Polyline.fromEncoded(response['polyline'], {
+	            color: 'red',
+			    weight: 2,
+			    opacity: 1,
+			    smoothFactor: 1
+	        }).addTo(markerGroup);
+		}
+		
 		document.getElementById('tablaDatosTaxista').innerHTML = 
 			"<tr>" + 
 				"<td class = 'col1Datos'><b>Nombre</b></td>" + 
@@ -291,9 +304,7 @@ function verLlamada(id){
 			"<tr>" +
 				"<td class = 'col1Datos1024'><b>Distancia recorrida</b></td>" +
 				"<td class = 'col2Datos1024'>" + dist + " Km</td>" +
-			"</tr>";				
-
-		markerGroup.clearLayers();
+			"</tr>";	
 
 		L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
 
