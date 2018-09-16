@@ -514,13 +514,12 @@
 
 				$('#modalFinalizandoLlamada').modal('hide');
 				$.ajax({
-				   	url : "https://voyentaxiws.herokuapp.com/usuarios.php/FinLlamada?callid="+id+"&url=&date=&latitud=" + lat + "&longitud=" + lon,
+				   	url : "https://voyentaxiws.herokuapp.com/usuarios.php/FinLlamadaDesconectada?callid="+id,
 				   	type : 'GET',
 				   	dataType : 'json',
 				   	async : false
 				})
 				.done(function (response) {
-
 				  	socket.emit('finish_help', sessionId, id);
 				});
 			}, 5000);
