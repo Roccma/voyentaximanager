@@ -137,8 +137,7 @@
 				<div class = "modal-footer">
 					<button type = "button" id = "btnAceptarConfirmacion" class = "btn btn-danger">Aceptar</button>
 					<button type = "button" data-dismiss="modal" class = "btn btn-default">Cancelar</button>
-					<input type = "hidden" id = "hiddenSessionId"/>
-					<input type = "hidden" id = "hiddenId"/>
+					
 				</div>
 			</div>
 		</div>
@@ -162,14 +161,21 @@
 			<div class = "modal-content">
 				<div class = "modal-header" style = "background: #F60700; color: white;">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-          			<center><h4 class="modal-title"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Error</h4></center>
+          			<center><h4 class="modal-title"><i class='fa fa-phone-slash'></i>&nbsp;&nbsp;Llamada desconectada</h4></center>
 				</div>
 				<div class = "modal-body">
-					<center>La llamada se encuentra desconectada, por lo que no es posible realizar esta acción</center>
+					<center>La llamada se encuentra desconectada actualmente ¿Desea finalizarla de todos modos?</center>
+				</div>
+				<div class = "modal-footer">
+					<button type = "button" id = "btnAceptarConfirmacion" class = "btn btn-danger">Aceptar</button>
+					<button type = "button" data-dismiss="modal" class = "btn btn-default">Cancelar</button>					
 				</div>
 			</div>
 		</div>
 	</div>
+	<input type = "hidden" id = "hiddenSessionId"/>
+	<input type = "hidden" id = "hiddenId"/>
+
 	<link rel = "stylesheet" href = "../css/leaflet.awesome-markers.css"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">  
