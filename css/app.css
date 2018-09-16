@@ -717,12 +717,12 @@ select[name='DataTables_Table_0_length'], #DataTables_Table_0_filter label input
   background: #F5F5F5; 
 }
 
-.col2Datos, .col6Datos,{
+.col2Datos, .col6Datos{
   width: 168px;
   background: #FBFBFB;
 }
 
-.col4Datos, .col8Datos,{
+.col4Datos, .col8Datos{
   width: 201.2px;
   background: #FBFBFB;
 }
