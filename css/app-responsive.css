@@ -267,12 +267,12 @@
 	  height: 200px;
 	  width: 277px;
 	  bottom: 35px;
-	  left: 240px;
+	  left: 225px;
 	}
 
 	.contenedorDatos{
 	    position: absolute;
-	    width: calc(100% - 510px);
+	    width: calc(100% - 495px);
 	    height: 165px;
 	    bottom: 55px;
 	    z-index: 100;
