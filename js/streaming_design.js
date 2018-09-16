@@ -22,7 +22,7 @@ $(document).on('ready', function(){
 		document.getElementById('tablaDatos').innerHTML = 
 			"<tr>" +
 				"<td><b>Nombre:</b><br> " + response['nombre'] + "</td>" +
-				"<td><b>Cédula de Identidad:</b><br> " + response['cedula'] + "</td>" +						
+				"<td><b>Cédula de Identidad:</b><br> " + response['cedula'].toString().substring(0, 7) + "-" + response['cedula'].toString().substring(7) + "</td>" +						
 				"<td><b>Celular:</b><br> " + response['telefono'] + "</td>" +
 			"</tr>" +
 			"<tr>" +

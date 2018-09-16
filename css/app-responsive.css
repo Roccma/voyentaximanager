@@ -238,7 +238,7 @@
 	  left: 0;
 	  top: -10px;
 	  width: 59% !important;
-	  height:  59% !important;
+	  height:  61% !important;
 	  z-index: 10;
 	  border: 3px solid #FFE448;
 	  border-radius: 5px;
@@ -254,8 +254,8 @@
 
 	.contenedorPublisher{
 	    position: absolute;
-	    width: 245px;
-	    height: 175px;
+	    width: 235px;
+	    height: 165px;
 	    bottom: 55px;
 	    z-index: 100;
 	    border: 3px solid #FFE448;
@@ -266,14 +266,14 @@
 	  position: absolute;
 	  height: 200px;
 	  width: 277px;
-	  bottom: 45px;
+	  bottom: 35px;
 	  left: 240px;
 	}
 
 	.contenedorDatos{
 	    position: absolute;
-	    width: calc(100% - 530px);
-	    height: 175px;
+	    width: calc(100% - 510px);
+	    height: 165px;
 	    bottom: 55px;
 	    z-index: 100;
 	    border: 3px solid #FFE448;
@@ -283,7 +283,7 @@
 
 	.contenedorMapa{
 	    width: 39%;
-	    height: 59%;
+	    height: 61%;
 	    position: absolute;
 	    right: 0;
 	    top: -10px;
@@ -315,6 +315,12 @@
 
 	#divDesconnectedText{
 		margin-top: -20px;
+	}
+
+	#tablaDatos{
+	  width: 100%;
+	  margin-top: -7px;
+	  margin-left: 0px;
 	}
 
 	/*.contenedorEstPorAnio{
