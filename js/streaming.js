@@ -145,7 +145,7 @@ socket.on('location', function(data){
 		markerLocation.setIcon(locationMarker);
 		markerLocation.addTo(map);
 
-		map.setView([data["latitud"], data["longitud"]], 16);
+		map.setView([data["latitud"], data["longitud"]], map.getZoom());
 		latitud = data["latitud"];
 		longitud = data["longitud"];
 
