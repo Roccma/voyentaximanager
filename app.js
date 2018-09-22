@@ -255,8 +255,9 @@ io.on('connection', (socket) => {
 		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
 
-	socket.on('update_polyline', (id, polyline) => {
+	socket.on('update_polyline', (id, p) => {
 		let index = callPolylines.indexOf(id);
+		console.log(index + " " + polylines[index].length);
 		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline.encode(polylines[index]);
 		console.log(url);
 		request.get(url,(error,res,body) => {
@@ -283,6 +284,7 @@ io.on('connection', (socket) => {
 
 	socket.on('location', (sessionId, latitud, longitud, fechaHora, id) => {
 		io.emit('location', {sessionid : sessionId, latitud : latitud, longitud : longitud, fechaHora : fechaHora, id : id});
+		console.log("Cantidad: " + callPolylines.length);
 		if(callPolylines.indexOf(id) == -1){
 			var num = polylines.length;
 			callPolylines[num] = id;
