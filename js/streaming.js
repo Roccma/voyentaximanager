@@ -83,9 +83,9 @@ else if(desconectada){
 		//$('#modalDesconexion').modal('show');
 	}
 }
-else{
+/*else{
 	socket.emit("listen_location", sessionId);
-}
+}*/
 
 var latitud1, longitud1, latitud2, longitud2;
 

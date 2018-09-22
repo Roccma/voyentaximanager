@@ -221,6 +221,7 @@ io.on('connection', (socket) => {
 			polylines[num] = [];
 			polylines[num].push([latitud, longitud]);	
 			io.emit('help', {sessionid : sessionId, token : token, cedula : cedula, name : name, email : email, telephone : telephone, latitud : latitud, longitud : longitud, fechaHora : fechaHora, cantidad_desconexiones : cantidad_desconexiones, id : id, url : url});
+			io.emit('listen_location', {send : 'ok', sessionId : sessionId});
 		});	
 	});
 
