@@ -216,10 +216,10 @@ io.on('connection', (socket) => {
 			var js = JSON.parse(body);
 			console.log(js);
 			let id = js.id;	
-			var num = polylines.length;
+			/*var num = polylines.length;
 			callPolylines[num] = id;
 			polylines[num] = [];
-			polylines[num].push([latitud, longitud]);	
+			polylines[num].push([latitud, longitud]);	*/
 			io.emit('help', {sessionid : sessionId, token : token, cedula : cedula, name : name, email : email, telephone : telephone, latitud : latitud, longitud : longitud, fechaHora : fechaHora, cantidad_desconexiones : cantidad_desconexiones, id : id, url : url});
 			//io.emit('listen_location', {send : 'ok', sessionId : sessionId});
 		});	
@@ -259,6 +259,7 @@ io.on('connection', (socket) => {
 	socket.on('update_polyline', (id, polyline) => {
 		/*let index = callPolylines.indexOf(id);
 		console.log(index + " " + polylines[index].length);*/
+		console.log(polyline);
 		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline;
 		console.log(url);
 		request.get(url,(error,res,body) => {
@@ -285,7 +286,7 @@ io.on('connection', (socket) => {
 
 	socket.on('location', (sessionId, latitud, longitud, fechaHora, id) => {
 		io.emit('location', {sessionid : sessionId, latitud : latitud, longitud : longitud, fechaHora : fechaHora, id : id});
-		console.log("Cantidad: " + callPolylines.length);
+		//console.log("Cantidad: " + callPolylines.length);
 		/*if(callPolylines.indexOf(id) == -1){
 			var num = polylines.length;
 			callPolylines[num] = id;
