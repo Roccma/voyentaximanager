@@ -4,6 +4,8 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+const polyline = require('polyline');
+
 const port = process.env.PORT || 3000;
 
 var fork = require("child_process").fork; 
@@ -184,6 +186,8 @@ app.get('/audio/voyentaxi_nueva_llamada.mp3', (req, res) => {
 });
 
 let locations = [];
+let callPolylines = [];
+let polylines = [];
 
 io.on('connection', (socket) => {
 	console.log("Nuevo usuario conectado: " + socket.id);
@@ -211,7 +215,11 @@ io.on('connection', (socket) => {
 				console.log(error);
 			var js = JSON.parse(body);
 			console.log(js);
-			let id = js.id;		
+			let id = js.id;	
+			var num = polylines.length;
+			callPolylines[num] = id;
+			polylines[num] = [];
+			polylines[num].push([latitud, longitud]);	
 			io.emit('help', {sessionid : sessionId, token : token, cedula : cedula, name : name, email : email, telephone : telephone, latitud : latitud, longitud : longitud, fechaHora : fechaHora, cantidad_desconexiones : cantidad_desconexiones, id : id, url : url});
 		});	
 	});
@@ -248,7 +256,8 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('update_polyline', (id, polyline) => {
-		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline;
+		let index = callPolylines.indexOf(id);
+		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline.encode(polylines.index);
 		console.log(url);
 		request.get(url,(error,res,body) => {
 			if(error)
@@ -257,6 +266,8 @@ io.on('connection', (socket) => {
 			console.log(js);		
 			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
 		});
+		callPolylines.splice(index, index);
+		polylines.splice(index, index);
 		
 		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
@@ -272,6 +283,16 @@ io.on('connection', (socket) => {
 
 	socket.on('location', (sessionId, latitud, longitud, fechaHora, id) => {
 		io.emit('location', {sessionid : sessionId, latitud : latitud, longitud : longitud, fechaHora : fechaHora, id : id});
+		if(callPolylines.indexOf(id) == -1){
+			var num = polylines.length;
+			callPolylines[num] = id;
+			polylines[num] = [];
+			polylines[num].push([latitud, longitud]);
+		}
+		else{
+			let index = callPolylines.indexOf(id);
+			polylines[index].push([latitud, longitud]);
+		}
 	});
 
 	socket.on('listen_location', (sessionId) => {
