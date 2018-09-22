@@ -257,7 +257,7 @@ io.on('connection', (socket) => {
 
 	socket.on('update_polyline', (id, polyline) => {
 		let index = callPolylines.indexOf(id);
-		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline.encode(polylines.index);
+		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline.encode(polylines[index]);
 		console.log(url);
 		request.get(url,(error,res,body) => {
 			if(error)
