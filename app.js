@@ -4,7 +4,7 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-const polyline = require('polyline');
+//const polyline = require('polyline');
 
 const port = process.env.PORT || 3000;
 
@@ -186,8 +186,8 @@ app.get('/audio/voyentaxi_nueva_llamada.mp3', (req, res) => {
 });
 
 let locations = [];
-let callPolylines = [];
-let polylines = [];
+/*let callPolylines = [];
+let polylines = [];*/
 
 io.on('connection', (socket) => {
 	console.log("Nuevo usuario conectado: " + socket.id);
@@ -256,10 +256,10 @@ io.on('connection', (socket) => {
 		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
 
-	socket.on('update_polyline', (id, p) => {
+	socket.on('update_polyline', (id, polyline) => {
 		/*let index = callPolylines.indexOf(id);
 		console.log(index + " " + polylines[index].length);*/
-		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ p;
+		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline;
 		console.log(url);
 		request.get(url,(error,res,body) => {
 			if(error)
@@ -268,8 +268,8 @@ io.on('connection', (socket) => {
 			console.log(js);		
 			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
 		});
-		callPolylines.splice(index, index);
-		polylines.splice(index, index);
+		/*callPolylines.splice(index, index);
+		polylines.splice(index, index);*/
 		
 		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
@@ -277,16 +277,16 @@ io.on('connection', (socket) => {
 
 	socket.on('finish_help', (sessionId, id) => {
 		console.log("finish_help " + id);
-		let index = locations.indexOf(sessionId);		
+		/*let index = locations.indexOf(sessionId);		
 		locations.splice(index, index);
-		console.log(locations);
+		console.log(locations);*/
 		io.emit('finish_help', {sessionid : sessionId, id : id});
 	});
 
 	socket.on('location', (sessionId, latitud, longitud, fechaHora, id) => {
 		io.emit('location', {sessionid : sessionId, latitud : latitud, longitud : longitud, fechaHora : fechaHora, id : id});
 		console.log("Cantidad: " + callPolylines.length);
-		if(callPolylines.indexOf(id) == -1){
+		/*if(callPolylines.indexOf(id) == -1){
 			var num = polylines.length;
 			callPolylines[num] = id;
 			polylines[num] = [];
@@ -295,13 +295,13 @@ io.on('connection', (socket) => {
 		else{
 			let index = callPolylines.indexOf(id);
 			polylines[index].push([latitud, longitud]);
-		}
+		}*/
 	});
 
 	socket.on('listen_location', (sessionId) => {
 		console.log("listen_location");
 		if(locations.indexOf(sessionId) == -1){
-			locations[locations.length] = sessionId;
+			//locations[locations.length] = sessionId;
 			io.emit('listen_location', {send : 'ok', sessionId : sessionId});
 		}
 	});
