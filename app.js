@@ -257,18 +257,29 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('update_polyline', (id, p) => {
-		let index = callPolylines.indexOf(id);
-		console.log(index + " " + polylines[index].length);
-		console.log(polyline);
-		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline.encode(polylines[index]);
-		console.log(url);
+		var url = "https://voyentaxiws.herokuapp.com/usuarios.php/DatosLlamadaPorId?id="+id;
 		request.get(url,(error,res,body) => {
 			if(error)
 				console.log(error);
-			/*var js = JSON.parse(body);
-			console.log(js);		
-			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
-		});
+			var js = JSON.parse(body);
+			console.log(js);
+			let latitud = js.latitud_inicial;
+			let longitud = js.longitud_inicial;	
+			let index = callPolylines.indexOf(id);
+			console.log(index + " " + polylines[index].length);
+			polylines[index].unshif([latitud, longitud]);
+			//console.log(polyline);
+			var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline.encode(polylines[index]);
+			console.log(url);
+			request.get(url,(error,res,body) => {
+				if(error)
+					console.log(error);
+				/*var js = JSON.parse(body);
+				console.log(js);		
+				io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
+			});
+		}
+		
 		/*callPolylines.splice(index, index);
 		polylines.splice(index, index);*/
 		
