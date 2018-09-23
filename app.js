@@ -267,7 +267,7 @@ io.on('connection', (socket) => {
 			let longitud = js.longitud_inicial;	
 			let index = callPolylines.indexOf(id);
 			console.log(index + " " + polylines[index].length);
-			polylines[index].unshif([latitud, longitud]);
+			polylines[index].unshift([latitud, longitud]);
 			//console.log(polyline);
 			var url = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ polyline.encode(polylines[index]);
 			console.log(url);
