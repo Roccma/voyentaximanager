@@ -278,7 +278,7 @@ io.on('connection', (socket) => {
 				console.log(js);		
 				io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
 			});
-		}
+		});
 		
 		/*callPolylines.splice(index, index);
 		polylines.splice(index, index);*/
