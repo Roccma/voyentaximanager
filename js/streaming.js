@@ -132,7 +132,7 @@ socket.on('location', function(data){
 
 	if(data['sessionid'] == sessionId){
 		if(markerLocation != null && markerLocation != "undefined")
-			map.removeLayer(markerLocation);
+			map.removeLayer(markerLocation); 
 		markerLocation = L.marker([data["latitud"], data["longitud"]], {draggable: false});
 		markerLocation.bindPopup("<center>Posición actual</center>");
 		markerLocation.on('mouseover', function (e) {
