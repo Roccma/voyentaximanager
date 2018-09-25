@@ -215,8 +215,8 @@ io.on('connection', (socket) => {
 				console.log(error);
 			var js = JSON.parse(body);
 			console.log(js);
-			/*let id = js.id;	
-			var num = polylines.length;
+			let id = js.id;	
+			/*var num = polylines.length;
 			callPolylines[num] = id;
 			polylines[num] = [];
 			polylines[num].push([latitud, longitud]);*/	
