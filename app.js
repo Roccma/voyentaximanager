@@ -4,7 +4,7 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-const polyline = require('polyline');
+//const polyline = require('polyline');
 
 const port = process.env.PORT || 3000;
 
@@ -186,8 +186,8 @@ app.get('/audio/voyentaxi_nueva_llamada.mp3', (req, res) => {
 });
 
 let locations = [];
-let callPolylines = [];
-let polylines = [];
+/*let callPolylines = [];
+let polylines = [];*/
 
 io.on('connection', (socket) => {
 	console.log("Nuevo usuario conectado: " + socket.id);
