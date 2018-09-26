@@ -100,6 +100,7 @@ if(localizaciones != null){
 	console.log("hay aca");
 	console.log(localizaciones);
 }else{
+	localizaciones = [];
 	localizaciones.push([latitud, longitud]);
 	localStorage.setItem(id, JSON.stringify(localizaciones)); 
 }
