@@ -30,8 +30,6 @@ let estado;
 
 let llamadaFinalizada = false;
 
-let localizaciones = [];
-
 var llamadaDesconectada;
 
 llamadaDesconectada = false;
@@ -96,8 +94,15 @@ longitud1 = longitud;
 latitud2 = latitud;
 longitud2 = longitud;
 
-localizaciones.push([latitud, longitud]);
-localStorage.setItem(id, JSON.stringify(localizaciones)); 
+let localizaciones = JSON.parse(localStorage.getItem(id)) != null ? JSON.parse(localStorage.getItem(id)) : null; 
+
+if(localizaciones != null){
+	console.log("hay aca");
+	console.log(localizaciones);
+}else{
+	localizaciones.push([latitud, longitud]);
+	localStorage.setItem(id, JSON.stringify(localizaciones)); 
+}
 
 var map = L.map('map').setView([latitud, longitud], 16);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
