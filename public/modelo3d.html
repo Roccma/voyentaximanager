@@ -1,0 +1,60 @@
+<html>
+  <head>
+  <title>Modelo 3D</title>
+  <link rel = "stylesheet" href = "../css/app.css"/>
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <link rel="shortcut icon" type="image/png" href="img/icon.png"/>
+  <style type="text/css">
+  .headerModelo3D{
+    background: #FFE448;
+    position: fixed;
+    height: 70px;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+  }
+  .imgModelo3D{
+    height: 59px;
+    margin-top: 5px;
+  }
+  iframe{
+    /*border-style: solid;*/
+    /*border-width: 10px;*/
+    /*border-color: #FFE448;*/
+    /*border-radius:15px;*/
+    position: absolute;
+    right: 0;
+    width: -webkit-fill-available;
+    height: 70%;
+    bottom: 35px;
+  }
+
+  .divInstrucciones{
+      position: fixed;
+      top: 80px;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+  }
+  
+  </style>
+
+  </head>
+  <body>
+      <div class = "headerModelo3D">
+        <center><img class = "imgModelo3D" src = "/img/Logo.png"/></center>
+      </div>
+      <div class = "divInstrucciones">Deslize el dedo para mover el modelo y aumentar o disminuir el acercamiento</div>
+      <div class="sketchfab-embed-wrapper"><iframe width="480" height="960" src="https://sketchfab.com/models/7e1382d54c674584b3027960ab5b613c/embed?autospin=0.2&amp;autostart=1&amp;preload=1" frameborder="0" allow="autoplay; fullscreen; vr" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>    
+      </div>
+
+        <footer class="footer">
+          <center>Modelado por <a href="https://sketchfab.com/maxirenders3d?utm_medium=embed&utm_source=website&utm_campaign=share-popup" target="_blank">Maxirenders3d</a></center>
+        </footer>
+      </div>
+    
+
+  </body>
+</html>
