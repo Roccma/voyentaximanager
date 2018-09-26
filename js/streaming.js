@@ -99,6 +99,32 @@ let localizaciones = JSON.parse(localStorage.getItem(id)) != null ? JSON.parse(l
 if(localizaciones != null){
 	console.log("hay aca");
 	console.log(localizaciones);
+	if(localizaciones.length > 1){
+		for(let i = 0; i < localizaciones.length; i++){
+			let j = i + 1;
+			if(j < localizaciones.length){				
+				var pointA = new L.LatLng(localizaciones[i][0], localizaciones[i][1]);
+				var pointB = new L.LatLng(localizaciones[j][0], localizaciones[j][1]);
+				var pointList = [pointA, pointB];
+
+				var firstpolyline = new L.Polyline(pointList, {
+				    color: 'red',
+				    weight: 2,
+				    opacity: 1,
+				    smoothFactor: 1
+				});
+				firstpolyline.addTo(map);
+			}
+			else{
+				latitud2 = localizaciones[i][0];
+				longitud2 = localizaciones[i][1];
+			}
+		}
+	}
+	else{
+		latitud2 = localizaciones[0][0];
+		longitud2 = localizaciones[0][1];
+	}
 }else{
 	localizaciones = [];
 	localizaciones.push([latitud, longitud]);
@@ -146,7 +172,13 @@ socket.on('location', function(data){
 			map.removeLayer(markerLocation); 
 		console.log(data["latitud"] + " <---> " + data["longitud"]);
 
-		localizaciones.push([data['latitud'], data['longitud']]);
+		if(JSON.parse(localStorage.getItem(id))){ 
+			var localizacionesAux = JSON.parse(localStorage.getItem(id)); 
+			publicacionAux.push([data['latitud'], data['longitud']]); 
+			localStorage.setItem(id, JSON.stringify(publicacionAux)); 
+		}
+
+		localizaciones.push();
 		localStorage.setItem(id, JSON.stringify(localizaciones)); 
 
 		markerLocation = L.marker([data["latitud"], data["longitud"]], {draggable: false});
