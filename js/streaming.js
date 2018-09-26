@@ -172,14 +172,13 @@ socket.on('location', function(data){
 			map.removeLayer(markerLocation); 
 		console.log(data["latitud"] + " <---> " + data["longitud"]);
 
-		if(JSON.parse(localStorage.getItem(id))){ 
-			var localizacionesAux = JSON.parse(localStorage.getItem(id)); 
-			localizacionesAux.push([data['latitud'], data['longitud']]); 
-			localStorage.setItem(id, JSON.stringify(localizacionesAux)); 
-		}
+		
+		var localizacionesAux = JSON.parse(localStorage.getItem(id)); 
+		localizacionesAux.push([data['latitud'], data['longitud']]); 
+		localStorage.setItem(id, JSON.stringify(localizacionesAux)); 
 
-		localizaciones.push();
-		localStorage.setItem(id, JSON.stringify(localizaciones)); 
+		/*localizaciones.push();
+		localStorage.setItem(id, JSON.stringify(localizaciones));*/ 
 
 		markerLocation = L.marker([data["latitud"], data["longitud"]], {draggable: false});
 		markerLocation.bindPopup("<center>Posición actual</center>");
