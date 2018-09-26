@@ -174,8 +174,8 @@ socket.on('location', function(data){
 
 		if(JSON.parse(localStorage.getItem(id))){ 
 			var localizacionesAux = JSON.parse(localStorage.getItem(id)); 
-			publicacionAux.push([data['latitud'], data['longitud']]); 
-			localStorage.setItem(id, JSON.stringify(publicacionAux)); 
+			localizacionesAux.push([data['latitud'], data['longitud']]); 
+			localStorage.setItem(id, JSON.stringify(localizacionesAux)); 
 		}
 
 		localizaciones.push();
