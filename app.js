@@ -398,6 +398,15 @@ io.on('connection', (socket) => {
 		console.log("reconnect_intent_response");
 		io.emit('reconnect_intent_response', {sessionId : sessionId});
 	});
+
+	socket.on('provider_disabled', (sessionId) => {
+		io.emit('provider_disabled', {sessionId : sessionId});
+	});
+
+	socket.on('provider_enabled', (sessionId) => {
+		io.emit('provider_enabled', {sessionId : sessionId});
+	});
+
 });
 
 http.listen(port, () => {

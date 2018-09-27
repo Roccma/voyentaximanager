@@ -93,7 +93,7 @@ latitud1 = latitud;
 longitud1 = longitud;
 latitud2 = latitud;
 longitud2 = longitud;
-
+soc
 var map = L.map('map').setView([latitud, longitud], 16);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 	maxZoom: 18}).addTo(map);
@@ -165,7 +165,13 @@ jQuery('#ultimaActualizacion').html("Última actualización: " + fecha + " " + h
 
 var markerLocation;
 
+socket.on('provider_disabled', function(data){
+	alert("Provider disabled!");
+});
 
+socket.on('provider_enabled', function(data){
+	alert("Provider enabled!");
+});
 
 socket.on('location', function(data){
 
@@ -404,7 +410,7 @@ function initializeSession(sessionId, token){
 			if(error)
 				handleError(error);
 			else{
-				if(connected == false){
+				isocf(connected == false){
 					connected = true;
 					//session.publish(publisher, handleError);
 				}
