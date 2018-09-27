@@ -407,6 +407,10 @@ io.on('connection', (socket) => {
 		io.emit('provider_enabled', {sessionId : sessionId});
 	});
 
+	socket.on('status_changed', (sessionId) => {
+		io.emit('status_changed', {sessionId : sessionId});
+	});
+
 });
 
 http.listen(port, () => {

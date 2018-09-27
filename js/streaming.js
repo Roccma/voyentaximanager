@@ -344,6 +344,10 @@ socket.on('provider_disabled', function(data){
 	alert("desconectado");
 });
 
+socket.on('status_changed', function(data){
+	alert("status_changed");
+});
+
 jQuery('#intentarReconectar').on('click', function(){
 	jQuery('#modalIntentarReconexion').modal('show');
 	socket.emit('reconnect_intent', sessionId);
