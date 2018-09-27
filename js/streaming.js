@@ -336,6 +336,14 @@ socket.on('finish_help_from_app', function(data){
 	
 });
 
+socket.on('provider_enabled', function(data){
+	alert("conectado");
+});
+
+socket.on('provider_disabled', function(data){
+	alert("desconectado");
+});
+
 jQuery('#intentarReconectar').on('click', function(){
 	jQuery('#modalIntentarReconexion').modal('show');
 	socket.emit('reconnect_intent', sessionId);
