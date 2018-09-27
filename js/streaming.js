@@ -345,7 +345,7 @@ socket.on('provider_disabled', function(data){
 });
 
 socket.on('status_changed', function(data){
-	console.log("status_changed: " + data['sessionId']);
+	console.log("status_changed: " + data['sessionId'] + " : " + data['i']);
 });
 
 jQuery('#intentarReconectar').on('click', function(){
