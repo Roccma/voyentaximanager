@@ -259,7 +259,7 @@ socket.on('location', function(data){
 					});
 				}
 				
-			}, 35000);
+			}, 25000);
 		}
 	}
 
