@@ -48,6 +48,10 @@ app.get('/modelo3d', (req, res) => {
 	res.redirect('modelo3d.html');
 });
 
+app.get('/descargar', (req, res) => {
+	res.redirect('descargar.html');
+});
+
 app.get('/css/app.css', (req, res) => {
 	res.sendFile(`${cssDir}/app.css`);
 });
