@@ -224,12 +224,8 @@ io.on('connection', (socket) => {
 			var js = JSON.parse(body);
 			console.log(js);
 			let id = js.id;	
-			/*var num = polylines.length;
-			callPolylines[num] = id;
-			polylines[num] = [];
-			polylines[num].push([latitud, longitud]);*/	
 			io.emit('help', {sessionid : sessionId, token : token, cedula : cedula, name : name, email : email, telephone : telephone, latitud : latitud, longitud : longitud, fechaHora : fechaHora, cantidad_desconexiones : cantidad_desconexiones, id : id, url : url});
-			//io.emit('listen_location', {send : 'ok', sessionId : sessionId});
+	
 		});	
 	});
 
@@ -247,7 +243,6 @@ io.on('connection', (socket) => {
 			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});
 		});
 		
-		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
 
 	socket.on('update_call_data', (id, latitud_final, longitud_final, url_video) => {
@@ -256,73 +251,31 @@ io.on('connection', (socket) => {
 		request.get(url,(error,res,body) => {
 			if(error)
 				console.log(error);
-			/*var js = JSON.parse(body);
-			console.log(js);		
-			io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
 		});
-		
-		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
 
 	socket.on('update_polyline', (id, p) => {
-		/*var url = "https://voyentaxiws.herokuapp.com/usuarios.php/DatosLlamadaPorId?id="+id;
-		console.log(url);
-		request.get(url,(error,res,body) => {
-			if(error)
-				console.log(error);
-			var js = JSON.parse(body);
-			console.log(js);
-			let latitud = js.latitud_inicial;
-			let longitud = js.longitud_inicial;	
-			let index = callPolylines.indexOf(id);
-			console.log(index + " " + polylines[index].length);
-			polylines[index].unshift([latitud, longitud]);*/
-			//console.log(polyline);
 			var url2 = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ p;
 			console.log(url2);
 			request.get(url2,(error,res,body) => {
 				if(error)
 					console.log(error);
-				/*var js = JSON.parse(body);
-				console.log(js);		
-				io.emit('finish_help_from_app', {sessionId : sessionId, id : id});*/
 			});
-		//});
-		
-		/*callPolylines.splice(index, index);
-		polylines.splice(index, index);*/
-		
-		//io.emit('finish_help_from_app', {sessionId : sessionId});
 	});
 
 
 	socket.on('finish_help', (sessionId, id) => {
 		console.log("finish_help " + id);
-		/*let index = locations.indexOf(sessionId);		
-		locations.splice(index, index);
-		console.log(locations);*/
 		io.emit('finish_help', {sessionid : sessionId, id : id});
 	});
 
 	socket.on('location', (sessionId, latitud, longitud, fechaHora, id) => {
 		io.emit('location', {sessionid : sessionId, latitud : latitud, longitud : longitud, fechaHora : fechaHora, id : id});
-		//console.log("Cantidad: " + callPolylines.length);
-		/*if(callPolylines.indexOf(id) == -1){
-			var num = polylines.length;
-			callPolylines[num] = id;
-			polylines[num] = [];
-			polylines[num].push([latitud, longitud]);
-		}
-		else{
-			let index = callPolylines.indexOf(id);
-			polylines[index].push([latitud, longitud]);
-		}*/
 	});
 
 	socket.on('listen_location', (sessionId) => {
 		console.log("listen_location");
 		if(locations.indexOf(sessionId) == -1){
-			//locations[locations.length] = sessionId;
 			io.emit('listen_location', {send : 'ok', sessionId : sessionId});
 		}
 	});
@@ -335,19 +288,16 @@ io.on('connection', (socket) => {
 
 		var startRecord = false;
 		console.log("aca");
-		//while(startRecord == false){
-			//console.log("acaa");
-			opentok.startArchive(sessionId, {name : 'Video record', outputMode : 'individual'}, (err, archive) => {
-				if(err){
-					io.emit('record_start', {archive: "0"});
-				    console.log("Error: " + err);
-				}
-				else{
-					console.log("Exito: " + archive.id);
-					io.emit('record_start', {archive : archive.id});
-				}
-			});
-		//}
+		opentok.startArchive(sessionId, {name : 'Video record', outputMode : 'individual'}, (err, archive) => {
+			if(err){
+				io.emit('record_start', {archive: "0"});
+			    console.log("Error: " + err);
+			}
+			else{
+				console.log("Exito: " + archive.id);
+				io.emit('record_start', {archive : archive.id});
+			}
+		});
 		
 	});
 
@@ -385,7 +335,6 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('reconnected', (sessionId) => {
-		//console.log("reconectado! " + sessionId);
 		io.emit('reconnected', {sessionId : sessionId});
 	});
 

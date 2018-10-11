@@ -11,7 +11,6 @@ let longitud = parseFloat(credentialsParts[3].replace("longitud=", ""));
 let fecha = credentialsParts[4].replace("fecha=", "")
 let hora = credentialsParts[5].replace("hora=", "")
 let id = credentialsParts[6].replace("id=", "");
-//let apiKey = credentialsParts[7].replace("apikey=", "");
 
 console.log(sessionId + " - " + token);
 
@@ -179,9 +178,6 @@ socket.on('location', function(data){
 		localizacionesAux.push([data['latitud'], data['longitud']]); 
 		localStorage.setItem(id, JSON.stringify(localizacionesAux)); 
 
-		/*localizaciones.push();
-		localStorage.setItem(id, JSON.stringify(localizaciones));*/ 
-
 		markerLocation = L.marker([data["latitud"], data["longitud"]], {draggable: false});
 		markerLocation.bindPopup("<center>Posición actual</center>");
 		markerLocation.on('mouseover', function (e) {
@@ -226,11 +222,6 @@ socket.on('location', function(data){
 			contadorDesconexion = window.setTimeout(function(){
 				if(!llamadaFinalizada){
 					llamadaDesconectada = true;
-					/*$('.contenedorSubscriber').hide();
-					$('.contenedorMapa').hide();
-					$('.contenedorPublisher').hide();
-					$('.contenedorBotones').hide();
-					$('.contenedorDatos').hide();*/
 					cantidad_desconexiones++;
 					if(cantidad_desconexiones < 3){
 						$('#imgCargando').css('display', 'none');		
@@ -269,7 +260,6 @@ socket.on('location', function(data){
 });
 
 socket.on('reconnected', function(data){
-	//alert("reconectar");
 	$('#modalReconectando').modal('hide');
 	if(data['sessionId'] == sessionId){
 
@@ -285,7 +275,6 @@ socket.on('reconnected', function(data){
 		.done(function(response) {			
 			location.reload(true);
 		});
-		//initializeSession("46127092", sessionId, token);
 	}
 });
 
@@ -312,7 +301,6 @@ socket.on('finish_help', function(data){
 
 	$.ajax({
     	url : "https://voyentaxiws.herokuapp.com/usuarios.php/FinLlamada?callid="+id+"&url=&date=&latitud="+latitud+"&longitud="+longitud,
-    	//userid="+data['cedula']+"&date="+fhSplit[0]+hora+"&latitud="+data['latitud']+"&longitud="+data['longitud']+"",
     	type : 'GET',
     	dataType : 'json'
     });
@@ -357,9 +345,6 @@ jQuery('#intentarReconectar').on('click', function(){
 	}, 10000);
 });
 
-	
-//initializeSession("46127092", sessionId, token);
-
 initializeSession(sessionId, token);
 
 var connected = false;
@@ -396,7 +381,6 @@ function initializeSession(sessionId, token){
 		session = OT.initSession(apiKey, sessionId);
 
 		session.on('streamCreated', function(event){
-			//alert("streamCreated");
 			var subscriber = session.subscribe(event.stream, 'subscriber', {
 				insertMode : 'append',
 				width : '75%',
@@ -418,7 +402,6 @@ function initializeSession(sessionId, token){
 			else{
 				if(connected == false){
 					connected = true;
-					//session.publish(publisher, handleError);
 				}
 			}
 		});

@@ -2,7 +2,6 @@ $(document).on('ready', function(){
 
 	let socket = io();
 
-	//$('#imgCargando').css('display', 'none');
 	socket.on('help', function(data){		
 		new Audio('/audio/voyentaxi_nueva_llamada.mp3').play();	        
 	});
