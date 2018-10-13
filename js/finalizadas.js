@@ -208,22 +208,6 @@ function verLlamada(id){
 		let distancia = 0;
 
 		if(response['polyline'] != null){
-			/*L.Polyline = L.Polyline.include({
-			    getDistance: function(system) {
-			        // distance in meters
-			        var mDistanse = 0,
-			            length = this._latlngs.length;
-			        for (var i = 1; i < length; i++) {
-			            mDistanse += this._latlngs[i].distanceTo(this._latlngs[i - 1]);
-			        }
-			        // optional
-			        if (system === 'imperial') {
-			            return mDistanse / 1609.34;
-			        } else {
-			            return mDistanse / 1000;
-			        }
-			    }
-			});*/
 			
 			var polygon = L.Polyline.fromEncoded(response['polyline'], {
 	            color: 'red',
@@ -231,8 +215,6 @@ function verLlamada(id){
 			    opacity: 1,
 			    smoothFactor: 1
 	        }).addTo(markerGroup);
-
-			//distancia = L.polyline.getDistance(polygon);
 		}
 		
 		document.getElementById('tablaDatosTaxista').innerHTML = 
@@ -292,8 +274,9 @@ function verLlamada(id){
 		let latf = parseFloat(response['latitud_final']);
 		let lonf = parseFloat(response['longitud_final']);
 
-		let longitud = L.GeometryUtil.length([L.latLng(lat, lon), L.latLng(latf, lonf)]);
-		let dist = parseFloat((longitud/1000)).toFixed(2);
+		/*let longitud = L.GeometryUtil.length([L.latLng(lat, lon), L.latLng(latf, lonf)]);
+		let dist = parseFloat((longitud/1000)).toFixed(2);*/
+		let dist = parseFloat(response['distancia']).toFixed(2);
 
 		document.getElementById('tablaDatosLlamada').innerHTML = 
 			"<tr>" + 
