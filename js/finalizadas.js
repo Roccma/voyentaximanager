@@ -205,13 +205,34 @@ function verLlamada(id){
 		
 		markerGroup.clearLayers();
 
+		let distancia = 0;
+
 		if(response['polyline'] != null){
+			/*L.Polyline = L.Polyline.include({
+			    getDistance: function(system) {
+			        // distance in meters
+			        var mDistanse = 0,
+			            length = this._latlngs.length;
+			        for (var i = 1; i < length; i++) {
+			            mDistanse += this._latlngs[i].distanceTo(this._latlngs[i - 1]);
+			        }
+			        // optional
+			        if (system === 'imperial') {
+			            return mDistanse / 1609.34;
+			        } else {
+			            return mDistanse / 1000;
+			        }
+			    }
+			});*/
+			
 			var polygon = L.Polyline.fromEncoded(response['polyline'], {
 	            color: 'red',
 			    weight: 2,
 			    opacity: 1,
 			    smoothFactor: 1
 	        }).addTo(markerGroup);
+
+			//distancia = L.polyline.getDistance(polygon);
 		}
 		
 		document.getElementById('tablaDatosTaxista').innerHTML = 

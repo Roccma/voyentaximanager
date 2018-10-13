@@ -254,8 +254,8 @@ io.on('connection', (socket) => {
 		});
 	});
 
-	socket.on('update_polyline', (id, p) => {
-			var url2 = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ p;
+	socket.on('update_polyline', (id, p, distancia) => {
+			var url2 = "https://voyentaxiws.herokuapp.com/usuarios.php/UpdatePolyline?id="+id+"&polyline="+ p + "&distancia=" + distancia;
 			console.log(url2);
 			request.get(url2,(error,res,body) => {
 				if(error)
